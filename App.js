@@ -1,12 +1,30 @@
 import { StatusBar } from "expo-status-bar";
+import { Button } from "native-base";
 import { StyleSheet, Text, View } from "react-native";
-
+import { Provider, useDispatch, useSelector } from "react-redux";
+import store from "./redux/store";
+import { toggleTheme } from "./redux/themeSlize";
 export default function App() {
+  const theme = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
+  console.log(theme);
   return (
-    <View style={styles.container}>
-      <Text>kitchen cabinet</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <View
+        style={[
+          styles.container,
+          theme === "dark"
+            ? { backgroundColor: "red" }
+            : { backgroundColor: "blue" },
+        ]}
+      >
+        <Text>kitchen cabinet</Text>
+        <Button onPress={() => dispatch(toggleTheme("dark"))}>
+          toggle theme
+        </Button>
+        <StatusBar style="auto" />
+      </View>
+    </Provider>
   );
 }
 
