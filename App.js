@@ -1,24 +1,29 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { NativeBaseProvider } from "native-base";
+import { StyleSheet, Text } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { StyleProviderThemed } from './StyleProviderThemed';
+// custom theme
+import customTheme from './src/theme';
+
+// custom components
+import Dashboard from './src/components/Dashboard';
 
 export default function App() {
+  
   return (
-    <StyleProviderThemed>
-    <View style={styles.container}>
-      <Text>kitchen cabinet</Text>
-      <StatusBar style="auto" />
-    </View>
-    </StyleProviderThemed>
+    <NativeBaseProvider theme={customTheme}>
+      <SafeAreaProvider>
+        <Dashboard />
+      </SafeAreaProvider>
+    </NativeBaseProvider>
   );
 }
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
-});
+}); */
