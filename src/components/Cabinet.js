@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { VStack, Image, Input, Icon, Box, Divider, Center } from 'native-base';
-import { Animated, SafeAreaView, StatusBar } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Button } from 'react-native';
 
 // components
 import Header from './Header';
@@ -11,7 +11,7 @@ import Loader from './Loader';
 
 
 const Cabinet = () => {
-
+  const [inputValue, setInputValue] = useState('');
   const [scrollYValue, setScrollYValue] = useState(new Animated.Value(0));
   const clampedScroll = Animated.diffClamp(
     Animated.add(
@@ -38,7 +38,10 @@ const Cabinet = () => {
           <Divider />
         </Box>}> 
       
-        <Input placeholder="Search" variant="filled" width="100%" borderRadius="10" py="1" px="2" InputLeftElement={<Icon ml="2" size="4" color="gray.400" />} />
+        <Input defaultValue={inputValue} onChangeText={(newText)=> setInputValue(newText)} placeholder="Search" variant="filled" width="100%" borderRadius="10" py="1" px="2" InputLeftElement={<Icon ml="2" size="4" color="gray.400" />} />
+       <Button title="Search" onPress={() => {
+        console.log(inputValue)
+       }} />
        </VStack></Center>
         <Image source={ require('../../assets/images/cabinet.jpg') } /* borderRadius={30} */ alt="Kitchen Cabinet" resizeMode="cover" />
    
