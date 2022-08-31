@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { VStack, Image, Input, Icon, Box, Divider, Center } from 'native-base';
 import { Animated, SafeAreaView, StatusBar, Button } from 'react-native';
+import axios from 'axios';
 
 // components
 import Header from './Header';
@@ -26,6 +27,16 @@ const Cabinet = () => {
     50,
   )
   const array = [1, 2, 3, 4, 5];
+  const handleSearch = async() => {
+    console.log(inputValue);
+    try {
+      const response = await axios.get('http://localhost:8002/cabinet/items/630dff86aa1ea3a726d5c230');
+    console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+    }
+
   return (
     <Animated.View>
 
@@ -39,9 +50,7 @@ const Cabinet = () => {
         </Box>}> 
       
         <Input defaultValue={inputValue} onChangeText={(newText)=> setInputValue(newText)} placeholder="Search" variant="filled" width="100%" borderRadius="10" py="1" px="2" InputLeftElement={<Icon ml="2" size="4" color="gray.400" />} />
-       <Button title="Search" onPress={() => {
-        console.log(inputValue)
-       }} />
+       <Button title="Search" onPress={handleSearch} />
        </VStack></Center>
         <Image source={ require('../../assets/images/cabinet.jpg') } /* borderRadius={30} */ alt="Kitchen Cabinet" resizeMode="cover" />
    
