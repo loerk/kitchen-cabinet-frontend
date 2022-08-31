@@ -1,10 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import themeSlize from "./themeSlize";
+import recipesSlize from "./recipesSlize";
 
 const store = configureStore({
   reducer: {
-    // Define a top-level state field named `todos`, handled by `todosReducer`
-    theme: themeSlize,
+    recipes: recipesSlize.reducer,
   },
 });
 
