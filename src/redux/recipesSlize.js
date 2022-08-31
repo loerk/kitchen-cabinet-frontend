@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_KEY = "5244e893971c49b5ba7c13b02a51d9b9";
+const API_KEY = "";
 const API_BASE_URL = "https://api.spoonacular.com/recipes";
 
 export const getRecipes = createAsyncThunk(
