@@ -1,12 +1,19 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { NativeBaseProvider } from "native-base";
+import { StyleSheet, View } from "react-native";
+import { Provider } from "react-redux";
+import RecipesList from "./src/components/recipes/recipesList";
+import store from "./src/redux/store";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>kitchen cabinet</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <RecipesList />
+        </View>
+      </Provider>
+    </NativeBaseProvider>
   );
 }
 
