@@ -1,3 +1,4 @@
+
 import { NativeBaseProvider } from "native-base";
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -9,14 +10,23 @@ import customTheme from './src/theme';
 import Dashboard from './src/components/Dashboard';
 import Cabinet from './src/components/Cabinet';
 
+
+import { Provider } from "react-redux";
+import RecipesList from "./src/components/recipes/recipesList";
+import store from "./src/redux/store";
+
+
 export default function App() {
   
   return (
+
     <NativeBaseProvider theme={customTheme}>
+      <Provider store={store}>
       <SafeAreaProvider>
         {/* <Dashboard /> */}
         <Cabinet />
       </SafeAreaProvider>
+      </Provider>
     </NativeBaseProvider>
   );
 }
