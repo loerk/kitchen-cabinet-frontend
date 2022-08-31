@@ -1,17 +1,26 @@
-import React from 'react';
-import { styles } from './styles';
-import { Heading, HStack, Switch, useColorMode } from 'native-base';
+import { StyleSheet, Dimensions } from 'react-native';
+import { HStack, Switch, useColorMode } from 'native-base';
 
-const Header = () => {
+const Profile = () => {
   const {colorMode, toggleColorMode} = useColorMode();
   const isDarkMode = colorMode === 'dark';
   const toggleSwitch = () => {
     toggleColorMode();
   }
 
+  const {width, height} = Dimensions.get('screen');
+  const styles = StyleSheet.create({
+      headerContainer: {
+          width: width,
+          height: 0.1 * height,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 20
+      }
+  });
+  
   return (
     <HStack style={styles.headerContainer}>
-      <Heading>Dashboard</Heading>
       <Switch 
         defaultIsChecked={isDarkMode}
         offTrackColor="black.800"
@@ -25,4 +34,5 @@ const Header = () => {
   )
 };
 
-export default Header;
+
+export default Profile;

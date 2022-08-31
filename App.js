@@ -7,13 +7,15 @@ import customTheme from './src/theme';
 
 // custom components
 import Dashboard from './src/components/Dashboard';
+import Cabinet from './src/components/Cabinet';
 
 export default function App() {
   
   return (
     <NativeBaseProvider theme={customTheme}>
       <SafeAreaProvider>
-        <Dashboard />
+        {/* <Dashboard /> */}
+        <Cabinet />
       </SafeAreaProvider>
     </NativeBaseProvider>
   );

@@ -1,7 +1,7 @@
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, useColorMode } from 'native-base';
+import { Divider, Text, StatusBar, useColorMode, Input } from 'native-base';
 
 // components
 import Header from './Header';
@@ -14,8 +14,11 @@ const Dashboard = () => {
     <SafeAreaView style={[styles.container, {backgroundColor: bgColor}]}>
         <StatusBar barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'} />
         <Header />
-      <Text color="green.300">kitchen cabinet</Text>
-      <Text color="amber.400">This is a test</Text>
+        <Divider />
+      {/* <Text color="green.300">kitchen cabinet</Text>
+      <Text color="amber.400">This is a test</Text> */}
+      {/* */}
+      <Input />
     </SafeAreaView>
   )
 }
