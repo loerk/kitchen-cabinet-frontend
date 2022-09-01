@@ -6,13 +6,14 @@ import axios from 'axios';
 // components
 import Header from './Header';
 
+
 const Cabinet = () => {
   const [inputValue, setInputValue] = useState('');
-  const [scrollYValue, setScrollYValue] = useState(new Animated.Value(0));
-  const [cabinetItems, setCabinetItems] = useState([]);
+/*   const [scrollYValue, setScrollYValue] = useState(new Animated.Value(0));
+ */  const [cabinetItems, setCabinetItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  const clampedScroll = Animated.diffClamp(
+  /* const clampedScroll = Animated.diffClamp(
     Animated.add(
       scrollYValue.interpolate({
         inputRange: [0, 1],
@@ -23,7 +24,7 @@ const Cabinet = () => {
     ),
     0,
     50,
-  )
+  ) */
 
   const handleSearch = async() => {
     console.log(inputValue);
@@ -70,7 +71,7 @@ const Cabinet = () => {
         <Image source={require('../../assets/images/cabinet.jpg')} alt="Kitchen Cabinet" resizeMode="cover" />
         
        {!isLoading && cabinetItems.map(item => <Text key={item._id}>{item.name}</Text>)} 
-
+       
       </SafeAreaView>
     </Animated.View>
   );

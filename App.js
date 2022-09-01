@@ -9,6 +9,7 @@ import customTheme from './src/theme';
 // custom components
 import Dashboard from './src/components/Dashboard';
 import Cabinet from './src/components/Cabinet';
+import Footer from './src/components/Footer';
 
 
 import { Provider } from "react-redux";
@@ -24,7 +25,8 @@ export default function App() {
       <Provider store={store}>
       <SafeAreaProvider>
         {/* <Dashboard /> */}
-        <Cabinet />
+       <Cabinet />
+       <Footer />
       </SafeAreaProvider>
       </Provider>
     </NativeBaseProvider>
