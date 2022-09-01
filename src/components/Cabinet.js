@@ -1,19 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { VStack, Image, Input, Icon, Box, Divider, Center } from 'native-base';
-import { Animated, SafeAreaView, StatusBar, Button } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Button, Text } from 'react-native';
 import axios from 'axios';
 
 // components
 import Header from './Header';
-import Loader from './Loader';
-/* import Search from './Search'; */
-
-
-
 
 const Cabinet = () => {
   const [inputValue, setInputValue] = useState('');
   const [scrollYValue, setScrollYValue] = useState(new Animated.Value(0));
+  const [cabinetItems, setCabinetItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
   const clampedScroll = Animated.diffClamp(
     Animated.add(
       scrollYValue.interpolate({
@@ -26,17 +24,34 @@ const Cabinet = () => {
     0,
     50,
   )
-  const array = [1, 2, 3, 4, 5];
+
   const handleSearch = async() => {
     console.log(inputValue);
     try {
-      const response = await axios.get('http://localhost:8002/cabinet/items/630dff86aa1ea3a726d5c230');
-    console.log(response.data)
+      const { data } = await axios.get('http://192.168.178.123:8002/cabinet/items/630f488243702ea0df8bf333');
+      setCabinetItems(data);
     } catch (error) {
       console.log(error)
+    }finally {
+      setIsLoading(false);
     }
     }
 
+  const getIngredients = async() => {
+    try {
+      const { data } = await axios.get('http://192.168.178.123:8002/cabinet/items/item/630dff86aa1ea3a726d5c230');
+      setCabinetItems(data);  
+    } catch (error) {
+      console.log(error)
+    }finally {
+      setIsLoading(false);
+    }
+    }
+
+    useEffect(() => {
+      getIngredients();
+    }, []);
+    console.log(cabinetItems);
   return (
     <Animated.View>
 
@@ -52,30 +67,10 @@ const Cabinet = () => {
         <Input defaultValue={inputValue} onChangeText={(newText)=> setInputValue(newText)} placeholder="Search" variant="filled" width="100%" borderRadius="10" py="1" px="2" InputLeftElement={<Icon ml="2" size="4" color="gray.400" />} />
        <Button title="Search" onPress={handleSearch} />
        </VStack></Center>
-        <Image source={ require('../../assets/images/cabinet.jpg') } /* borderRadius={30} */ alt="Kitchen Cabinet" resizeMode="cover" />
-   
-        {/* <Search clampedScroll={clampedScroll} /> */}
-        <Animated.ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{
-            margin: 20,
-            backgroundColor: 'white',
-            paddingTop: 55
-          }}
-          contentContainerStyle={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around'
-          }}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-             { useNativeDriver: true },
-            () => { },          // Optional async listener
-          )}
-          contentInsetAdjustmentBehavior="automatic">
-          {array.map(item => <Loader key={item} />)}
-        </Animated.ScrollView>
+        <Image source={require('../../assets/images/cabinet.jpg')} alt="Kitchen Cabinet" resizeMode="cover" />
+        
+       {!isLoading && cabinetItems.map(item => <Text key={item._id}>{item.name}</Text>)} 
+
       </SafeAreaView>
     </Animated.View>
   );
