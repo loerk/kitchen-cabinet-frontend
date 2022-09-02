@@ -1,24 +1,41 @@
-import { View, Text } from "native-base";
-import { useEffect } from "react";
+import { View, Text, Spinner } from "native-base";
+
 import { StyleSheet } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { getRecipes } from "../../redux/recipesSlize";
+
+import { useGetFilteredRecipesQuery } from "../../redux/apiSlice";
+
+let CabinetExcerpt = ({ item }) => {
+  return <Text>{item.title}</Text>;
+};
 
 export default function RecipesList() {
-  const dispatch = useDispatch();
-  const recipes = useSelector((state) => state.recipes.list);
-  console.log(recipes);
+  const {
+    data: items,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetFilteredRecipesQuery({
+    query: "banana",
+    type: "breakfast",
+  });
 
-  useEffect(() => {
-    dispatch(getRecipes());
-  }, []);
+  let content;
+
+  if (isLoading) {
+    content = <Spinner text="Loading..." />;
+  } else if (isSuccess) {
+    content = items.results.map((item) => (
+      <CabinetExcerpt key={item.id} item={item} />
+    ));
+  } else if (isError) {
+    content = <Text>{error.toString()}</Text>;
+  }
 
   return (
     <View style={styles.container}>
-      <Text>Recipes List</Text>
-      {recipes && recipes.map((recipe) => (
-        <Text>{recipe.title}</Text>
-      ))}
+      <Text>RecipeList</Text>
+      {content}
     </View>
   );
 }
