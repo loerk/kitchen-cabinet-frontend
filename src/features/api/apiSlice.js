@@ -35,9 +35,9 @@ export const apiSlice = createApi({
     }),
     addCabinet: builder.mutation({
       query: (name) => ({
-        url: "/cabinet/",
+        url: "/cabinet",
         method: "POST",
-        body: name,
+        body: { name },
       }),
     }),
     addItem: builder.mutation({
