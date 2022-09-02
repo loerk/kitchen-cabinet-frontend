@@ -25,7 +25,6 @@ export default function App() {
       <Provider store={store}>
         <SafeAreaProvider>
           {/* <Dashboard /> */}
-          <Cabinet />
           <NavigationContainer>
             <AppNavigator />
             <Footer />
