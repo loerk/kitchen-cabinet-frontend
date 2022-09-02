@@ -1,11 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { HStack, Switch, useColorMode } from 'native-base';
+import { HStack, Switch, useColorMode, Text } from 'native-base';
 
 const Profile = () => {
   const {colorMode, toggleColorMode} = useColorMode();
   const isDarkMode = colorMode === 'dark';
   const toggleSwitch = () => {
-    toggleColorMode();
+    toggleColorMode(() => {});
   }
 
   const {width, height} = Dimensions.get('screen');
@@ -21,6 +21,7 @@ const Profile = () => {
   
   return (
     <HStack style={styles.headerContainer}>
+      <Text>Profile</Text>
       <Switch 
         defaultIsChecked={isDarkMode}
         offTrackColor="black.800"

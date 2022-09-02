@@ -15,8 +15,8 @@ export default function RecipesList() {
 
   return (
     <View style={styles.container}>
-      <Text>RecipeList</Text>
-      {recipes.map((recipe) => (
+      <Text>Recipes List</Text>
+      {recipes && recipes.map((recipe) => (
         <Text>{recipe.title}</Text>
       ))}
     </View>

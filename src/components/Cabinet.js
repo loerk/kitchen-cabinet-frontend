@@ -59,7 +59,7 @@ const Cabinet = () => {
 
       
       <SafeAreaView>
-        <Header header="Cabinet" />
+        {/* <Header header="Cabinet" /> */}
         <Center>
          <VStack my="4" space={5} w="100%" maxW="300px" divider={<Box px="2">
           <Divider />
