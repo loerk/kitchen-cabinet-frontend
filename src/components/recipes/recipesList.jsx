@@ -2,7 +2,7 @@ import { View, Text, Spinner } from "native-base";
 
 import { StyleSheet } from "react-native";
 
-import { useGetRecipeByIngredientsQuery } from "../../redux/apiSlice";
+import { useGetFilteredRecipesQuery } from "../../redux/apiSlice";
 
 let CabinetExcerpt = ({ item }) => {
   return <Text>{item.title}</Text>;
@@ -15,24 +15,27 @@ export default function RecipesList() {
     isSuccess,
     isError,
     error,
-  } = useGetRecipeByIngredientsQuery("tomato");
+  } = useGetFilteredRecipesQuery({
+    query: "banana",
+    type: "breakfast",
+  });
 
   let content;
 
   if (isLoading) {
     content = <Spinner text="Loading..." />;
   } else if (isSuccess) {
-    content = items.map((item) => <CabinetExcerpt key={item.id} item={item} />);
+    content = items.results.map((item) => (
+      <CabinetExcerpt key={item.id} item={item} />
+    ));
   } else if (isError) {
     content = <Text>{error.toString()}</Text>;
   }
-  console.log(items[1].title);
+
   return (
     <View style={styles.container}>
       <Text>RecipeList</Text>
-      {items.map((item) => (
-        <Text>{item.title}</Text>
-      ))}
+      {content}
     </View>
   );
 }
