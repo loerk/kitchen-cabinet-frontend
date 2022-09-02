@@ -1,24 +1,23 @@
 
 import { NativeBaseProvider } from "native-base";
+import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // custom theme
 import customTheme from './src/theme';
 
+// stack navigator
+import StackNavigator from "./StackNavigator";
+
+
 // custom components
-import Dashboard from './src/components/Dashboard';
-import Cabinet from './src/components/Cabinet';
-import Profile from './src/components/Profile';
 import Footer from './src/components/Footer';
 
-
+// redux
 import { Provider } from "react-redux";
-import RecipesList from "./src/components/recipes/recipesList";
 import store from "./src/redux/store";
 
-const Stack = createNativeStackNavigator();
 
 export default function App() {
 
@@ -28,13 +27,10 @@ export default function App() {
       <Provider store={store}>
         <SafeAreaProvider>
           <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name="Cabinet" component={Cabinet} />
-              <Stack.Screen name="Dashboard" component={Dashboard} />
-              <Stack.Screen name="Profile" component={Profile} />
-            </Stack.Navigator>
+            <StackNavigator />
+            <StatusBar style="dark" />
+            <Footer />
           </NavigationContainer>
-          <Footer />
         </SafeAreaProvider>
       </Provider>
     </NativeBaseProvider>

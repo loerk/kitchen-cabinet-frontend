@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { VStack, Image, Input, Icon, Box, Divider, Center } from 'native-base';
-import { Animated, SafeAreaView, StatusBar, Button, Text } from 'react-native';
+import { Animated, SafeAreaView, Button, Text } from 'react-native';
 import axios from 'axios';
 
 // components
@@ -57,7 +57,7 @@ const Cabinet = () => {
     <Animated.View>
 
 
-      <StatusBar barStyle="dark-content" />
+      
       <SafeAreaView>
         <Header header="Cabinet" />
         <Center>
