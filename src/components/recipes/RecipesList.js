@@ -2,7 +2,7 @@ import { View, Text, Spinner } from "native-base";
 
 import { StyleSheet } from "react-native";
 
-import { useGetFilteredRecipesQuery } from "../../redux/apiSlice";
+import { useGetFilteredRecipesQuery } from "../../features/api/apiSlice";
 
 let CabinetExcerpt = ({ item }) => {
   return <Text>{item.title}</Text>;

@@ -23,6 +23,7 @@ import axios from "axios";
 
 // components
 import Header from "./Header";
+import { AddCabinetForm } from "./cabinet/AddCabinet";
 
 const Cabinet = () => {
   const navigation = useNavigation();
@@ -31,7 +32,6 @@ const Cabinet = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleSearch = async () => {
-    console.log(inputValue);
     try {
       const { data } = await axios.get(
         "http://192.168.178.123:8002/cabinet/items/630f488243702ea0df8bf333"
@@ -60,7 +60,6 @@ const Cabinet = () => {
   useEffect(() => {
     getIngredients();
   }, []);
-  console.log(cabinetItems);
   return (
     <ScrollView>
       {/* <Header header="Cabinet" /> */}
@@ -96,6 +95,7 @@ const Cabinet = () => {
         alt="Kitchen Cabinet"
         resizeMode="cover"
       />
+      <AddCabinetForm />
       <View>
         {!isLoading &&
           cabinetItems.map((item) => <Text key={item._id}>{item.name}</Text>)}

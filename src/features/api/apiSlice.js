@@ -2,13 +2,16 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL = "http://192.168.178.26:8002";
 
-// Define our single API slice object
+// Defines the single API slice object
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (builder) => ({
-    getCabinetItems: builder.query({
+    getCabinetById: builder.query({
       query: (id) => `/cabinet/${id}`,
+    }),
+    getCabinetItems: builder.query({
+      query: (id) => `/cabinet/items/all/${id}`,
     }),
     getCabinetItem: builder.query({
       query: (id) => `/cabinet/items/${id}`,
@@ -30,10 +33,51 @@ export const apiSlice = createApi({
     getRecipeInstructions: builder.query({
       query: (id) => `/recipes/instructions/${id}`,
     }),
+    addCabinet: builder.mutation({
+      query: (name) => ({
+        url: "/cabinet",
+        method: "POST",
+        body: { name },
+      }),
+    }),
+    addItem: builder.mutation({
+      query: ({ cabinetId, id, expiryDate, amount }) => ({
+        url: "cabinet/items/",
+        method: "POST",
+        body: { cabinetId, id, expiryDate, amount },
+      }),
+    }),
+    editCabinet: builder.mutation({
+      query: ({ id, ...rest }) => ({
+        url: `/cabinet/${id}`,
+        method: "PUT",
+        body: rest,
+      }),
+    }),
+    editItem: builder.mutation({
+      query: ({ id, ...rest }) => ({
+        url: `/cabinet/items/${id}`,
+        method: "PUT",
+        body: rest,
+      }),
+    }),
+    deleteItem: builder.mutation({
+      query: (id) => ({
+        url: `/cabinet/items/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    deleteCabinet: builder.mutation({
+      query: (id) => ({
+        url: `/cabinet/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
 export const {
+  useGetCabinetByIdQuery,
   useGetCabinetItemsQuery,
   useGetCabinetItemQuery,
   useGetFilteredRecipesQuery,
@@ -41,46 +85,10 @@ export const {
   useGetRecipeByIngredientsQuery,
   useIngredientsListQuery,
   useRecipeInstructionsQuery,
+  useAddCabinetMutation,
+  useAddItemMutation,
+  useEditCabinetMutation,
+  useEditItemMutation,
+  useDeleteItemMutation,
+  useDeleteCabinetMutation,
 } = apiSlice;
-
-// export const getRecipe = createAsyncThunk(
-//   "getRecipes",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const { data } = await axios.get(
-//         `${BASE_URL}/findByIngredients?ingredients=apples,+flour,+sugar&number=2&apiKey=${API_KEY}`
-//       );
-//       console.log(data);
-//       return data;
-//     } catch (error) {
-//       console.log(error);
-//       rejectWithValue(error.response);
-//     }
-//   }
-// );
-
-// const initialState = {
-//   list: [],
-//   isLoading: false,
-//   error: null,
-// };
-
-// const recipesSlize = createSlice({
-//   name: "recipes",
-//   initialState,
-//   reducers: {},
-//   extraReducers: {
-//     [getRecipes.pending]: (state) => {
-//       state.isLoading = true;
-//     },
-//     [getRecipes.fulfilled]: (state, { payload }) => {
-//       state.isLoading = false;
-//       state.list = payload;
-//     },
-//     [getRecipes.rejected]: (state) => {
-//       state.isLoading = false;
-//       state.error = true;
-//       state.message = "failed";
-//     },
-//   },
-// });
