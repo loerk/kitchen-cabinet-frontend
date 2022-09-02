@@ -7,7 +7,7 @@ const Footer = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = React.useState(0);
   return (
-    <Box flex={1} bg="white" safeAreaTop width="100%" maxW="100%" alignSelf="stretch">
+    <Box width="100%" maxW="100%" alignSelf="stretch">
     <Center flex={1}></Center>
     <HStack bg="green.600" alignItems="center" safeAreaBottom shadow={6}>
       <Pressable cursor="pointer" opacity={selected === 0 ? 1 : 0.5} py="3" flex={1} onPress={() => {setSelected(0); navigation.navigate("Cabinet");}}>

@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import customTheme from './src/theme';
 
 // stack navigator
-import StackNavigator from "./StackNavigator";
+import AppNavigator from "./AppNavigator";
 
 
 // custom components
@@ -27,8 +27,7 @@ export default function App() {
       <Provider store={store}>
         <SafeAreaProvider>
           <NavigationContainer>
-            <StackNavigator />
-            <StatusBar style="dark" />
+            <AppNavigator />
             <Footer />
           </NavigationContainer>
         </SafeAreaProvider>
