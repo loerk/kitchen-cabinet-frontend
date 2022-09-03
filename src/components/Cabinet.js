@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
-  VStack,
   HStack,
   Image,
   Input,
   Icon,
-  Box,
-  Divider,
   Center,
   View,
   ScrollView,
 } from "native-base";
-import {
-  Animated,
-  SafeAreaView,
-  Button,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { Button, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
 
-// components
-import Header from "./Header";
-import { AddCabinetForm } from "./cabinet/AddCabinet";
+// import { AddItemForm } from "./cabinet/CabinetAddItemForm";
 
 const Cabinet = () => {
   const navigation = useNavigation();
@@ -95,7 +84,8 @@ const Cabinet = () => {
         alt="Kitchen Cabinet"
         resizeMode="cover"
       />
-      <AddCabinetForm />
+
+      {/* <AddItemForm cabinetId={"1234"} /> */}
       <View>
         {!isLoading &&
           cabinetItems.map((item) => <Text key={item._id}>{item.name}</Text>)}
