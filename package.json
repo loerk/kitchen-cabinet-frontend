@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.12",
@@ -26,7 +27,10 @@
     "rn-content-loader": "^0.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "husky": "^8.0.0",
+    "prettier": "2.7.1",
+    "pretty-quick": "^3.1.3"
   },
   "private": true
 }
