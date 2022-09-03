@@ -28,7 +28,7 @@ export const apiSlice = createApi({
         `/recipes/byIngredients?ingredients=${ingredients}`,
     }),
     getIngredientsList: builder.query({
-      query: (ingredient) => `/recipes/ingredient?ingredient=${ingredient}`,
+      query: ({ ingredient }) => `/recipes/ingredient?ingredient=${ingredient}`,
     }),
     getRecipeInstructions: builder.query({
       query: (id) => `/recipes/instructions/${id}`,
@@ -83,7 +83,7 @@ export const {
   useGetFilteredRecipesQuery,
   useGetRecipeByIdQuery,
   useGetRecipeByIngredientsQuery,
-  useIngredientsListQuery,
+  useGetIngredientsListQuery,
   useRecipeInstructionsQuery,
   useAddCabinetMutation,
   useAddItemMutation,
