@@ -1,8 +1,8 @@
-import { View, Text, Spinner } from "native-base";
+import { View, Text, Spinner } from 'native-base';
 
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-import { useGetFilteredRecipesQuery } from "../../features/api/apiSlice";
+import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 
 let CabinetExcerpt = ({ item }) => {
   return <Text>{item.title}</Text>;
@@ -16,8 +16,8 @@ export default function RecipesList() {
     isError,
     error,
   } = useGetFilteredRecipesQuery({
-    query: "banana",
-    type: "breakfast",
+    query: 'banana',
+    type: 'breakfast',
   });
 
   let content;
@@ -43,8 +43,8 @@ export default function RecipesList() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
