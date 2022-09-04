@@ -1,50 +1,80 @@
-import { Button, Input, Spinner, View, Text } from "native-base";
+import { Button, Input, Spinner, View, Text, Center } from "native-base";
 
 import React, { useState } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { useAddItemMutation } from "../../features/api/apiSlice";
 import { IngredientsList } from "./IngredientsList";
 
 export const CabinetAddItemForm = ({ cabinetId }) => {
-  const [selected, setSelected] = useState({ name: "", id: "" });
-  const [ingredient, setIngredient] = useState("");
-  const [addIngredient, { data, isLoading, isSuccess, isError, error }] =
+  const [selectedIngredient, setSelectedIngredient] = useState({
+    name: "",
+    id: "",
+    expiryDate: new Date(),
+  });
+  const [ingredientQuery, setIngredientQuery] = useState("");
+
+  const onChangeDate = (_, selectedDate) => {
+    const currentDate = selectedDate || selectedIngredient.expiryDate;
+
+    setSelectedIngredient({
+      ...selectedIngredient,
+      expiryDate: currentDate,
+    });
+  };
+
+  const [addIngredient, { data, isLoading, isError, error }] =
     useAddItemMutation(cabinetId);
 
-  const canSaveItem = selected.name && !isLoading;
+  const canSaveItem = selectedIngredient.name && !isLoading;
 
   const saveItem = () => {
     if (canSaveItem) {
-      console.log("can save", selected);
-      // addIngredient(ingredient).unwrap();
+      addIngredient(selectedIngredient).unwrap();
     }
   };
-  console.log("base", selected);
+
   if (isLoading) return <Spinner text="Loading..." />;
   if (isError) return <Text>{error.toString()}</Text>;
-  if (true)
-    return (
-      <View>
-        <Input
-          placeholder={"item name"}
-          defaultValue={selected.name}
-          onChangeText={(newText) => setIngredient(newText)}
-        />
-        {
-          <IngredientsList
-            ingredient={ingredient}
-            selected={selected}
-            setSelected={setSelected}
+
+  return (
+    <View>
+      <Center>
+        <Text>Add an item to your Cabinet:</Text>
+        <View>
+          <Input
+            w={200}
+            placeholder={"item name"}
+            defaultValue={selectedIngredient.name}
+            onChangeText={(text) => setIngredientQuery(text)}
           />
-        }
-        <Button
-          type="button"
-          title="save item"
-          onPress={saveItem}
-          disabled={!canSaveItem}
-        >
-          Save Item
-        </Button>
-      </View>
-    );
+          {
+            <IngredientsList
+              ingredientQuery={ingredientQuery}
+              setIngredientQuery={setIngredientQuery}
+              selectedIngredient={selectedIngredient}
+              setSelectedIngredient={setSelectedIngredient}
+            />
+          }
+
+          <View w={150}>
+            <DateTimePicker
+              value={selectedIngredient.expiryDate}
+              display="default"
+              onChange={onChangeDate}
+            />
+          </View>
+          <Button
+            w={200}
+            type="button"
+            title="save item"
+            onPress={saveItem}
+            disabled={!canSaveItem}
+          >
+            Save Item
+          </Button>
+        </View>
+      </Center>
+    </View>
+  );
 };
