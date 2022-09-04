@@ -3,22 +3,25 @@ import {
   Text,
   FlatList,
   Box,
-  VStack,
   Pressable,
-  Center,
   ScrollView,
 } from "native-base";
 
 import { useGetIngredientsListQuery } from "../../features/api/apiSlice";
 
-export const IngredientsList = ({ ingredient, selected, setSelected }) => {
+export const IngredientsList = ({
+  ingredientQuery,
+  setIngredientQuery,
+  selectedIngredient,
+  setSelectedIngredient,
+}) => {
   const {
     data: ingredients,
     isLoading,
     isError,
-  } = useGetIngredientsListQuery({ ingredient: ingredient.toLowerCase() });
+  } = useGetIngredientsListQuery({ ingredient: ingredientQuery.toLowerCase() });
 
-  if (ingredient.length < 3) return null;
+  if (ingredientQuery.length < 3) return null;
 
   if (isLoading) {
     return <Spinner text="Loading ..." />;
@@ -28,9 +31,9 @@ export const IngredientsList = ({ ingredient, selected, setSelected }) => {
   }
 
   return (
-    <ScrollView w={["200", "300"]} h="80">
+    <ScrollView w={200} h="50">
       <FlatList
-        data={ingredients}
+        data={ingredientQuery === selectedIngredient.name ? [] : ingredients}
         renderItem={({ item: ingredient }) => (
           <Box
             borderBottomWidth="1"
@@ -39,15 +42,40 @@ export const IngredientsList = ({ ingredient, selected, setSelected }) => {
             }}
             borderColor="muted.800"
           >
+            <Box maxW="300">
+              <Select
+                selectedValue={service}
+                minWidth="200"
+                accessibilityLabel="Choose Service"
+                placeholder="Choose Service"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                mt={1}
+                onValueChange={(itemValue) => setService(itemValue)}
+              >
+                <Select.Item label="UX Research" value="ux" />
+                <Select.Item label="Web Development" value="web" />
+                <Select.Item label="Cross Platform Development" value="cross" />
+                <Select.Item label="UI Designing" value="ui" />
+                <Select.Item label="Backend Development" value="backend" />
+              </Select>
+            </Box>
+
             <Pressable
               _pressed={{
-                bg: "primary.200",
+                bg: "primary.400",
               }}
-              bg="primary.100"
               cursor="pointer"
               flex={1}
               onPress={() => {
-                setSelected({ name: ingredient.name, id: ingredient.id });
+                setSelectedIngredient({
+                  ...selectedIngredient,
+                  name: ingredient.name,
+                  id: ingredient.id,
+                });
+                setIngredientQuery(ingredient.name);
               }}
             >
               <Text
