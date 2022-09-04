@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import { useAddCabinetMutation } from "../../features/api/apiSlice";
 
-export const AddCabinetForm = () => {
+export const CabinetAddForm = () => {
   const [cabinetName, setCabinetName] = useState("");
 
   const [addCabinet, { isLoading, isSuccess, error }] = useAddCabinetMutation();

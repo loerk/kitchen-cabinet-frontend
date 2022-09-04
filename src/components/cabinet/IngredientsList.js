@@ -1,7 +1,17 @@
-import { Spinner, Text, FlatList, Box, VStack } from "native-base";
+import {
+  Spinner,
+  Text,
+  FlatList,
+  Box,
+  VStack,
+  Pressable,
+  Center,
+  ScrollView,
+} from "native-base";
+
 import { useGetIngredientsListQuery } from "../../features/api/apiSlice";
 
-export const IngredientsList = ({ ingredient }) => {
+export const IngredientsList = ({ ingredient, selected, setSelected }) => {
   const {
     data: ingredients,
     isLoading,
@@ -18,33 +28,44 @@ export const IngredientsList = ({ ingredient }) => {
   }
 
   return (
-    <FlatList
-      data={ingredients}
-      renderItem={({ item: ingredient }) => (
-        <Box
-          borderBottomWidth="1"
-          _dark={{
-            borderColor: "muted.50",
-          }}
-          borderColor="muted.800"
-          pl={["0", "4"]}
-          pr={["0", "5"]}
-          py="2"
-        >
-          <VStack>
-            <Text
-              _dark={{
-                color: "warmGray.50",
+    <ScrollView w={["200", "300"]} h="80">
+      <FlatList
+        data={ingredients}
+        renderItem={({ item: ingredient }) => (
+          <Box
+            borderBottomWidth="1"
+            _dark={{
+              borderColor: "muted.50",
+            }}
+            borderColor="muted.800"
+          >
+            <Pressable
+              _pressed={{
+                bg: "primary.200",
               }}
-              color="coolGray.800"
-              bold
+              bg="primary.100"
+              cursor="pointer"
+              flex={1}
+              onPress={() => {
+                setSelected({ name: ingredient.name, id: ingredient.id });
+              }}
             >
-              {ingredient.name}
-            </Text>
-          </VStack>
-        </Box>
-      )}
-      keyExtractor={(ingredient) => ingredient.id}
-    />
+              <Text
+                _dark={{
+                  color: "black.300",
+                }}
+                py={1}
+                px={2}
+                color="black.300"
+                bold
+              >
+                {ingredient.name}
+              </Text>
+            </Pressable>
+          </Box>
+        )}
+        keyExtractor={(ingredient) => ingredient.id}
+      />
+    </ScrollView>
   );
 };

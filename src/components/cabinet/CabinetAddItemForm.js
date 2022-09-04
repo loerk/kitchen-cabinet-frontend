@@ -5,43 +5,46 @@ import React, { useState } from "react";
 import { useAddItemMutation } from "../../features/api/apiSlice";
 import { IngredientsList } from "./IngredientsList";
 
-export const AddItemForm = ({ cabinetId }) => {
+export const CabinetAddItemForm = ({ cabinetId }) => {
+  const [selected, setSelected] = useState({ name: "", id: "" });
   const [ingredient, setIngredient] = useState("");
   const [addIngredient, { data, isLoading, isSuccess, isError, error }] =
     useAddItemMutation(cabinetId);
 
-  const canFetchIngredients = [ingredient].every(Boolean) && !isLoading;
+  const canSaveItem = selected.name && !isLoading;
 
   const saveItem = () => {
-    if (canFetchIngredients) {
-      addIngredient(ingredient).unwrap();
+    if (canSaveItem) {
+      console.log("can save", selected);
+      // addIngredient(ingredient).unwrap();
     }
   };
-  let content;
-  if (isLoading) {
-    content = <Spinner text="Loading..." />;
-  } else if (isSuccess) {
-    console.log(data);
-  } else if (isError) {
-    content = <Text>{error.toString()}</Text>;
-  }
-  return (
-    <View>
-      <Input
-        placeholder={"item name"}
-        inputValue={ingredient}
-        onChangeText={(newText) => setIngredient(newText)}
-      />
-      {<IngredientsList ingredient={ingredient} />}
-      <Button
-        type="button"
-        title="save item"
-        onPress={saveItem}
-        disabled={!canFetchIngredients}
-      >
-        Save Item
-      </Button>
-      {content}
-    </View>
-  );
+  console.log("base", selected);
+  if (isLoading) return <Spinner text="Loading..." />;
+  if (isError) return <Text>{error.toString()}</Text>;
+  if (true)
+    return (
+      <View>
+        <Input
+          placeholder={"item name"}
+          defaultValue={selected.name}
+          onChangeText={(newText) => setIngredient(newText)}
+        />
+        {
+          <IngredientsList
+            ingredient={ingredient}
+            selected={selected}
+            setSelected={setSelected}
+          />
+        }
+        <Button
+          type="button"
+          title="save item"
+          onPress={saveItem}
+          disabled={!canSaveItem}
+        >
+          Save Item
+        </Button>
+      </View>
+    );
 };

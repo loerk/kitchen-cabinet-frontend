@@ -12,7 +12,7 @@ import {
 import { Button, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
 
-// import { AddItemForm } from "./cabinet/CabinetAddItemForm";
+import { CabinetAddItemForm } from "./cabinet/CabinetAddItemForm";
 
 const Cabinet = () => {
   const navigation = useNavigation();
@@ -79,13 +79,13 @@ const Cabinet = () => {
           </TouchableOpacity>
         </HStack>
       </Center>
-      <Image
+      {/* <Image
         source={require("../../assets/images/cabinet.jpg")}
         alt="Kitchen Cabinet"
         resizeMode="cover"
-      />
+      /> */}
 
-      {/* <AddItemForm cabinetId={"1234"} /> */}
+      <CabinetAddItemForm cabinetId={"1234"} />
       <View>
         {!isLoading &&
           cabinetItems.map((item) => <Text key={item._id}>{item.name}</Text>)}
