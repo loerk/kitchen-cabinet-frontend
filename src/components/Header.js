@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
-import { Heading, HStack, Link } from 'native-base';
+import { Heading, HStack } from 'native-base';
 
 const Header = ({ header }) => {
   const { width, height } = Dimensions.get('screen');
