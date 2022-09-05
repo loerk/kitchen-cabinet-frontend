@@ -6,7 +6,7 @@ const Favorites = () => {
     <View>
       <Text>Favorites Recipes</Text>
     </View>
-  )
-}
+  );
+};
 
 export default Favorites;

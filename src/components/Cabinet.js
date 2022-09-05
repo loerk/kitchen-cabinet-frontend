@@ -1,66 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
-  VStack,
   HStack,
   Image,
   Input,
   Icon,
-  Box,
-  Divider,
   Center,
   View,
   ScrollView,
-} from "native-base";
-import {
-  Animated,
-  SafeAreaView,
-  Button,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import axios from "axios";
+} from 'native-base';
+import { Button, Text, TouchableOpacity } from 'react-native';
 
 // components
-import Header from "./Header";
+// import Header from './Header';
+import { AddCabinetForm } from './cabinet/AddCabinet';
 
 const Cabinet = () => {
   const navigation = useNavigation();
-  const [inputValue, setInputValue] = useState("");
-  const [cabinetItems, setCabinetItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [inputValue, setInputValue] = useState('');
 
-  const handleSearch = async () => {
-    console.log(inputValue);
-    try {
-      const { data } = await axios.get(
-        "http://192.168.178.123:8002/cabinet/items/630f488243702ea0df8bf333"
-      );
-      setCabinetItems(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const getIngredients = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://192.168.178.123:8002/cabinet/items/item/630dff86aa1ea3a726d5c230"
-      );
-      setCabinetItems(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getIngredients();
-  }, []);
-  console.log(cabinetItems);
+  const handleSearch = () => {};
   return (
     <ScrollView>
       {/* <Header header="Cabinet" /> */}
@@ -68,9 +27,9 @@ const Cabinet = () => {
         <HStack
           my="5"
           w="100%"
-          style={{ display: "flex", justifyContent: "space-around" }}
+          style={{ display: 'flex', justifyContent: 'space-around' }}
         >
-          <TouchableOpacity onPress={() => navigation.navigate("Favorites")}>
+          <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
             <Text>Favorites</Text>
           </TouchableOpacity>
 
@@ -86,19 +45,21 @@ const Cabinet = () => {
             InputLeftElement={<Icon ml="2" size="4" color="gray.400" />}
           />
           <Button title="Search" onPress={handleSearch} />
-          <TouchableOpacity onPress={() => navigation.navigate("Filters")}>
+          <TouchableOpacity onPress={() => navigation.navigate('Filters')}>
             <Text>Filters</Text>
           </TouchableOpacity>
         </HStack>
       </Center>
       <Image
-        source={require("../../assets/images/cabinet.jpg")}
+        source={require('../../assets/images/cabinet.jpg')}
         alt="Kitchen Cabinet"
         resizeMode="cover"
       />
+      <AddCabinetForm />
       <View>
-        {!isLoading &&
-          cabinetItems.map((item) => <Text key={item._id}>{item.name}</Text>)}
+        {/* {cabinetItems?.map((item) => (
+          <Text key={item._id}>{item.name}</Text>
+        ))} */}
       </View>
     </ScrollView>
   );

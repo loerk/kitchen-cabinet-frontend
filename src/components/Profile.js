@@ -2,27 +2,27 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { HStack, Switch, useColorMode, Text } from 'native-base';
 
 const Profile = () => {
-  const {colorMode, toggleColorMode} = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
   const isDarkMode = colorMode === 'dark';
   const toggleSwitch = () => {
     toggleColorMode(() => {});
-  }
+  };
 
-  const {width, height} = Dimensions.get('screen');
+  const { width, height } = Dimensions.get('screen');
   const styles = StyleSheet.create({
-      headerContainer: {
-          width: width,
-          height: 0.1 * height,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: 20
-      }
+    headerContainer: {
+      width: width,
+      height: 0.1 * height,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 20,
+    },
   });
-  
+
   return (
     <HStack style={styles.headerContainer}>
       <Text>Profile</Text>
-      <Switch 
+      <Switch
         defaultIsChecked={isDarkMode}
         offTrackColor="black.800"
         onTrackColor="primary.200"
@@ -32,8 +32,7 @@ const Profile = () => {
         onValueChange={toggleSwitch}
       />
     </HStack>
-  )
+  );
 };
-
 
 export default Profile;

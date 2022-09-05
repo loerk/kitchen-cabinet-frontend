@@ -6,7 +6,7 @@ const Filter = () => {
     <View>
       <Text>Some filtration options will go here</Text>
     </View>
-  )
-}
+  );
+};
 
 export default Filter;
