@@ -5,11 +5,11 @@ import React from 'react';
 const ShoppingList = () => {
   return (
     <View>
-        <Center>
-      <Text>Shopping List</Text>
+      <Center>
+        <Text>Shopping List</Text>
       </Center>
     </View>
-  )
-}
+  );
+};
 
 export default ShoppingList;

@@ -1,11 +1,11 @@
-import { Button, Input, Spinner, View, Text } from "native-base";
+import { Button, Input, Spinner, View, Text } from 'native-base';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { useAddCabinetMutation } from "../../features/api/apiSlice";
+import { useAddCabinetMutation } from '../../features/api/apiSlice';
 
 export const AddCabinetForm = () => {
-  const [cabinetName, setCabinetName] = useState("");
+  const [cabinetName, setCabinetName] = useState('');
 
   const [addCabinet, { isLoading, isSuccess, error }] = useAddCabinetMutation();
 
@@ -24,7 +24,7 @@ export const AddCabinetForm = () => {
   return (
     <View>
       <Input
-        placeholder={"cabinet name"}
+        placeholder={'cabinet name'}
         inputValue={cabinetName}
         onChangeText={(newText) => setCabinetName(newText)}
       />
