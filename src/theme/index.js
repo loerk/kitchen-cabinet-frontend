@@ -77,7 +77,7 @@ export default customTheme = extendTheme({
       },
       defaultProps: {
         size: 'md',
-        fontFamily: 'Times New Roman',
+        /* fontFamily: 'Times New Roman', */
       },
       sizes: {
         xl: {
