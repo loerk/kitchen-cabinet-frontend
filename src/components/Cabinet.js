@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   HStack,
@@ -10,45 +10,15 @@ import {
   ScrollView,
 } from "native-base";
 import { Button, Text, TouchableOpacity } from "react-native";
-import axios from "axios";
-
 import { CabinetAddItemForm } from "./cabinet/CabinetAddItemForm";
+
+const cabinetId = "6315f1e0801fa7692c1bb736";
 
 const Cabinet = () => {
   const navigation = useNavigation();
   const [inputValue, setInputValue] = useState("");
   const [cabinetItems, setCabinetItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const handleSearch = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://192.168.178.123:8002/cabinet/items/630f488243702ea0df8bf333"
-      );
-      setCabinetItems(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const getIngredients = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://192.168.178.123:8002/cabinet/items/item/630dff86aa1ea3a726d5c230"
-      );
-      setCabinetItems(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getIngredients();
-  }, []);
   return (
     <ScrollView>
       {/* <Header header="Cabinet" /> */}
@@ -85,7 +55,7 @@ const Cabinet = () => {
         resizeMode="cover"
       /> */}
 
-      <CabinetAddItemForm cabinetId={"1234"} />
+      <CabinetAddItemForm cabinetId={cabinetId} />
       <View>
         {!isLoading &&
           cabinetItems.map((item) => <Text key={item._id}>{item.name}</Text>)}
