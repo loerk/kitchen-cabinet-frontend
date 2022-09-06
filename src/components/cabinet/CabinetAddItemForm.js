@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { useAddItemMutation } from '../../features/api/apiSlice';
-import { CabinetSelectItemAutocomplete } from './CabinetSelectItemAutocomplete';
+import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 
 export const CabinetAddItemForm = ({ cabinetId }) => {
   const [selectedIngredient, setSelectedIngredient] = useState({
@@ -28,7 +28,6 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
 
   const saveItem = () => {
     if (canSaveItem) {
-      skip = false;
       addItem({
         cabinetId,
         id: selectedIngredient.id,
