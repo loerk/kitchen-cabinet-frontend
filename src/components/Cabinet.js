@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   HStack,
-  Image,
+  // Image,
   Input,
   Icon,
   Center,
@@ -13,12 +13,13 @@ import { Button, Text, TouchableOpacity } from 'react-native';
 
 // components
 // import Header from './Header';
-import { AddCabinetForm } from './cabinet/AddCabinet';
+
+import { CabinetAddItemForm } from './cabinet/CabinetAddItemForm';
 
 const Cabinet = () => {
   const navigation = useNavigation();
   const [inputValue, setInputValue] = useState('');
-
+  const cabinetId = '6315f1e0801fa7692c1bb736';
   const handleSearch = () => {};
   return (
     <ScrollView>
@@ -50,12 +51,12 @@ const Cabinet = () => {
           </TouchableOpacity>
         </HStack>
       </Center>
-      <Image
+      {/* <Image
         source={require('../../assets/images/cabinet.jpg')}
         alt="Kitchen Cabinet"
         resizeMode="cover"
-      />
-      <AddCabinetForm />
+      /> */}
+      <CabinetAddItemForm cabinetId={cabinetId} />
       <View>
         {/* {cabinetItems?.map((item) => (
           <Text key={item._id}>{item.name}</Text>
