@@ -41,10 +41,10 @@ export const apiSlice = createApi({
       }),
     }),
     addItem: builder.mutation({
-      query: ({ cabinetId, id, expiryDate, amount }) => ({
+      query: ({ cabinetId, id, expiryDate }) => ({
         url: 'cabinet/items/',
         method: 'POST',
-        body: { cabinetId, id, expiryDate, amount },
+        body: { cabinetId, id, expiryDate },
       }),
     }),
     editCabinet: builder.mutation({
