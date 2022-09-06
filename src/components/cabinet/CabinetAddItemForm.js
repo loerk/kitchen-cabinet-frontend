@@ -1,10 +1,10 @@
-import { Button, Input, Spinner, View, Text, Center } from "native-base";
+import { Button, Spinner, View, Text, Center } from "native-base";
 
 import React, { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { useAddItemMutation } from "../../features/api/apiSlice";
-import { IngredientsList } from "./IngredientsList";
+import { CabinetSelectItemAutocomplete } from "./CabinetSelectItemAutocomplete";
 
 export const CabinetAddItemForm = ({ cabinetId }) => {
   const [selectedIngredient, setSelectedIngredient] = useState({
@@ -12,7 +12,8 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
     id: "",
     expiryDate: new Date(),
   });
-  const [ingredientQuery, setIngredientQuery] = useState("");
+  const [addItem, { data, isLoading, isError, isSuccess, error }] =
+    useAddItemMutation();
 
   const onChangeDate = (_, selectedDate) => {
     const currentDate = selectedDate || selectedIngredient.expiryDate;
@@ -23,40 +24,27 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
     });
   };
 
-  const [addIngredient, { data, isLoading, isError, error }] =
-    useAddItemMutation(cabinetId);
-
   const canSaveItem = selectedIngredient.name && !isLoading;
 
   const saveItem = () => {
     if (canSaveItem) {
-      addIngredient(selectedIngredient).unwrap();
+      skip = false;
+      addItem({
+        cabinetId,
+        id: selectedIngredient.id,
+        expiryDate: selectedIngredient.expiryDate,
+      }).unwrap();
     }
   };
-
-  if (isLoading) return <Spinner text="Loading..." />;
-  if (isError) return <Text>{error.toString()}</Text>;
-
   return (
     <View>
       <Center>
         <Text>Add an item to your Cabinet:</Text>
         <View>
-          <Input
-            w={200}
-            placeholder={"item name"}
-            defaultValue={selectedIngredient.name}
-            onChangeText={(text) => setIngredientQuery(text)}
+          <CabinetSelectItemAutocomplete
+            setSelectedIngredient={setSelectedIngredient}
+            selectedIngredient={selectedIngredient}
           />
-          {
-            <IngredientsList
-              ingredientQuery={ingredientQuery}
-              setIngredientQuery={setIngredientQuery}
-              selectedIngredient={selectedIngredient}
-              setSelectedIngredient={setSelectedIngredient}
-            />
-          }
-
           <View w={150}>
             <DateTimePicker
               value={selectedIngredient.expiryDate}
@@ -74,6 +62,13 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
             Save Item
           </Button>
         </View>
+        {isSuccess ? (
+          <Text>
+            You successfully added {selectedIngredient.name} to your cabinet!
+          </Text>
+        ) : null}
+        {isLoading ? <Spinner text="Loading..." /> : null}{" "}
+        {isError ? <Text>{error.toString()}</Text> : null}
       </Center>
     </View>
   );
