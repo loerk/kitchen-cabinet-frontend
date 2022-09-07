@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Divider, Text, StatusBar, useColorMode, Input } from 'native-base';
+import { Divider, StatusBar, useColorMode, Input } from 'native-base';
 
 // components
 import Header from './Header';
