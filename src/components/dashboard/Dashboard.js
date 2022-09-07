@@ -10,7 +10,9 @@ import {
   Center,
   ScrollView,
   Spinner,
+  HStack,
 } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
@@ -18,6 +20,9 @@ import {
   useGetCabinetItemsQuery,
   useGetRecipeByIngredientsQuery,
 } from '../../features/api/apiSlice';
+
+// custom components
+import SearchBar from '../SearchBar';
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
@@ -79,7 +84,12 @@ const Dashboard = () => {
       <Text>Welcome</Text>
       <Heading>{user.username && `${user.username}`}</Heading>
       <Divider />
+
       <Center>
+        <HStack alignItems="center">
+          <SearchBar placeholder="Search a recipe" />
+          <Ionicons name="options" size={24} color="black" />
+        </HStack>
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:{' '}
         </Text>
