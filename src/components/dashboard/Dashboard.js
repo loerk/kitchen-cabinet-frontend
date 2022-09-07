@@ -5,7 +5,6 @@ import {
   Divider,
   StatusBar,
   useColorMode,
-  View,
   Heading,
   Text,
   Spinner,
@@ -14,57 +13,25 @@ import {
   ScrollView,
 } from 'native-base';
 
-import {
-  useGetCabinetItemsQuery,
-  /*   useGetRecipeByIngredientsQuery, */
-} from '../../features/api/apiSlice';
+/* import {
+     useGetRecipeByIngredientsQuery,
+} from '../../features/api/apiSlice'; */
 /* import { skipToken } from '@reduxjs/toolkit/query/react'; */
+
+import getCabinetItems from '../../helpers/getCabinetItems';
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
 
-  const {
-    data: items,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetCabinetItemsQuery('6315f1e0801fa7692c1bb736');
-
   /*   const { data: recipes } = useGetRecipeByIngredientsQuery( isSuccess ?
     items.map((item) => item.name).join(',') : skipToken ); */
-
-  let content;
-
-  if (isLoading) {
-    content = <Spinner text="Loading..." />;
-  } else if (isSuccess) {
-    console.log(items);
-    content = items.map((item) => {
-      console.log(item.image);
-      return (
-        <Text key={item.id}>
-          {item.name}{' '}
-          <Image
-            key={item.id}
-            source={{
-              uri: `https://spoonacular.com/cdn/ingredients_500x500/${item.image}`,
-            }}
-            alt="ingredient image"
-            size="xl"
-          />
-        </Text>
-      );
-    }); /* }</Text>  */
-
-    /*  content = recipes && recipes.map((recipe) => (
+  /*  content = recipes && recipes.map((recipe) => (
       <Text key={recipe.id}>{recipe.title} ( Used Ingredients: {recipe.usedIngredientCount} ) {/* {recipe.missedIngredients.map((item) => (<Text key={}>{item}</Text>))} */
-    /* )); */
-  } else if (isError) {
-    content = <Text>{error.toString()}</Text>;
-  }
+  /* )); */
+
+  const cabinetItems = getCabinetItems();
 
   return (
     <SafeAreaView
@@ -80,7 +47,7 @@ const Dashboard = () => {
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:{' '}
         </Text>
-        <ScrollView>{content}</ScrollView>
+        <ScrollView>{cabinetItems}</ScrollView>
       </Center>
     </SafeAreaView>
   );
