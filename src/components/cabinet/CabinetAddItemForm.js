@@ -1,7 +1,7 @@
 import { Button, Spinner, View, Text, Center } from 'native-base';
 
 import React, { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
+/* import DateTimePicker from '@react-native-community/datetimepicker'; */
 
 import { useAddItemMutation } from '../../features/api/apiSlice';
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
@@ -45,11 +45,11 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
             selectedIngredient={selectedIngredient}
           />
           <View w={150}>
-            <DateTimePicker
+            {/* <DateTimePicker
               value={selectedIngredient.expiryDate}
               display="default"
               onChange={onChangeDate}
-            />
+            /> */}
           </View>
           <Button
             w={200}
