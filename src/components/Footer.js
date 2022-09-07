@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Box, Text, Icon, HStack, Center, Pressable } from 'native-base';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import {
+  Box,
+  Text,
+  Icon,
+  HStack,
+  Center,
+  Pressable,
+  useDisclose,
+  Actionsheet,
+} from 'native-base';
+import {
+  MaterialCommunityIcons,
+  MaterialIcons,
+  AntDesign,
+} from '@expo/vector-icons';
+import { CabinetAddItemForm } from './cabinet/CabinetAddItemForm';
 
 const Footer = () => {
   const navigation = useNavigation();
-  const [selected, setSelected] = React.useState(0);
+  const [selected, setSelected] = useState(0);
+  const { isOpen, onOpen, onClose } = useDisclose();
+
+  const cabinetId = '6315f1e0801fa7692c1bb736';
   return (
     <Box width="100%" maxW="100%" alignSelf="stretch">
       <Center flex={1}></Center>
@@ -58,7 +75,26 @@ const Footer = () => {
         </Pressable>
         <Pressable
           cursor="pointer"
-          opacity={selected === 2 ? 1 : 0.6}
+          opacity={1}
+          py="3"
+          flex={1}
+          onPress={onOpen}
+        >
+          <Center>
+            <Icon
+              mb="1"
+              as={<AntDesign size={24} color="black" name="pluscircleo" />}
+              color="white"
+              size="sm"
+            />
+            <Text color="white" fontSize="12">
+              Add
+            </Text>
+          </Center>
+        </Pressable>
+        <Pressable
+          cursor="pointer"
+          opacity={selected === 2 ? 1 : 0.5}
           py="2"
           flex={1}
           onPress={() => {
@@ -108,6 +144,11 @@ const Footer = () => {
             </Text>
           </Center>
         </Pressable>
+        <Actionsheet isOpen={isOpen} onClose={onClose}>
+          <Actionsheet.Content>
+            <CabinetAddItemForm cabinetId={cabinetId} />
+          </Actionsheet.Content>
+        </Actionsheet>
       </HStack>
     </Box>
   );
