@@ -21,8 +21,8 @@ import store from './src/app/store';
 
 export default function App() {
   return (
-    <NativeBaseProvider theme={customTheme}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <NativeBaseProvider theme={customTheme}>
         <SafeAreaProvider>
           {/* <Dashboard /> */}
           <NavigationContainer>
@@ -30,7 +30,7 @@ export default function App() {
             <Footer />
           </NavigationContainer>
         </SafeAreaProvider>
-      </Provider>
-    </NativeBaseProvider>
+      </NativeBaseProvider>
+    </Provider>
   );
 }
