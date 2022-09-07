@@ -7,7 +7,7 @@ import { Text, Spinner, Image } from 'native-base';
  * @desc A function to get all items in a cabinet by cabinet id
  * @return list of items
  */
-const getCabinetItems = (cabinetID = '6315f1e0801fa7692c1bb736') => {
+const getCabinetItems = (cabinetID) => {
   const {
     data: items,
     isLoading,
@@ -19,22 +19,23 @@ const getCabinetItems = (cabinetID = '6315f1e0801fa7692c1bb736') => {
   if (isLoading) {
     return <Spinner text="Loading..." />;
   } else if (isSuccess) {
-    console.log(items);
     return items.map((item) => {
-      console.log(item.image);
-      return (
-        <Text key={item.id}>
-          {item.name}{' '}
-          <Image
-            key={item.id}
-            source={{
-              uri: `https://spoonacular.com/cdn/ingredients_500x500/${item.image}`,
-            }}
-            alt="ingredient image"
-            size="sm" // sizes: "xs", "sm", "md", "lg", "xl", "2xl"
-          />
-        </Text>
-      );
+      return {
+        item,
+        formatted: (
+          <Text key={item.id}>
+            {item.name}{' '}
+            <Image
+              key={item.id}
+              source={{
+                uri: `https://spoonacular.com/cdn/ingredients_500x500/${item.image}`,
+              }}
+              alt="ingredient image"
+              size="sm" // sizes: "xs", "sm", "md", "lg", "xl", "2xl"
+            />
+          </Text>
+        ),
+      };
     });
   } else if (isError) {
     return <Text>{error.toString()}</Text>;

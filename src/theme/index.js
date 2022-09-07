@@ -1,6 +1,7 @@
 import { extendTheme } from 'native-base';
 /* import { useFonts } from 'expo-font'; */
 
+// eslint-disable-next-line no-undef
 export default customTheme = extendTheme({
   /*fontConfig: {
         OmedBrush: {
