@@ -88,7 +88,12 @@ const Dashboard = () => {
       <Center>
         <HStack alignItems="center">
           <SearchBar placeholder="Search a recipe" />
-          <Ionicons name="options" size={24} color="black" />
+          <Ionicons
+            name="options"
+            size={24}
+            color="black"
+            onPress={() => navigation.navigate('Filters')}
+          />
         </HStack>
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:{' '}
