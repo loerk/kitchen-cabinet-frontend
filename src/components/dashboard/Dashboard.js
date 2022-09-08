@@ -30,11 +30,15 @@ const Dashboard = () => {
   const user = { username: 'Manfred' }; // to hold the user's data
   const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState('');
+  const [filteredRecipes, setFilteredRecipes] = useState('');
 
   useEffect(() => {
-    /* suggestedRecipes && suggestedRecipes.filter(recipe => recipe.includes(searchInput)); */
-    /* console.log(suggestedRecipes.map(obj => obj.props.children)); */
-    console.log(suggestedRecipes.map((obj) => obj.props.children[0]));
+    const recipeTitles =
+      suggestedRecipes && suggestedRecipes.map(({ props }) => props.children);
+    recipeTitles &&
+      setFilteredRecipes(
+        recipeTitles.filter((recipe) => recipe[0].includes(searchInput))
+      );
   }, [searchInput]);
 
   const {
@@ -70,10 +74,10 @@ const Dashboard = () => {
     suggestedRecipes = <Spinner text="Loading..." />;
   } else if (isSuccess2) {
     suggestedRecipes = recipes.map((recipe) => {
+      console.log(recipe);
       return (
         <Text key={recipe.id}>
-          {recipe.title} ( Used Ingredients: {recipe.usedIngredientCount} ){' '}
-          {/* {recipe.missedIngredients.map((item) => (<Text key={}>{item}</Text>))*/}
+          {recipe.title} ( Used Ingredients: {recipe.usedIngredientCount} )
         </Text>
       );
     });
@@ -109,14 +113,16 @@ const Dashboard = () => {
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:{' '}
         </Text>
-        <ScrollView>
-          {suggestedRecipes ? (
-            suggestedRecipes
-          ) : (
-            <Text>Your cabinet is empty. Add an item.</Text>
-          )}
-        </ScrollView>
       </Center>
+      <ScrollView>
+        {filteredRecipes ? (
+          filteredRecipes.map((recipe) => <Text key={recipe}>{recipe}</Text>)
+        ) : suggestedRecipes ? (
+          suggestedRecipes
+        ) : (
+          <Text>Your cabinet is empty. Add an item.</Text>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
