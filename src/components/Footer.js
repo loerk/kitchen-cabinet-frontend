@@ -34,20 +34,18 @@ const Footer = () => {
           flex={1}
           onPress={() => {
             setSelected(0);
-            navigation.navigate('Cabinet');
+            navigation.navigate('Dashboard');
           }}
         >
           <Center>
             <Icon
               mb="1"
-              as={
-                <MaterialIcons name={selected === 0 ? 'kitchen' : 'kitchen'} />
-              }
+              as={<MaterialIcons name={selected === 0 ? 'home' : 'home'} />}
               color="white"
               size="sm"
             />
             <Text color="white" fontSize="12">
-              Cabinet
+              Home
             </Text>
           </Center>
         </Pressable>
@@ -58,7 +56,7 @@ const Footer = () => {
           flex={1}
           onPress={() => {
             setSelected(1);
-            navigation.navigate('Recipes');
+            navigation.navigate('Cabinet');
           }}
         >
           <Center>
@@ -125,22 +123,20 @@ const Footer = () => {
           flex={1}
           onPress={() => {
             setSelected(3);
-            navigation.navigate('Profile');
+            navigation.navigate('Cabinet');
           }}
         >
           <Center>
             <Icon
               mb="1"
               as={
-                <MaterialCommunityIcons
-                  name={selected === 3 ? 'account' : 'account-outline'}
-                />
+                <MaterialIcons name={selected === 3 ? 'kitchen' : 'kitchen'} />
               }
               color="white"
               size="sm"
             />
             <Text color="white" fontSize="12">
-              Profile
+              Cabinet
             </Text>
           </Center>
         </Pressable>
