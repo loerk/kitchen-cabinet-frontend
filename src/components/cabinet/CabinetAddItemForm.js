@@ -1,8 +1,7 @@
-import { Button, Spinner, View, Text, Center } from 'native-base';
+import { View, Text, Center, Button } from 'native-base';
 
 import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
 import { useAddItemMutation } from '../../features/api/apiSlice';
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 
@@ -12,8 +11,7 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
     id: '',
     expiryDate: new Date(),
   });
-  const [addItem, { data, isLoading, isError, isSuccess, error }] =
-    useAddItemMutation();
+  const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
 
   const onChangeDate = (_, selectedDate) => {
     const currentDate = selectedDate || selectedIngredient.expiryDate;
@@ -24,10 +22,8 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
     });
   };
 
-  const canSaveItem = selectedIngredient.name && !isLoading;
-
   const saveItem = () => {
-    if (canSaveItem) {
+    if (selectedIngredient.name) {
       addItem({
         cabinetId,
         id: selectedIngredient.id,
@@ -35,40 +31,64 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
       }).unwrap();
     }
   };
+
   return (
-    <View>
-      <Center>
-        <Text>Add an item to your Cabinet:</Text>
+    <Center>
+      <View>
+        <Text size="md" py={4} bold>
+          Please select an Item
+        </Text>
+        <CabinetSelectItemAutocomplete
+          setSelectedIngredient={setSelectedIngredient}
+          selectedIngredient={selectedIngredient}
+        />
         <View>
-          <CabinetSelectItemAutocomplete
-            setSelectedIngredient={setSelectedIngredient}
-            selectedIngredient={selectedIngredient}
-          />
-          <View w={150}>
-            <DateTimePicker
-              value={selectedIngredient.expiryDate}
-              display="default"
-              onChange={onChangeDate}
-            />
-          </View>
-          <Button
-            w={200}
-            type="button"
-            title="save item"
-            onPress={saveItem}
-            disabled={!canSaveItem}
-          >
-            Save Item
-          </Button>
-        </View>
-        {isSuccess ? (
-          <Text>
-            You successfully added {selectedIngredient.name} to your cabinet!
+          <Text bold size="md" pb={2}>
+            Pick an expiry Date
           </Text>
-        ) : null}
-        {isLoading ? <Spinner text="Loading..." /> : null}{' '}
-        {isError ? <Text>{error.toString()}</Text> : null}
-      </Center>
-    </View>
+          <DateTimePicker
+            style={{
+              width: 80,
+            }}
+            value={selectedIngredient.expiryDate}
+            onChange={onChangeDate}
+          />
+          {isLoading ? (
+            <Button
+              isLoading
+              bg={'pink.400'}
+              cursor="pointer"
+              mb="33"
+              mt="60"
+              onPress={saveItem}
+              disabled={!selectedIngredient.name}
+            >
+              Add Item
+            </Button>
+          ) : (
+            <Button
+              bg={'pink.400'}
+              cursor="pointer"
+              mb="33"
+              mt="60"
+              onPress={saveItem}
+              disabled={!selectedIngredient.name}
+            >
+              Add Item
+            </Button>
+          )}
+        </View>
+      </View>
+      {isSuccess ? (
+        <Text>
+          You successfully added {selectedIngredient.name} to your cabinet!
+        </Text>
+      ) : null}
+      {isError ? (
+        <Text>
+          Oops please check you cabinet, we are not sure if this worked
+        </Text>
+      ) : null}
+    </Center>
   );
 };

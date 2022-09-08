@@ -18,15 +18,15 @@ import store from './src/app/store';
 
 export default function App() {
   return (
-    <NativeBaseProvider theme={customTheme}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <NativeBaseProvider theme={customTheme}>
         <SafeAreaProvider>
           <NavigationContainer>
             <AppNavigator />
             <Footer />
           </NavigationContainer>
         </SafeAreaProvider>
-      </Provider>
-    </NativeBaseProvider>
+      </NativeBaseProvider>
+    </Provider>
   );
 }
