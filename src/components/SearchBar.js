@@ -2,7 +2,8 @@ import { VStack, Box, Divider, Icon, Input } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 
-const SearchBar = ({ placeholder }) => {
+// eslint-disable-next-line react/prop-types
+const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
   return (
     <VStack
       my="4"
@@ -18,6 +19,8 @@ const SearchBar = ({ placeholder }) => {
       <VStack w="100%" space={5} alignSelf="center">
         <Input
           placeholder={placeholder}
+          onChangeText={onChangeText}
+          defaultValue={defaultValue}
           variant="filled"
           width="100%"
           borderRadius="10"

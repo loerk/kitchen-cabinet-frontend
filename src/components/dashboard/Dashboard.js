@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Divider,
@@ -29,6 +29,13 @@ const Dashboard = () => {
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
   const navigation = useNavigation();
+  const [searchInput, setSearchInput] = useState('');
+
+  useEffect(() => {
+    /* suggestedRecipes && suggestedRecipes.filter(recipe => recipe.includes(searchInput)); */
+    /* console.log(suggestedRecipes.map(obj => obj.props.children)); */
+    console.log(suggestedRecipes.map((obj) => obj.props.children[0]));
+  }, [searchInput]);
 
   const {
     data: items,
@@ -87,7 +94,11 @@ const Dashboard = () => {
 
       <Center>
         <HStack alignItems="center">
-          <SearchBar placeholder="Search a recipe" />
+          <SearchBar
+            placeholder="Search a recipe"
+            onChangeText={(newValue) => setSearchInput(newValue)}
+            defaultValue={searchInput}
+          />
           <Ionicons
             name="options"
             size={24}
@@ -102,12 +113,7 @@ const Dashboard = () => {
           {suggestedRecipes ? (
             suggestedRecipes
           ) : (
-            <Text>
-              Your cabinet is empty.
-              <TouchableOpacity onPress={() => navigation.navigate('Cabinet')}>
-                <Text> Add an item.</Text>
-              </TouchableOpacity>
-            </Text>
+            <Text>Your cabinet is empty. Add an item.</Text>
           )}
         </ScrollView>
       </Center>
