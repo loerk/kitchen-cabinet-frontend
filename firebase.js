@@ -1,15 +1,15 @@
-// Import the functions you need from the SDKs you need
+// Import the functions
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: 'AIzaSyDi0UyinfXI3wH0H7Gul4w1wiCe0k-2aEg',
+  authDomain: 'kitchen-cabinet-361713.firebaseapp.com',
+  projectId: 'kitchen-cabinet-361713',
+  storageBucket: 'kitchen-cabinet-361713.appspot.com',
+  messagingSenderId: '1027337546172',
+  appId: '1:1027337546172:web:5a6bac9e210d5ee117a3b9',
 };
 
 // Initialize Firebase
