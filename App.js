@@ -1,6 +1,5 @@
 import React from 'react';
 import { NativeBaseProvider } from 'native-base';
-
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 
