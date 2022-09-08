@@ -46,9 +46,6 @@ const Cabinet = () => {
             InputLeftElement={<Icon ml="2" size="4" color="gray.400" />}
           />
           <Button title="Search" onPress={handleSearch} />
-          <TouchableOpacity onPress={() => navigation.navigate('Filters')}>
-            <Text>Filters</Text>
-          </TouchableOpacity>
         </HStack>
       </Center>
       {/* <Image
