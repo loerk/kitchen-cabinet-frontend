@@ -70,6 +70,8 @@ export const CabinetSelectItemAutocomplete = memo(
             alignSelf: 'center',
           }}
           inputContainerStyle={{
+            borderWidth: '1',
+            borderColor: 'black',
             backgroundColor: '#fff',
             width: 200,
           }}

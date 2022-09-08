@@ -1,8 +1,7 @@
-import { Spinner, View, Text, Center, Button } from 'native-base';
+import { View, Text, Center, Button } from 'native-base';
 
 import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { AntDesign } from '@expo/vector-icons';
 import { useAddItemMutation } from '../../features/api/apiSlice';
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 
@@ -12,8 +11,7 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
     id: '',
     expiryDate: new Date(),
   });
-  const [addItem, { data, isLoading, isSuccess, isError, error }] =
-    useAddItemMutation();
+  const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
 
   const onChangeDate = (_, selectedDate) => {
     const currentDate = selectedDate || selectedIngredient.expiryDate;
@@ -34,9 +32,6 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
     }
   };
 
-  console.log({ selectedIngredient });
-  console.log(data);
-  console.log(error);
   return (
     <Center>
       <View>
@@ -58,16 +53,30 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
             value={selectedIngredient.expiryDate}
             onChange={onChangeDate}
           />
-          <Button
-            bg={'pink.400'}
-            cursor="pointer"
-            mb="33"
-            mt="60"
-            onPress={saveItem}
-            disabled={!selectedIngredient.name}
-          >
-            <AntDesign size={26} color="black" name="pluscircleo" />
-          </Button>
+          {isLoading ? (
+            <Button
+              isLoading
+              bg={'pink.400'}
+              cursor="pointer"
+              mb="33"
+              mt="60"
+              onPress={saveItem}
+              disabled={!selectedIngredient.name}
+            >
+              Add Item
+            </Button>
+          ) : (
+            <Button
+              bg={'pink.400'}
+              cursor="pointer"
+              mb="33"
+              mt="60"
+              onPress={saveItem}
+              disabled={!selectedIngredient.name}
+            >
+              Add Item
+            </Button>
+          )}
         </View>
       </View>
       {isSuccess ? (
@@ -75,7 +84,6 @@ export const CabinetAddItemForm = ({ cabinetId }) => {
           You successfully added {selectedIngredient.name} to your cabinet!
         </Text>
       ) : null}
-      {isLoading ? <Spinner text="Loading..." /> : null}{' '}
       {isError ? (
         <Text>
           Oops please check you cabinet, we are not sure if this worked
