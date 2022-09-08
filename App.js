@@ -1,5 +1,5 @@
 import { NativeBaseProvider } from 'native-base';
-import { StatusBar } from 'expo-status-bar';
+
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -10,9 +10,6 @@ import customTheme from './src/theme';
 import AppNavigator from './AppNavigator';
 
 // custom components
-
-import Dashboard from './src/components/Dashboard';
-import Cabinet from './src/components/Cabinet';
 import Footer from './src/components/Footer';
 
 // redux
@@ -24,7 +21,6 @@ export default function App() {
     <Provider store={store}>
       <NativeBaseProvider theme={customTheme}>
         <SafeAreaProvider>
-          {/* <Dashboard /> */}
           <NavigationContainer>
             <AppNavigator />
             <Footer />
