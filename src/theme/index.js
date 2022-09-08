@@ -1,6 +1,7 @@
 import { extendTheme } from 'native-base';
 /* import { useFonts } from 'expo-font'; */
 
+// eslint-disable-next-line no-undef
 export default customTheme = extendTheme({
   /*fontConfig: {
         OmedBrush: {
@@ -77,7 +78,7 @@ export default customTheme = extendTheme({
       },
       defaultProps: {
         size: 'md',
-        fontFamily: 'Times New Roman',
+        /* fontFamily: 'Times New Roman', */
       },
       sizes: {
         xl: {
