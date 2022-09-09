@@ -6,28 +6,72 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+// import firebase functions
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from 'firebase/auth';
 import { auth } from '../../../firebase';
+// import Authentication Screens
+import RegisterScreen from './RegisterScreen';
+import { Stack } from 'native-base';
 
 const LoginScreen = () => {
+  const [initializing, setInitializing] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [user, setUser] = useState({});
+
+  //Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const user = auth.onAuthStateChanged(onAuthStateChanged);
+    return user;
+  }, []);
+
+  if (initializing) return null;
+
+  if (!user) {
+    return <View></View>;
+  }
+
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
 
   const handleRegister = async () => {
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
       console.log(user);
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
     }
-    /*     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => alert(error.message)); */
   };
+
+  const handleLogin = async () => {
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log(user);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  // to be used when configuring signOut functionality in user profile // will need to import signOut from firebase/auth
+  // <button onPress={handleLogout}>
+  /*   const handleLogout = async () => {
+    await signOut(auth);:
+  }; */
+  // Logged in status
+  // <Text> Logged in as: <Text/> {user?.email}
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -47,7 +91,7 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity

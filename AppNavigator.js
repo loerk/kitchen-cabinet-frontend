@@ -3,14 +3,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // custom components
 import Dashboard from './src/components/Dashboard';
-
 import Profile from './src/components/Profile';
 import RecipesList from './src/components/recipes/RecipesList';
 import ShoppingList from './src/components/ShoppingList';
 import Filters from './src/components/Filters';
 import Favorites from './src/components/Favorites';
 import Cabinet from './src/components/Cabinet';
-import HomeScreen from './src/components/Authentication/HomeScreen';
 import LoginScreen from './src/components/Authentication/LoginScreen';
 import RegisterScreen from './src/components/Authentication/RegisterScreen';
 
@@ -24,7 +22,6 @@ const AppNavigator = () => {
         name="Login"
         component={LoginScreen}
       />
-      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Group>
         <Stack.Screen name="Cabinet" component={Cabinet} />
