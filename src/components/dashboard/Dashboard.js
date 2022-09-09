@@ -13,7 +13,6 @@ import {
   HStack,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import {
@@ -23,21 +22,24 @@ import {
 
 // custom components
 import SearchBar from '../SearchBar';
+import Filters from '../filters/Filters';
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
-  const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState('');
   const [filteredRecipes, setFilteredRecipes] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     const recipeTitles =
       suggestedRecipes && suggestedRecipes.map(({ props }) => props.children);
     recipeTitles &&
       setFilteredRecipes(
-        recipeTitles.filter((recipe) => recipe[0].includes(searchInput))
+        recipeTitles.filter((recipe) =>
+          recipe[0].toLowerCase().includes(searchInput.toLowerCase())
+        )
       );
   }, [searchInput]);
 
@@ -74,7 +76,6 @@ const Dashboard = () => {
     suggestedRecipes = <Spinner text="Loading..." />;
   } else if (isSuccess2) {
     suggestedRecipes = recipes.map((recipe) => {
-      console.log(recipe);
       return (
         <Text key={recipe.id}>
           {recipe.title} ( Used Ingredients: {recipe.usedIngredientCount} )
@@ -107,9 +108,10 @@ const Dashboard = () => {
             name="options"
             size={24}
             color="black"
-            onPress={() => navigation.navigate('Filters')}
+            onPress={() => setShowFilters(!showFilters)}
           />
         </HStack>
+        {showFilters && <Filters />}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:{' '}
         </Text>
