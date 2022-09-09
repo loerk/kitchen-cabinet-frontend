@@ -1,3 +1,4 @@
+import React from 'react';
 import { NativeBaseProvider, Stack } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';

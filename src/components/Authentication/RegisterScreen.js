@@ -1,4 +1,5 @@
 import {
+  Alert,
   Text,
   TextInput,
   View,
@@ -28,6 +29,11 @@ const RegisterScreen = () => {
         console.log(user);
         const uid = user.uid;
         console.log(uid);
+        Alert.alert(
+          'Your account has been created!',
+
+          'You can now log in'
+        );
       })
       .catch((error) => {
         const errorCode = error.code;
