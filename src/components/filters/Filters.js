@@ -65,7 +65,7 @@ const Filter = () => {
           setFilterOptions((options) => ({ ...options, diet: selectedValue }))
         }
         _selectedItem={{
-          bg: 'cyan.600',
+          bg: '',
           endIcon: <CheckIcon size={4} />,
         }}
       >
@@ -92,7 +92,7 @@ const Filter = () => {
           }))
         }
         _selectedItem={{
-          bg: 'cyan.600',
+          bg: '',
           endIcon: <CheckIcon size={4} />,
         }}
       >
@@ -120,7 +120,7 @@ const Filter = () => {
           setFilterOptions((options) => ({ ...options, type: selectedValue }))
         }
         _selectedItem={{
-          bg: 'cyan.600',
+          bg: '',
           endIcon: <CheckIcon size={4} />,
         }}
       >
