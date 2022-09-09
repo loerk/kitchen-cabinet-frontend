@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
 import ShoppingList from './src/components/ShoppingList';
-import Cabinet from './src/components/Cabinet';
+import Cabinet from './src/components/cabinet/Cabinet';
 import Diagrams from './src/components/Diagrams';
 
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';

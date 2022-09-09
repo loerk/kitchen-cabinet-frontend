@@ -11,9 +11,6 @@ import {
 } from 'native-base';
 import { Button, Text, TouchableOpacity } from 'react-native';
 
-// components
-// import Header from './Header';
-
 const Cabinet = () => {
   const navigation = useNavigation();
   const [inputValue, setInputValue] = useState('');
@@ -21,7 +18,6 @@ const Cabinet = () => {
   const handleSearch = () => {};
   return (
     <ScrollView>
-      {/* <Header header="Cabinet" /> */}
       <Center>
         <HStack
           my="5"
@@ -47,7 +43,7 @@ const Cabinet = () => {
         </HStack>
       </Center>
       <Image
-        source={require('../../assets/images/cabinet.jpg')}
+        source={require('../../../assets/images/cabinet.jpg')}
         alt="Kitchen Cabinet"
         resizeMode="cover"
       />
