@@ -139,7 +139,13 @@ const Filter = () => {
         <Select.Item label="snack" value="snack" />
         <Select.Item label="drink" value="drink" />
       </Select>
-      <Button onPress={() => {}}>Apply Filters</Button>
+      <Button
+        onPress={() => {
+          /* action to be added */
+        }}
+      >
+        Apply Filters
+      </Button>
     </VStack>
   );
 };
