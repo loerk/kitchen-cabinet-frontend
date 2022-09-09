@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { NativeBaseProvider } from 'native-base';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -23,7 +24,6 @@ export default function App() {
         <SafeAreaProvider>
           <NavigationContainer>
             <AppNavigator />
-            <Footer />
           </NavigationContainer>
         </SafeAreaProvider>
       </NativeBaseProvider>
