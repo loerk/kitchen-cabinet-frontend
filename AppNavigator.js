@@ -1,33 +1,54 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialIcons } from '@expo/vector-icons';
 
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
-
-import Profile from './src/components/Profile';
-import RecipesList from './src/components/recipes/RecipesList';
 import ShoppingList from './src/components/ShoppingList';
-import Filters from './src/components/Filters';
-import Favorites from './src/components/Favorites';
 import Cabinet from './src/components/Cabinet';
+import Diagrams from './src/components/Diagrams';
 
-const Stack = createNativeStackNavigator();
+import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
 
+const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Group>
-        <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="Cabinet" component={Cabinet} />
-        <Stack.Screen name="Recipes" component={RecipesList} />
-        <Stack.Screen name="Shopping List" component={ShoppingList} />
-        <Stack.Screen name="Profile" component={Profile} />
-      </Stack.Group>
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Filters" component={Filters} />
-        <Stack.Screen name="Favorites" component={Favorites} />
-      </Stack.Group>
-    </Stack.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
+          let iconName;
+          if (route.name === 'Home') {
+            iconName = 'home-filled';
+          } else if (route.name === 'Cabinet') {
+            iconName = 'kitchen';
+          } else if (route.name === 'Add') {
+            iconName = focused ? 'add-circle' : 'add-circle-outline';
+          } else if (route.name === 'Shopping List') {
+            iconName = 'list-alt';
+          } else if (route.name === 'Diagrams') {
+            iconName = 'stacked-bar-chart';
+          }
+
+          return (
+            <MaterialIcons
+              name={iconName}
+              size={24}
+              color={focused ? 'black' : 'gray'}
+            />
+          );
+        },
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: { height: 60 },
+        tabBarItemStyle: { padding: 10 },
+      })}
+    >
+      <Tab.Screen name="Home" component={Dashboard} />
+      <Tab.Screen name="Cabinet" component={Cabinet} />
+      <Tab.Screen name="Add" component={CabinetAddItemForm} />
+      <Tab.Screen name="Shopping List" component={ShoppingList} />
+      <Tab.Screen name="Diagrams" component={Diagrams} />
+    </Tab.Navigator>
   );
 };
 
