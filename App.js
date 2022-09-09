@@ -10,9 +10,6 @@ import customTheme from './src/theme';
 // stack navigator
 import AppNavigator from './AppNavigator';
 
-// custom components
-import Footer from './src/components/Footer';
-
 // redux
 import { Provider } from 'react-redux';
 import store from './src/app/store';
