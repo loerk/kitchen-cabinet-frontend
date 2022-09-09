@@ -22,7 +22,11 @@ const AppNavigator = () => {
         name="Login"
         component={LoginScreen}
       />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen
+        name="Register"
+        options={{ headerShown: false }}
+        component={RegisterScreen}
+      />
       <Stack.Group>
         <Stack.Screen name="Cabinet" component={Cabinet} />
         <Stack.Screen name="Recipes" component={RecipesList} />
