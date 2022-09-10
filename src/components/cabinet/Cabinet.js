@@ -26,7 +26,7 @@ import {
 const Cabinet = () => {
   const [searchInput, setSearchInput] = useState('');
   const [filteredItems, setFilteredItems] = useState('');
-  let cabinetItems = getCabinetItems('6315f1e0801fa7692c1bb736');
+  let cabinetItems = getCabinetItems('6315f1e0801fa7692c1bb736'); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
   const [toBeDeleted, setToBeDeleted] = useState({ id: '', name: '' });
   const onClose = () => setIsOpenDeleteAlert(false);
@@ -58,7 +58,7 @@ const Cabinet = () => {
     cabinetItems.isSuccess &&
       setFilteredItems(
         cabinetItems.items.filter(({ name }) =>
-          name.toLowerCase().includes(searchInput.toLowerCase())
+          name.toLowerCase().startsWith(searchInput.toLowerCase())
         )
       );
   }, [searchInput]);
@@ -119,6 +119,9 @@ const Cabinet = () => {
         </HStack>
 
         <View>
+          {cabinetItems.isSuccess && cabinetItems.items.length === 0 && (
+            <Text>Your cabinet is empty. Add an item.</Text>
+          )}
           {filteredItems ? (
             filteredItems.map(({ _id: id, name, image }) => (
               <HStack space={3} alignItems="center" key={id}>
@@ -165,9 +168,7 @@ const Cabinet = () => {
             ))
           ) : cabinetItems.isLoading ? (
             <Spinner text="Loading..." />
-          ) : (
-            <Text>Your cabinet is empty. Add an item.</Text>
-          )}
+          ) : null}
         </View>
       </Center>
     </ScrollView>
