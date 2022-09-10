@@ -25,6 +25,7 @@ import {
 
 const Cabinet = () => {
   const [searchInput, setSearchInput] = useState('');
+  const [filteredItems, setFilteredItems] = useState('');
   let cabinetItems = getCabinetItems('6315f1e0801fa7692c1bb736');
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
   const [toBeDeleted, setToBeDeleted] = useState({ id: '', name: '' });
@@ -52,6 +53,15 @@ const Cabinet = () => {
     cabinetItems = getCabinetItems('6315f1e0801fa7692c1bb736');
   }, [isSuccessDelete]); */
   }
+
+  useEffect(() => {
+    cabinetItems.isSuccess &&
+      setFilteredItems(
+        cabinetItems.items.filter(({ name }) =>
+          name.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      );
+  }, [searchInput]);
 
   const cancelRef = useRef(null);
   const editItem = () => {
@@ -109,7 +119,29 @@ const Cabinet = () => {
         </HStack>
 
         <View>
-          {cabinetItems.isSuccess ? (
+          {filteredItems ? (
+            filteredItems.map(({ _id: id, name, image }) => (
+              <HStack space={3} alignItems="center" key={id}>
+                <Image source={{ uri: `${image}` }} alt={name} size="sm" />
+                <Text key={id}>{name}</Text>
+                <FontAwesome5
+                  name="edit"
+                  size={14}
+                  color="black"
+                  onPress={editItem}
+                />
+                <Feather
+                  name="x"
+                  size={16}
+                  color="black"
+                  onPress={() => {
+                    setToBeDeleted({ id, name });
+                    setIsOpenDeleteAlert(!isOpenDeleteAlert);
+                  }}
+                />
+              </HStack>
+            ))
+          ) : cabinetItems.isSuccess ? (
             cabinetItems.items.map(({ _id: id, name, image }) => (
               <HStack space={3} alignItems="center" key={id}>
                 <Image source={{ uri: `${image}` }} alt={name} size="sm" />
@@ -131,8 +163,10 @@ const Cabinet = () => {
                 />
               </HStack>
             ))
-          ) : (
+          ) : cabinetItems.isLoading ? (
             <Spinner text="Loading..." />
+          ) : (
+            <Text>Your cabinet is empty. Add an item.</Text>
           )}
         </View>
       </Center>
