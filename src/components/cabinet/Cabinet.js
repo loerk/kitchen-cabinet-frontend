@@ -1,58 +1,141 @@
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   HStack,
   Image,
-  Input,
-  Icon,
   Center,
   View,
   ScrollView,
+  Text,
+  Spinner,
+  AlertDialog,
+  Button,
 } from 'native-base';
-import { Button, Text, TouchableOpacity } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+
+// custom components
+import SearchBar from '../SearchBar';
+
+// helper function
+import getCabinetItems from '../../helpers/getCabinetItems';
+import {
+  useDeleteItemMutation,
+  useEditItemMutation,
+} from '../../features/api/apiSlice';
 
 const Cabinet = () => {
-  const navigation = useNavigation();
-  const [inputValue, setInputValue] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  let cabinetItems = getCabinetItems('6315f1e0801fa7692c1bb736');
+  const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
+  const [toBeDeleted, setToBeDeleted] = useState({ id: '', name: '' });
+  const onClose = () => setIsOpenDeleteAlert(false);
 
-  const handleSearch = () => {};
+  const [
+    editCabinetItem,
+    {
+      isLoading: isLoadingEdit,
+      isSuccess: isSuccessEdit,
+      isError: isErrorEdit,
+    },
+  ] = useEditItemMutation();
+  const [
+    deleteCabinetItem,
+    {
+      isLoading: isLoadingDelete,
+      isSuccess: isSuccessDelete,
+      isError: isErrorDelete,
+    },
+  ] = useDeleteItemMutation();
+
+  {
+    /*   useEffect(() => {
+    cabinetItems = getCabinetItems('6315f1e0801fa7692c1bb736');
+  }, [isSuccessDelete]); */
+  }
+
+  const cancelRef = useRef(null);
+  const editItem = () => {
+    editCabinetItem({
+      // item id and updated info
+    }).unwrap();
+  };
+
+  const deleteItem = () => {
+    deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
+    isSuccessDelete
+      ? onClose()
+      : isLoadingDelete
+      ? null
+      : 'Something went wrong';
+  };
+
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: 'white' }}>
+      <AlertDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isOpenDeleteAlert}
+        onClose={onClose}
+      >
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>Confirm Delete</AlertDialog.Header>
+          <AlertDialog.Body>
+            {`Are you sure you want to delete ${toBeDeleted.name} ?`}
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button
+                variant="unstyled"
+                colorScheme="coolGray"
+                onPress={onClose}
+                ref={cancelRef}
+              >
+                Cancel
+              </Button>
+              <Button colorScheme="danger" onPress={deleteItem}>
+                Delete
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
       <Center>
-        <HStack
-          my="5"
-          w="100%"
-          style={{ display: 'flex', justifyContent: 'space-around' }}
-        >
-          <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
-            <Text>Favorites</Text>
-          </TouchableOpacity>
-
-          <Input
-            defaultValue={inputValue}
-            onChangeText={(newText) => setInputValue(newText)}
-            placeholder="Search"
-            variant="filled"
-            width="50%"
-            borderRadius="10"
-            py="1"
-            px="2"
-            InputLeftElement={<Icon ml="2" size="4" color="gray.400" />}
+        <HStack alignItems="center">
+          <SearchBar
+            placeholder="Search an item"
+            onChangeText={(newValue) => setSearchInput(newValue)}
+            defaultValue={searchInput}
           />
-          <Button title="Search" onPress={handleSearch} />
         </HStack>
-      </Center>
-      <Image
-        source={require('../../../assets/images/cabinet.jpg')}
-        alt="Kitchen Cabinet"
-        resizeMode="cover"
-      />
 
-      <View>
-        {/* {cabinetItems?.map((item) => (
-          <Text key={item._id}>{item.name}</Text>
-        ))} */}
-      </View>
+        <View>
+          {cabinetItems.isSuccess ? (
+            cabinetItems.items.map(({ _id: id, name, image }) => (
+              <HStack space={3} alignItems="center" key={id}>
+                <Image source={{ uri: `${image}` }} alt={name} size="sm" />
+                <Text key={id}>{name}</Text>
+                <FontAwesome5
+                  name="edit"
+                  size={14}
+                  color="black"
+                  onPress={editItem}
+                />
+                <Feather
+                  name="x"
+                  size={16}
+                  color="black"
+                  onPress={() => {
+                    setToBeDeleted({ id, name });
+                    setIsOpenDeleteAlert(!isOpenDeleteAlert);
+                  }}
+                />
+              </HStack>
+            ))
+          ) : (
+            <Spinner text="Loading..." />
+          )}
+        </View>
+      </Center>
     </ScrollView>
   );
 };
