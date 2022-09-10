@@ -24,7 +24,7 @@ const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
           variant="filled"
           width="100%"
           borderRadius="10"
-          py="1"
+          py="2"
           px="2"
           InputLeftElement={
             <Icon

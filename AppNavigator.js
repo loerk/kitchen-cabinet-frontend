@@ -39,7 +39,7 @@ const AppNavigator = () => {
         },
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
-        tabBarStyle: { height: 60 },
+        tabBarStyle: { height: '10%' },
         tabBarItemStyle: { padding: 10 },
       })}
     >
