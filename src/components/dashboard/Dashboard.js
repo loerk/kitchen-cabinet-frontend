@@ -31,6 +31,12 @@ const Dashboard = () => {
   const [searchInput, setSearchInput] = useState('');
   const [filteredRecipes, setFilteredRecipes] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
+    diet: '',
+    intolerances: '',
+    type: '',
+  });
+  const [moreFilteredRecipes, setMoreFilteredRecipes] = useState('');
 
   useEffect(() => {
     const recipeTitles =
@@ -111,7 +117,14 @@ const Dashboard = () => {
             onPress={() => setShowFilters(!showFilters)}
           />
         </HStack>
-        {showFilters && <Filters />}
+        {showFilters && (
+          <Filters
+            filterOptions={filterOptions}
+            setFilterOptions={setFilterOptions}
+            setMoreFilteredRecipes={setMoreFilteredRecipes}
+            setShowFilters={setShowFilters}
+          />
+        )}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:{' '}
         </Text>

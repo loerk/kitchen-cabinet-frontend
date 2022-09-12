@@ -6,6 +6,7 @@ const BASE_URL = 'http://192.168.178.123:8002';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  tagTypes: ['Items'],
   endpoints: (builder) => ({
     getCabinetById: builder.query({
       query: (id) => `/cabinet/${id}`,
@@ -17,8 +18,8 @@ export const apiSlice = createApi({
       query: (id) => `/cabinet/items/${id}`,
     }),
     getFilteredRecipes: builder.query({
-      query: ({ query, type, diet, cuisine, intolerances }) =>
-        `/recipes/filter?query=${query}&type=${type}&cuisine=${cuisine}&intolerances=d${intolerances}&diet=${diet}`,
+      query: ({ type, diet, intolerances }) =>
+        `/recipes/filter?type=${type}&intolerances=d${intolerances}&diet=${diet}`,
     }),
     getRecipeById: builder.query({
       query: (id) => `/recipes/id/${id}`,
@@ -60,12 +61,14 @@ export const apiSlice = createApi({
         method: 'PUT',
         body: rest,
       }),
+      invalidatesTags: ['Items'],
     }),
     deleteItem: builder.mutation({
       query: ({ id }) => ({
         url: `/cabinet/items/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Items'],
     }),
     deleteCabinet: builder.mutation({
       query: (id) => ({
