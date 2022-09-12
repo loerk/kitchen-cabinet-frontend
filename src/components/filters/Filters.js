@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, VStack, CheckIcon, Button } from 'native-base';
+import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 
-const Filter = () => {
-  let [filterOptions, setFilterOptions] = React.useState({
-    cuisine: '',
+const Filter = ({ type, diet, intolerances, recipeIds }) => {
+  const [filterData, setFilterData] = useState(false);
+  let [filterOptions, setFilterOptions] = useState({
     diet: '',
     intolerances: '',
     type: '',
   });
+  const { data: filteredData } = useGetFilteredRecipesQuery(
+    filterData
+      ? { type, diet, intolerances, recipeIds: recipeIds.join() }
+      : skipToken
+  );
 
   return (
     <VStack alignItems="center" space={4}>
@@ -139,13 +146,7 @@ const Filter = () => {
         <Select.Item label="snack" value="snack" />
         <Select.Item label="drink" value="drink" />
       </Select>
-      <Button
-        onPress={() => {
-          /* action to be added */
-        }}
-      >
-        Apply Filters
-      </Button>
+      <Button onPress={setFilterData(true)}>Apply Filters</Button>
     </VStack>
   );
 };
