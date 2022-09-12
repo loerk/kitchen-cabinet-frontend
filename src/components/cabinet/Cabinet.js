@@ -72,11 +72,7 @@ const Cabinet = () => {
 
   const deleteItem = () => {
     deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
-    isSuccessDelete
-      ? onClose()
-      : isLoadingDelete
-      ? null
-      : 'Something went wrong';
+    onClose();
   };
 
   return (
