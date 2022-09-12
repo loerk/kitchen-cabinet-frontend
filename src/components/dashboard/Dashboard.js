@@ -25,23 +25,19 @@ import SearchBar from '../SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 
-
 const Dashboard = () => {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
-  const [filteredRecipes, setFilteredRecipes] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
-  
-  const { data: items } = useGetCabinetItemsQuery('631b2436b274cf976cc4bfe9');
+
+  const { data: items } = useGetCabinetItemsQuery('631f0edea3f91c57be508d70');
   const itemNames = items?.map((item) => item.name).join(',');
-
-
+  console.log(items);
   const { data: suggestedRecipes, isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
-
 
   useEffect(() => {
     const filteredSuggestions = suggestedRecipes?.filter((recipe) => {
@@ -86,7 +82,7 @@ const Dashboard = () => {
           searchedRecipes?.map((searchedRecipe) => {
             return <RecipeCard key={searchedRecipe.id} item={searchedRecipe} />;
           })
-        ) : !searchInput ? (
+        ) : !searchInput && itemNames ? (
           suggestedRecipes?.map((suggestedRecipe) => {
             return (
               <RecipeCard key={suggestedRecipe.id} item={suggestedRecipe} />
