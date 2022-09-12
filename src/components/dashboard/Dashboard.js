@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import {
   Divider,
   StatusBar,
@@ -16,13 +17,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
+// custom components
+import SearchBar from '../SearchBar';
+
 import {
   useGetCabinetItemsQuery,
   useGetRecipeByIngredientsQuery,
 } from '../../features/api/apiSlice';
-
-// custom components
-import SearchBar from '../SearchBar';
+import { RecipeCard } from '../utils/RecipeCard';
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
@@ -30,60 +32,22 @@ const Dashboard = () => {
   const user = { username: 'Manfred' }; // to hold the user's data
   const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState('');
-  const [filteredRecipes, setFilteredRecipes] = useState('');
+  const [searchedRecipes, setSearchedRecipes] = useState([]);
+
+  const { data: items } = useGetCabinetItemsQuery('631b2436b274cf976cc4bfe9');
+  const itemNames = items?.map((item) => item.name).join(',');
+
+  const { data: suggestedRecipes, isLoadingRecipes } =
+    useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
 
   useEffect(() => {
-    const recipeTitles =
-      suggestedRecipes && suggestedRecipes.map(({ props }) => props.children);
-    recipeTitles &&
-      setFilteredRecipes(
-        recipeTitles.filter((recipe) => recipe[0].includes(searchInput))
-      );
-  }, [searchInput]);
-
-  const {
-    data: items,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetCabinetItemsQuery('6315f1e0801fa7692c1bb736'); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
-
-  let cabinetItems;
-  let suggestedRecipes;
-
-  if (isLoading) {
-    cabinetItems = null;
-  } else if (isSuccess) {
-    cabinetItems = items.map((item) => item.name).join(',');
-  } else if (isError) {
-    console.log(error);
-  }
-
-  const {
-    data: recipes,
-    isLoading: isLoading2,
-    isSuccess: isSuccess2,
-    isError: isError2,
-    error: error2,
-  } = useGetRecipeByIngredientsQuery(
-    isSuccess && cabinetItems.length !== 0 ? cabinetItems : skipToken
-  );
-
-  if (isLoading2) {
-    suggestedRecipes = <Spinner text="Loading..." />;
-  } else if (isSuccess2) {
-    suggestedRecipes = recipes.map((recipe) => {
-      console.log(recipe);
-      return (
-        <Text key={recipe.id}>
-          {recipe.title} ( Used Ingredients: {recipe.usedIngredientCount} )
-        </Text>
-      );
+    const filteredSuggestions = suggestedRecipes?.filter((recipe) => {
+      if (recipe.title.toLowerCase().includes(searchInput)) return true;
+      return false;
     });
-  } else if (isError2) {
-    suggestedRecipes = <Text>{error2.toString()}</Text>;
-  }
+    if (searchInput) setSearchedRecipes(filteredSuggestions);
+    if (!searchInput) setSearchedRecipes([]);
+  }, [searchInput]);
 
   return (
     <SafeAreaView
@@ -95,12 +59,11 @@ const Dashboard = () => {
       <Text>Welcome</Text>
       <Heading>{user.username && `${user.username}`}</Heading>
       <Divider />
-
       <Center>
         <HStack alignItems="center">
           <SearchBar
             placeholder="Search a recipe"
-            onChangeText={(newValue) => setSearchInput(newValue)}
+            onChangeText={(newValue) => setSearchInput(newValue.toLowerCase())}
             defaultValue={searchInput}
           />
           <Ionicons
@@ -111,17 +74,25 @@ const Dashboard = () => {
           />
         </HStack>
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
-          Suggested Recipes:{' '}
+          Suggested Recipes:
         </Text>
       </Center>
       <ScrollView>
-        {filteredRecipes ? (
-          filteredRecipes.map((recipe) => <Text key={recipe}>{recipe}</Text>)
-        ) : suggestedRecipes ? (
-          suggestedRecipes
+        {searchInput ? (
+          searchedRecipes?.map((searchedRecipe) => {
+            return <RecipeCard key={searchedRecipe.id} item={searchedRecipe} />;
+          })
+        ) : !searchInput ? (
+          suggestedRecipes?.map((suggestedRecipe) => {
+            return (
+              <RecipeCard key={suggestedRecipe.id} item={suggestedRecipe} />
+            );
+          })
         ) : (
           <Text>Your cabinet is empty. Add an item.</Text>
         )}
+
+        {isLoadingRecipes && <Spinner text="Loading..." />}
       </ScrollView>
     </SafeAreaView>
   );
