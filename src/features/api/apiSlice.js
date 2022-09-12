@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const BASE_URL = 'http://192.168.178.123:8002';
+const BASE_URL = 'http://192.168.178.117:8002';
 
 // Defines the single API slice object
 export const apiSlice = createApi({
@@ -13,6 +13,7 @@ export const apiSlice = createApi({
     }),
     getCabinetItems: builder.query({
       query: (id) => `/cabinet/items/all/${id}`,
+      invalidatesTags: ['Items'],
     }),
     getCabinetItem: builder.query({
       query: (id) => `/cabinet/items/${id}`,
