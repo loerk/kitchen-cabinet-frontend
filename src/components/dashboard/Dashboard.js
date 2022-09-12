@@ -32,10 +32,11 @@ const Dashboard = () => {
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
+  const [recipeIds, setRecipeIds] = useState([]);
 
   const { data: items } = useGetCabinetItemsQuery('631f0edea3f91c57be508d70');
   const itemNames = items?.map((item) => item.name).join(',');
-  console.log(items);
+
   const { data: suggestedRecipes, isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
 
@@ -44,10 +45,25 @@ const Dashboard = () => {
       if (recipe.title.toLowerCase().includes(searchInput)) return true;
       return false;
     });
-    if (searchInput) setSearchedRecipes(filteredSuggestions);
+    if (searchInput) {
+      setSearchedRecipes(filteredSuggestions);
+    }
     if (!searchInput) setSearchedRecipes([]);
   }, [searchInput]);
 
+  useEffect(() => {
+    if (searchedRecipes.length) {
+      const ids = searchedRecipes.map((recipe) => recipe.id);
+      setRecipeIds(ids);
+    }
+  }, [searchedRecipes]);
+
+  useEffect(() => {
+    if (!searchedRecipes.length) {
+      const ids = suggestedRecipes?.map((recipe) => recipe.id);
+      setRecipeIds(ids);
+    }
+  }, [showFilters]);
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: bgColor, color: !bgColor }]}
@@ -72,7 +88,7 @@ const Dashboard = () => {
             onPress={() => setShowFilters(!showFilters)}
           />
         </HStack>
-        {showFilters && <Filters />}
+        {showFilters && <Filters recipeIds={recipeIds} />}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:
         </Text>
