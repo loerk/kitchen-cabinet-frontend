@@ -6,12 +6,14 @@ const BASE_URL = 'http://192.168.178.117:8002';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  tagTypes: ['Items'],
   endpoints: (builder) => ({
     getCabinetById: builder.query({
       query: (id) => `/cabinet/${id}`,
     }),
     getCabinetItems: builder.query({
       query: (id) => `/cabinet/items/all/${id}`,
+      providesTags: ['Items'],
     }),
     getCabinetItem: builder.query({
       query: (id) => `/cabinet/items/${id}`,
@@ -46,6 +48,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: { cabinetId, id, expiryDate },
       }),
+      invalidatesTags: ['Items'],
     }),
     editCabinet: builder.mutation({
       query: ({ id, ...rest }) => ({
@@ -60,12 +63,14 @@ export const apiSlice = createApi({
         method: 'PUT',
         body: rest,
       }),
+      invalidatesTags: ['Items'],
     }),
     deleteItem: builder.mutation({
       query: (id) => ({
         url: `/cabinet/items/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Items'],
     }),
     deleteCabinet: builder.mutation({
       query: (id) => ({
