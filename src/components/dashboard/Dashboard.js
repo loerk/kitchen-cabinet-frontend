@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import {
   Divider,
   StatusBar,
@@ -17,13 +16,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
-// custom components
-import SearchBar from '../SearchBar';
-
 import {
   useGetCabinetItemsQuery,
   useGetRecipeByIngredientsQuery,
 } from '../../features/api/apiSlice';
+
+// custom components
+import SearchBar from '../SearchBar';
+import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 
 const Dashboard = () => {
@@ -32,6 +32,8 @@ const Dashboard = () => {
   const user = { username: 'Manfred' }; // to hold the user's data
   const navigation = useNavigation();
   const [searchInput, setSearchInput] = useState('');
+  const [filteredRecipes, setFilteredRecipes] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
 
   const { data: items } = useGetCabinetItemsQuery('631b2436b274cf976cc4bfe9');
@@ -70,9 +72,10 @@ const Dashboard = () => {
             name="options"
             size={24}
             color="black"
-            onPress={() => navigation.navigate('Filters')}
+            onPress={() => setShowFilters(!showFilters)}
           />
         </HStack>
+        {showFilters && <Filters />}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:
         </Text>
