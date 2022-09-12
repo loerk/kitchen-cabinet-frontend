@@ -31,6 +31,12 @@ const Dashboard = () => {
   const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
+    diet: '',
+    intolerances: '',
+    type: '',
+  });
+  const [moreFilteredRecipes, setMoreFilteredRecipes] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
 
   const { data: items } = useGetCabinetItemsQuery('631f0edea3f91c57be508d70');
@@ -72,7 +78,14 @@ const Dashboard = () => {
             onPress={() => setShowFilters(!showFilters)}
           />
         </HStack>
-        {showFilters && <Filters />}
+        {showFilters && (
+          <Filters
+            filterOptions={filterOptions}
+            setFilterOptions={setFilterOptions}
+            setMoreFilteredRecipes={setMoreFilteredRecipes}
+            setShowFilters={setShowFilters}
+          />
+        )}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:
         </Text>

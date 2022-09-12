@@ -19,8 +19,8 @@ export const apiSlice = createApi({
       query: (id) => `/cabinet/items/${id}`,
     }),
     getFilteredRecipes: builder.query({
-      query: ({ query, type, diet, cuisine, intolerances }) =>
-        `/recipes/filter?query=${query}&type=${type}&cuisine=${cuisine}&intolerances=d${intolerances}&diet=${diet}`,
+      query: ({ type, diet, intolerances }) =>
+        `/recipes/filter?type=${type}&intolerances=d${intolerances}&diet=${diet}`,
     }),
     getRecipeById: builder.query({
       query: (id) => `/recipes/id/${id}`,
@@ -66,7 +66,7 @@ export const apiSlice = createApi({
       invalidatesTags: ['Items'],
     }),
     deleteItem: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/cabinet/items/${id}`,
         method: 'DELETE',
       }),
