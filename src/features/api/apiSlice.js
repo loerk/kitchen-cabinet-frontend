@@ -13,7 +13,7 @@ export const apiSlice = createApi({
     }),
     getCabinetItems: builder.query({
       query: (id) => `/cabinet/items/all/${id}`,
-      invalidatesTags: ['Items'],
+      providesTags: ['Items'],
     }),
     getCabinetItem: builder.query({
       query: (id) => `/cabinet/items/${id}`,
@@ -48,6 +48,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: { cabinetId, id, expiryDate },
       }),
+      invalidatesTags: ['Items'],
     }),
     editCabinet: builder.mutation({
       query: ({ id, ...rest }) => ({

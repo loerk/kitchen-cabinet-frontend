@@ -40,7 +40,7 @@ const AppNavigator = () => {
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: { height: '10%' },
-        tabBarItemStyle: { padding: 5 },
+        tabBarItemStyle: { padding: 10 },
       })}
     >
       <Tab.Screen name="Home" component={Dashboard} />
