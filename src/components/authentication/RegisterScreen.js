@@ -94,40 +94,4 @@ const RegisterScreen = () => {
   );
 };
 
-{
-  /* <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View styles={styles.inputContainer}>
-        <TextInput
-          placeholder="Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={handleRegister}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView> */
-}
-
-/* '../../../assets/images/placeholder-logo.png' */
-
 export default RegisterScreen;

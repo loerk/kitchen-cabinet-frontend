@@ -21,10 +21,20 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [user, setUser] = useState({});
+
+  onAuthStateChanged(auth, (currentUser) => {
+    console.log(currentUser);
+    setUser(currentUser);
+    console.log(user);
+    if (currentUser) {
+      console.log('user logged in:', user);
+    }
+  });
+
   const handleLogin = async () => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
     } catch (error) {
       alert(error.message);
     }
@@ -84,36 +94,5 @@ const LoginScreen = () => {
     </>
   );
 };
-
-{
-  /* <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View styles={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}
-          style={[styles.button]}
-        >
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView> */
-}
 
 export default LoginScreen;
