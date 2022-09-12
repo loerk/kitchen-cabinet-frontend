@@ -28,6 +28,7 @@ const AppNavigator = () => {
         component={RegisterScreen}
       />
       <Stack.Group>
+        <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="Cabinet" component={Cabinet} />
         <Stack.Screen name="Recipes" component={RecipesList} />
         <Stack.Screen name="Shopping List" component={ShoppingList} />
