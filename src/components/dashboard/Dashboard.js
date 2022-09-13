@@ -33,13 +33,14 @@ const Dashboard = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const [recipeIds, setRecipeIds] = useState([]);
-
+  const [moreFilteredRecipes, setMoreFilteredRecipes] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const { data: items } = useGetCabinetItemsQuery('631f0edea3f91c57be508d70');
   const itemNames = items?.map((item) => item.name).join(',');
 
   const { data: suggestedRecipes, isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
-
+  // useEffect for filtering By title
   useEffect(() => {
     const filteredSuggestions = suggestedRecipes?.filter((recipe) => {
       if (recipe.title.toLowerCase().includes(searchInput)) return true;
@@ -51,6 +52,7 @@ const Dashboard = () => {
     if (!searchInput) setSearchedRecipes([]);
   }, [searchInput]);
 
+  // useEffect for setting recipeIds from searchedList to get Bulk in the next step
   useEffect(() => {
     if (searchedRecipes.length) {
       const ids = searchedRecipes.map((recipe) => recipe.id);
@@ -58,12 +60,24 @@ const Dashboard = () => {
     }
   }, [searchedRecipes]);
 
+  // useEffect for setting recipeIds from suggestedList to get Bulk in the next step
   useEffect(() => {
     if (!searchedRecipes.length) {
       const ids = suggestedRecipes?.map((recipe) => recipe.id);
       setRecipeIds(ids);
     }
   }, [showFilters]);
+
+  // useEffect for setting filteredList to display them in next step
+  useEffect(() => {
+    if (moreFilteredRecipes.length && !searchInput) {
+      const filtered = suggestedRecipes.filter((item) => {
+        return moreFilteredRecipes.includes(item.id);
+      });
+      setFilteredRecipes(filtered);
+    }
+  }, [moreFilteredRecipes]);
+
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: bgColor, color: !bgColor }]}
@@ -88,17 +102,27 @@ const Dashboard = () => {
             onPress={() => setShowFilters(!showFilters)}
           />
         </HStack>
-        {showFilters && <Filters recipeIds={recipeIds} />}
+        {showFilters && (
+          <Filters
+            setMoreFilteredRecipes={setMoreFilteredRecipes}
+            setShowFilters={setShowFilters}
+            recipeIds={recipeIds}
+          />
+        )}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
           Suggested Recipes:
         </Text>
       </Center>
       <ScrollView>
-        {searchInput ? (
+        {filteredRecipes.length && !searchInput ? (
+          filteredRecipes?.map((filteredRecipe) => {
+            return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;
+          })
+        ) : searchInput ? (
           searchedRecipes?.map((searchedRecipe) => {
             return <RecipeCard key={searchedRecipe.id} item={searchedRecipe} />;
           })
-        ) : !searchInput && itemNames ? (
+        ) : !searchInput && itemNames && !filteredRecipes.length ? (
           suggestedRecipes?.map((suggestedRecipe) => {
             return (
               <RecipeCard key={suggestedRecipe.id} item={suggestedRecipe} />
@@ -114,6 +138,23 @@ const Dashboard = () => {
   );
 };
 
+// {searchInput ? (
+//   searchedRecipes?.map((searchedRecipe) => {
+//     return <RecipeCard key={searchedRecipe.id} item={searchedRecipe} />;
+//   })
+// ) : !searchInput && itemNames && !filteredRecipes.length ? (
+//   suggestedRecipes?.map((suggestedRecipe) => {
+//     return (
+//       <RecipeCard key={suggestedRecipe.id} item={suggestedRecipe} />
+//     );
+//   })
+// ) : filteredRecipes.length ? (
+//   filteredRecipes?.map((filteredRecipe) => {
+//     return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;
+//   })
+// ) : (
+//   <Text>Your cabinet is empty. Add an item.</Text>
+// )}
 const styles = StyleSheet.create({ container: { flex: 1 } });
 
 export default Dashboard;
