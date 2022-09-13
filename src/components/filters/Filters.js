@@ -116,6 +116,7 @@ const Filter = ({
       >
         Apply Filters
       </Button>
+      <Button>Reset</Button>
     </VStack>
   );
 };

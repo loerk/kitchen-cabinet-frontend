@@ -39,7 +39,7 @@ const Dashboard = () => {
   const [moreFilteredRecipes, setMoreFilteredRecipes] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
 
-  const { data: items } = useGetCabinetItemsQuery('631f0edea3f91c57be508d70');
+  const { data: items } = useGetCabinetItemsQuery('6315f1e0801fa7692c1bb736');
   const itemNames = items?.map((item) => item.name).join(',');
   console.log(items);
   const { data: suggestedRecipes, isLoadingRecipes } =

@@ -13,7 +13,7 @@ export const CabinetAddItemForm = () => {
   });
   const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
 
-  const cabinetId = '631b2436b274cf976cc4bfe9';
+  const cabinetId = '6315f1e0801fa7692c1bb736';
   const onChangeDate = (_, selectedDate) => {
     const currentDate = selectedDate || selectedIngredient.expiryDate;
 

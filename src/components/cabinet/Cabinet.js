@@ -8,14 +8,17 @@ import {
   Text,
   Spinner,
   AlertDialog,
-  Modal,
   FormControl,
   Button,
   Input,
+  Label,
+  Flex,
+  VStack,
+  Box,
 } from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 // custom components
 import SearchBar from '../SearchBar';
@@ -34,7 +37,8 @@ const Cabinet = () => {
   const [toBeDeleted, setToBeDeleted] = useState({ id: '', name: '' });
   const [toBeEdited, setToBeEdited] = useState({
     id: '',
-    name: '' /* expiryDate: new Date() */,
+    name: '',
+    /* expiryDate:  Date */
   });
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
@@ -47,6 +51,7 @@ const Cabinet = () => {
     error,
   } = useGetCabinetItemsQuery('6315f1e0801fa7692c1bb736'); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
 
+  isSuccess && console.log(cabinetItems);
   const [
     editCabinetItem,
     {
@@ -119,28 +124,29 @@ const Cabinet = () => {
         </AlertDialog.Content>
       </AlertDialog>
 
-      <Modal isOpen={isOpenEditForm} onClose={closeEditForm}>
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Edit Item</Modal.Header>
-          <Modal.Body>
+      <AlertDialog
+        leastDestructiveRef={cancelRefEdit}
+        isOpen={isOpenEditForm}
+        onClose={closeEditForm}
+      >
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>Edit Item</AlertDialog.Header>
+          <AlertDialog.Body>
             <FormControl>
               <FormControl.Label>Item Name</FormControl.Label>
-              {/* <Input placeholder={toBeEdited.name} value={toBeEdited.name} onChangeText={(newValue) => setToBeEdited({ ...toBeEdited, name: newValue })} /> */}
               {toBeEdited.name}
-            </FormControl>
-            <FormControl mt="3">
               <FormControl.Label>Expiry Date</FormControl.Label>
-              {/*  <DateTimePicker
-                style={{
-                  width: 80,
-                }}
-                value={toBeEdited.expiryDate}
-                onChange={(_, selectedDate) => setToBeEdited({ ...toBeEdited, expiryDate: selectedDate })}
-              /> */}
+              {/* <DateTimePicker
+              style={{
+                width: 80,
+              }}
+              value={toBeEdited.expiryDate}
+              onChange={(_, selectedDate) => setToBeEdited({ ...toBeEdited, expiryDate: selectedDate })}
+            /> */}
             </FormControl>
-          </Modal.Body>
-          <Modal.Footer>
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button
                 variant="ghost"
@@ -151,9 +157,9 @@ const Cabinet = () => {
               </Button>
               <Button onPress={editItem}>Save</Button>
             </Button.Group>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
 
       <Center>
         <HStack alignItems="center">
@@ -173,6 +179,7 @@ const Cabinet = () => {
               <HStack space={3} alignItems="center" key={id}>
                 <Image source={{ uri: `${image}` }} alt={name} size="sm" />
                 <Text key={id}>{name}</Text>
+
                 <FontAwesome5
                   name="edit"
                   size={14}
@@ -182,8 +189,8 @@ const Cabinet = () => {
                     setIsOpenEditForm(!isOpenEditForm);
                   }}
                 />
-                <Feather
-                  name="x"
+                <AntDesign
+                  name="delete"
                   size={16}
                   color="black"
                   onPress={() => {
@@ -195,28 +202,44 @@ const Cabinet = () => {
             ))
           ) : isSuccess ? (
             cabinetItems.map(({ _id: id, name, image, expiryDate }) => (
-              <HStack space={3} alignItems="center" key={id}>
-                <Image source={{ uri: `${image}` }} alt={name} size="sm" />
-                <Text key={id}>{name}</Text>
-                <FontAwesome5
-                  name="edit"
-                  size={14}
-                  color="black"
-                  onPress={() => {
-                    setToBeEdited({ id, name, expiryDate });
-                    setIsOpenEditForm(!isOpenEditForm);
-                  }}
-                />
-                <Feather
-                  name="x"
-                  size={16}
-                  color="black"
-                  onPress={() => {
-                    setToBeDeleted({ id, name });
-                    setIsOpenDeleteAlert(!isOpenDeleteAlert);
-                  }}
-                />
-              </HStack>
+              <VStack sm={4} spacing={2} key={id}>
+                <Box px="4" pt="4">
+                  <HStack space="1">
+                    <Image source={{ uri: `${image}` }} alt={name} size="sm" />
+                    <Text
+                      alignSelf="stretch"
+                      isTruncated
+                      maxW="200"
+                      w="80%"
+                      px="4"
+                    >
+                      {name}
+                    </Text>
+                  </HStack>
+                </Box>
+                <Box px="4">
+                  <HStack>
+                    <FontAwesome5
+                      name="edit"
+                      size={14}
+                      color="black"
+                      onPress={() => {
+                        setToBeEdited({ id, name, expiryDate });
+                        setIsOpenEditForm(!isOpenEditForm);
+                      }}
+                    />
+                    <AntDesign
+                      name="delete"
+                      size={16}
+                      color="black"
+                      onPress={() => {
+                        setToBeDeleted({ id, name });
+                        setIsOpenDeleteAlert(!isOpenDeleteAlert);
+                      }}
+                    />
+                  </HStack>
+                </Box>
+              </VStack>
             ))
           ) : isLoading ? (
             <Spinner text="Loading..." />
