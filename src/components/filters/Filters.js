@@ -3,66 +3,30 @@ import { Select, VStack, CheckIcon, Button } from 'native-base';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 
-const Filter = ({ type, diet, intolerances, recipeIds }) => {
-  const [filterData, setFilterData] = useState(false);
-  let [filterOptions, setFilterOptions] = useState({
+const Filter = ({ setMoreFilteredRecipes, setShowFilters, recipeIds }) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
     diet: '',
     intolerances: '',
     type: '',
   });
-  const { data: filteredData } = useGetFilteredRecipesQuery(
-    filterData
+  const { diet, intolerances, type } = filterOptions;
+  const {
+    data: recipes,
+    isSuccess,
+    error,
+  } = useGetFilteredRecipesQuery(
+    isPressed
       ? { type, diet, intolerances, recipeIds: recipeIds.join() }
       : skipToken
   );
 
+  if (isSuccess) {
+    setMoreFilteredRecipes(recipes);
+    setShowFilters(false);
+  }
   return (
     <VStack alignItems="center" space={4}>
-      <Select
-        selectedValue={filterOptions.cuisine}
-        minWidth={200}
-        accessibilityLabel="Select Cuisine"
-        placeholder="Cuisine"
-        onValueChange={(selectedValue) =>
-          setFilterOptions((options) => ({
-            ...options,
-            cuisine: selectedValue,
-          }))
-        }
-        _selectedItem={{
-          bg: '',
-          endIcon: <CheckIcon size={4} />,
-        }}
-      >
-        <Select.Item label="" value="" />
-        <Select.Item label="African" value="African" />
-        <Select.Item label="American" value="American" />
-        <Select.Item label="British" value="British" />
-        <Select.Item label="Cajun" value="Cajun" />
-        <Select.Item label="Caribbean" value="Caribbean" />
-        <Select.Item label="Chinese" value="Chinese" />
-        <Select.Item label="Eastern European" value="Eastern European" />
-        <Select.Item label="European" value="European" />
-        <Select.Item label="French" value="French" />
-        <Select.Item label="German" value="German" />
-        <Select.Item label="Greek" value="Greek" />
-        <Select.Item label="Indian" value="Indian" />
-        <Select.Item label="Irish" value="Irish" />
-        <Select.Item label="Italian" value="Italian" />
-        <Select.Item label="Japanese" value="Japanese" />
-        <Select.Item label="Jewish" value="Jewish" />
-        <Select.Item label="Korean" value="Korean" />
-        <Select.Item label="Latin American" value="Latin American" />
-        <Select.Item label="Mediterranean" value="Mediterranean" />
-        <Select.Item label="Mexican" value="Mexican" />
-        <Select.Item label="Middle Eastern" value="Middle Eastern" />
-        <Select.Item label="Nordic" value="Nordic" />
-        <Select.Item label="Southern" value="Southern" />
-        <Select.Item label="Spanish" value="Spanish" />
-        <Select.Item label="Thai" value="Thai" />
-        <Select.Item label="Vietnamese" value="Vietnamese" />
-      </Select>
-
       <Select
         selectedValue={filterOptions.diet}
         minWidth={200}
@@ -146,7 +110,13 @@ const Filter = ({ type, diet, intolerances, recipeIds }) => {
         <Select.Item label="snack" value="snack" />
         <Select.Item label="drink" value="drink" />
       </Select>
-      <Button onPress={setFilterData(true)}>Apply Filters</Button>
+      <Button
+        onPress={() => {
+          setIsPressed(true);
+        }}
+      >
+        Apply Filters
+      </Button>
     </VStack>
   );
 };
