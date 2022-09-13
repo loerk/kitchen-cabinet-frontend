@@ -1,10 +1,10 @@
-import React from 'react';
+/* import React from 'react';
 import { AuthProvider } from './AuthProvider';
-import Routes from './Routes';
+import AuthRoutes from './AuthRoutes';
 export default function AuthProviders() {
   return (
     <AuthProvider>
-      <Routes />
+      <AuthRoutes />
     </AuthProvider>
   );
-}
+} */

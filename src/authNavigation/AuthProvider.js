@@ -8,6 +8,15 @@ import { auth } from '../../firebase';
 
 export const AuthContext = createContext({});
 
+const handleRegister = async (email, password) => {
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    alert(error.message);
+    console.log(error.message);
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   return (
@@ -23,14 +32,7 @@ export const AuthProvider = ({ children }) => {
             console.log(error.message);
           }
         },
-        handleRegister: async (email, password) => {
-          try {
-            await createUserWithEmailAndPassword(auth, email, password);
-          } catch (error) {
-            alert(error.message);
-            console.log(error.message);
-          }
-        },
+        handleRegister,
         handleLogout: async () => {
           try {
             await signOut(auth);

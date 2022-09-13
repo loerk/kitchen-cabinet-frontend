@@ -6,39 +6,39 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 // import firebase functions
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../../firebase';
-
-// import Authentication Screens
-// import RegisterScreen from './RegisterScreen';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [user, setUser] = useState({});
+  const { handleLogin } = useContext(AuthContext);
 
-  onAuthStateChanged(auth, (currentUser) => {
-    console.log(currentUser);
-    setUser(currentUser);
-    console.log(user);
-    if (currentUser) {
-      console.log('user logged in:', user);
-    }
-  });
+  /*   const [user, setUser] = useState({}); */
 
-  const handleLogin = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+  /*   onAuthStateChanged(auth, (currentUser) => {
+      console.log(currentUser);
+      setUser(currentUser);
+      console.log(user);
+      if (currentUser) {
+        console.log('user logged in:', user);
+      }
+    }); */
+
+  /*   const handleLogin = async () => {
+      try {
+        const user = await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        alert(error.message);
+      }
+    }; */
 
   // to be used when configuring signOut functionality in user profile // will need to import signOut from firebase/auth
   // <button onPress={handleLogout}>
@@ -75,7 +75,7 @@ const LoginScreen = () => {
               secureTextEntry
               onChangeText={(text) => setPassword(text)}
             />
-            <TouchableOpacity onPress={() => handleLogin()}>
+            <TouchableOpacity onPress={() => handleLogin(email, password)}>
               <View style={styles.button}>
                 <Text style={styles.buttonLabel}>{'Sign in'}</Text>
               </View>

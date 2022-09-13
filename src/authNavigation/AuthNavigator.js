@@ -7,14 +7,14 @@ const Stack = createStackNavigator();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator>
       <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{ header: () => null }}
       />
       <Stack.Screen
-        name="Login"
+        name="Register"
         component={RegisterScreen}
         options={{ header: () => null }}
       />
