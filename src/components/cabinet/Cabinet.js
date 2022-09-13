@@ -93,8 +93,48 @@ const Cabinet = () => {
     closeDeleteAlert();
   };
 
+  const EditForm = () => (
+    <AlertDialog
+      leastDestructiveRef={cancelRefEdit}
+      isOpen={isOpenEditForm}
+      onClose={closeEditForm}
+    >
+      <AlertDialog.Content>
+        <AlertDialog.CloseButton />
+        <AlertDialog.Header>Edit Item</AlertDialog.Header>
+        <AlertDialog.Body>
+          <FormControl>
+            <FormControl.Label>Item Name</FormControl.Label>
+            {toBeEdited.name}
+            <FormControl.Label>Expiry Date</FormControl.Label>
+            {/* <DateTimePicker
+              style={{
+                width: 80,
+              }}
+              value={toBeEdited.expiryDate}
+              onChange={(_, selectedDate) => setToBeEdited({ ...toBeEdited, expiryDate: selectedDate })}
+            /> */}
+          </FormControl>
+        </AlertDialog.Body>
+        <AlertDialog.Footer>
+          <Button.Group space={2}>
+            <Button
+              variant="ghost"
+              colorScheme="blueGray"
+              onPress={closeEditForm}
+            >
+              Cancel
+            </Button>
+            <Button onPress={editItem}>Save</Button>
+          </Button.Group>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
+  );
+
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
+      <EditForm />
       <AlertDialog
         leastDestructiveRef={cancelRefDelete}
         isOpen={isOpenDeleteAlert}
@@ -119,43 +159,6 @@ const Cabinet = () => {
               <Button colorScheme="danger" onPress={deleteItem}>
                 Delete
               </Button>
-            </Button.Group>
-          </AlertDialog.Footer>
-        </AlertDialog.Content>
-      </AlertDialog>
-
-      <AlertDialog
-        leastDestructiveRef={cancelRefEdit}
-        isOpen={isOpenEditForm}
-        onClose={closeEditForm}
-      >
-        <AlertDialog.Content>
-          <AlertDialog.CloseButton />
-          <AlertDialog.Header>Edit Item</AlertDialog.Header>
-          <AlertDialog.Body>
-            <FormControl>
-              <FormControl.Label>Item Name</FormControl.Label>
-              {toBeEdited.name}
-              <FormControl.Label>Expiry Date</FormControl.Label>
-              {/* <DateTimePicker
-              style={{
-                width: 80,
-              }}
-              value={toBeEdited.expiryDate}
-              onChange={(_, selectedDate) => setToBeEdited({ ...toBeEdited, expiryDate: selectedDate })}
-            /> */}
-            </FormControl>
-          </AlertDialog.Body>
-          <AlertDialog.Footer>
-            <Button.Group space={2}>
-              <Button
-                variant="ghost"
-                colorScheme="blueGray"
-                onPress={closeEditForm}
-              >
-                Cancel
-              </Button>
-              <Button onPress={editItem}>Save</Button>
             </Button.Group>
           </AlertDialog.Footer>
         </AlertDialog.Content>
@@ -202,21 +205,7 @@ const Cabinet = () => {
             ))
           ) : isSuccess ? (
             cabinetItems.map(({ _id: id, name, image, expiryDate }) => (
-              <VStack sm={4} spacing={2} key={id}>
-                <Box px="4" pt="4">
-                  <HStack space="1">
-                    <Image source={{ uri: `${image}` }} alt={name} size="sm" />
-                    <Text
-                      alignSelf="stretch"
-                      isTruncated
-                      maxW="200"
-                      w="80%"
-                      px="4"
-                    >
-                      {name}
-                    </Text>
-                  </HStack>
-                </Box>
+              <VStack key={id}>
                 <Box px="4">
                   <HStack>
                     <FontAwesome5
@@ -237,6 +226,20 @@ const Cabinet = () => {
                         setIsOpenDeleteAlert(!isOpenDeleteAlert);
                       }}
                     />
+                  </HStack>
+                </Box>
+                <Box px="4" pt="4">
+                  <HStack space="1">
+                    <Image source={{ uri: `${image}` }} alt={name} size="sm" />
+                    <Text
+                      alignSelf="stretch"
+                      isTruncated
+                      maxW="200"
+                      w="80%"
+                      px="4"
+                    >
+                      {name}
+                    </Text>
                   </HStack>
                 </Box>
               </VStack>
