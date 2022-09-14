@@ -31,12 +31,6 @@ const Dashboard = () => {
   const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [filterOptions, setFilterOptions] = useState({
-    diet: '',
-    intolerances: '',
-    type: '',
-  });
-  const [moreFilteredRecipes, setMoreFilteredRecipes] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const [recipeIds, setRecipeIds] = useState([]);
   const [moreFilteredRecipes, setMoreFilteredRecipes] = useState([]);
@@ -113,7 +107,7 @@ const Dashboard = () => {
         <HStack alignItems="center">
           <SearchBar
             placeholder="Search a recipe"
-            onChangeText={(newValue) => setSearchInput(newValue.toLowerCase())}
+            onChangeText={(newValue) => setSearchInput(newValue)}
             defaultValue={searchInput}
           />
           <Ionicons
@@ -145,7 +139,7 @@ const Dashboard = () => {
         </Text>
       </Center>
       <ScrollView>
-        {moreFilteredRecipes.length && !searchInput ? (
+        {moreFilteredRecipes?.length && !searchInput ? (
           filteredRecipes?.map((filteredRecipe) => {
             return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;
           })
