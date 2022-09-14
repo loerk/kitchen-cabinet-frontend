@@ -3,7 +3,13 @@ import { Select, VStack, CheckIcon, Button } from 'native-base';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 
-const Filter = ({ setMoreFilteredRecipes, setShowFilters, recipeIds }) => {
+const Filter = ({
+  setMoreFilteredRecipes,
+  setShowFilters,
+  recipeIds,
+  setFilterOptions,
+  filterOptions,
+}) => {
   const [isPressed, setIsPressed] = useState(false);
   const [filterOptions, setFilterOptions] = useState({
     diet: '',
