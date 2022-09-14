@@ -19,7 +19,7 @@ import {
   useGetCabinetItemsQuery,
   useGetRecipeByIngredientsQuery,
 } from '../../features/api/apiSlice';
-
+import { CABINET_ID } from '@env';
 // custom components
 import SearchBar from '../SearchBar';
 import Filters from '../filters/Filters';
@@ -35,7 +35,13 @@ const Dashboard = () => {
   const [recipeIds, setRecipeIds] = useState([]);
   const [moreFilteredRecipes, setMoreFilteredRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
-  const { data: items } = useGetCabinetItemsQuery('631f0edea3f91c57be508d70');
+  const [filterOptions, setFilterOptions] = useState({
+    diet: '',
+    intolerance: '',
+    type: '',
+    extras: '',
+  });
+  const { data: items } = useGetCabinetItemsQuery(CABINET_ID);
   const itemNames = items?.map((item) => item.name).join(',');
 
   const { data: suggestedRecipes, isLoadingRecipes } =
@@ -78,6 +84,17 @@ const Dashboard = () => {
     }
   }, [moreFilteredRecipes]);
 
+  //useEffect to reset filtered recipes if no filter is selected
+  useEffect(() => {
+    if (
+      !filterOptions.diet &&
+      !filterOptions.intolerance &&
+      !filterOptions.type &&
+      !filterOptions.diet
+    ) {
+      setMoreFilteredRecipes([]);
+    }
+  }, [filterOptions]);
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: bgColor, color: !bgColor }]}
@@ -97,9 +114,17 @@ const Dashboard = () => {
           />
           <Ionicons
             name="options"
-            size={24}
+            size={28}
             color="black"
-            onPress={() => setShowFilters(!showFilters)}
+            onPress={() => {
+              setFilterOptions({
+                diet: '',
+                intolerance: '',
+                type: '',
+                extras: '',
+              });
+              setShowFilters(!showFilters);
+            }}
           />
         </HStack>
         {showFilters && (
@@ -107,6 +132,8 @@ const Dashboard = () => {
             setMoreFilteredRecipes={setMoreFilteredRecipes}
             setShowFilters={setShowFilters}
             recipeIds={recipeIds}
+            setFilterOptions={setFilterOptions}
+            filterOptions={filterOptions}
           />
         )}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
@@ -114,7 +141,7 @@ const Dashboard = () => {
         </Text>
       </Center>
       <ScrollView>
-        {filteredRecipes.length && !searchInput ? (
+        {moreFilteredRecipes.length && !searchInput ? (
           filteredRecipes?.map((filteredRecipe) => {
             return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;
           })
@@ -122,7 +149,7 @@ const Dashboard = () => {
           searchedRecipes?.map((searchedRecipe) => {
             return <RecipeCard key={searchedRecipe.id} item={searchedRecipe} />;
           })
-        ) : !searchInput && itemNames && !filteredRecipes.length ? (
+        ) : !searchInput && itemNames && !searchedRecipes.length ? (
           suggestedRecipes?.map((suggestedRecipe) => {
             return (
               <RecipeCard key={suggestedRecipe.id} item={suggestedRecipe} />
