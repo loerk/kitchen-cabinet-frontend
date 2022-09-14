@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Select, VStack, CheckIcon, Button } from 'native-base';
+import { Select, VStack, CheckIcon, Button, HStack } from 'native-base';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 
@@ -11,30 +11,31 @@ const Filter = ({
   filterOptions,
 }) => {
   const [isPressed, setIsPressed] = useState(false);
-  const [filterOptions, setFilterOptions] = useState({
-    diet: '',
-    intolerances: '',
-    type: '',
-  });
-  const { diet, intolerances, type } = filterOptions;
+
+  const { diet, intolerance, type, extras } = filterOptions;
   const {
     data: recipes,
     isSuccess,
     error,
   } = useGetFilteredRecipesQuery(
     isPressed
-      ? { type, diet, intolerances, recipeIds: recipeIds.join() }
+      ? { type, diet, intolerance, extras, recipeIds: recipeIds.join() }
       : skipToken
   );
 
   if (isSuccess) {
     setMoreFilteredRecipes(recipes);
+    setIsPressed(false);
     setShowFilters(false);
   }
+  if (error) {
+    console.log(error);
+  }
+
   return (
     <VStack alignItems="center" space={4}>
       <Select
-        selectedValue={filterOptions.diet}
+        selectedValue={diet}
         minWidth={200}
         accessibilityLabel="Select Diet"
         placeholder="Diet"
@@ -47,25 +48,21 @@ const Filter = ({
         }}
       >
         <Select.Item label="" value="" />
-        <Select.Item label="Lacto-Vegetarian" value="Lacto-Vegetarian" />
-        <Select.Item label="Ovo-Vegetarian" value="Ovo-Vegetarian" />
-        <Select.Item label="Vegan" value="Vegan" />
-        <Select.Item label="Pescetarian" value="Pescetarian" />
-        <Select.Item label="Paleo" value="Paleo" />
-        <Select.Item label="Primal" value="Primal" />
-        <Select.Item label="Low FODMAP" value="Low FODMAP" />
-        <Select.Item label="Whole30" value="Whole30" />
+        <Select.Item label="Vegetarian" value="vegetarian" />
+        <Select.Item label="Vegan" value="vegan" />
+        <Select.Item label="Gluten free" value="glutenFree" />
+        <Select.Item label="Dairy free" value="dairyFree" />
       </Select>
 
       <Select
-        selectedValue={filterOptions.intolerances}
+        selectedValue={intolerance}
         minWidth={200}
         accessibilityLabel="Select Intolerances"
         placeholder="Intolerances"
         onValueChange={(selectedValue) =>
           setFilterOptions((options) => ({
             ...options,
-            intolerances: selectedValue,
+            intolerance: selectedValue,
           }))
         }
         _selectedItem={{
@@ -74,22 +71,18 @@ const Filter = ({
         }}
       >
         <Select.Item label="" value="" />
-        <Select.Item label="Dairy" value="Dairy" />
         <Select.Item label="Egg" value="Egg" />
-        <Select.Item label="Gluten" value="Gluten" />
-        <Select.Item label="Grain" value="Grain" />
-        <Select.Item label="Peanut" value="Peanut" />
-        <Select.Item label="Seafood" value="Seafood" />
-        <Select.Item label="Sesame" value="Sesame" />
-        <Select.Item label="Shellfish" value="Shellfish" />
-        <Select.Item label="Soy" value="Soy" />
-        <Select.Item label="Sulfite" value="Sulfite" />
-        <Select.Item label="Tree Nut" value="Tree Nut" />
-        <Select.Item label="Wheat" value="Wheat" />
+        <Select.Item label="Grain" value="grain" />
+        <Select.Item label="Peanut" value="peanut" />
+        <Select.Item label="Sesame" value="sesame" />
+        <Select.Item label="Shellfish" value="shellfish" />
+        <Select.Item label="Soy" value="soy" />
+        <Select.Item label="Tree Nut" value="tree Nut" />
+        <Select.Item label="Wheat" value="wheat" />
       </Select>
 
       <Select
-        selectedValue={filterOptions.type}
+        selectedValue={type}
         minWidth={200}
         accessibilityLabel="Select Recipe Type"
         placeholder="Recipe Type"
@@ -116,13 +109,27 @@ const Filter = ({
         <Select.Item label="snack" value="snack" />
         <Select.Item label="drink" value="drink" />
       </Select>
-      <Button
-        onPress={() => {
-          setIsPressed(true);
+
+      <Select
+        selectedValue={extras}
+        minWidth={200}
+        accessibilityLabel="Select Extras"
+        placeholder="Extras"
+        onValueChange={(selectedValue) =>
+          setFilterOptions((options) => ({ ...options, extras: selectedValue }))
+        }
+        _selectedItem={{
+          bg: '',
+          endIcon: <CheckIcon size={4} />,
         }}
       >
-        Apply Filters
-      </Button>
+        <Select.Item label="" value="" />
+        <Select.Item label="Cheap" value="cheap" />
+        <Select.Item label="Very Healthy" value="veryHealthy" />
+        <Select.Item label="Very Popular" value="veryPopular" />
+        <Select.Item label="Sustainable" value="sustainable" />
+        <Select.Item label="Under 30 mins" value="readyInMinutes" />
+      </Select>
       <HStack space={6}>
         <Button
           onPress={() => {
