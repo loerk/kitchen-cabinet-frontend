@@ -22,7 +22,7 @@ import {
 } from '../../features/api/apiSlice';
 
 // custom components
-import SearchBar from '../SearchBar';
+import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 

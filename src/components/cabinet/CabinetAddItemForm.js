@@ -5,6 +5,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useAddItemMutation } from '../../features/api/apiSlice';
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 
+// environment variable
+import { CABINET_ID } from '@env';
+
 export const CabinetAddItemForm = () => {
   const [selectedIngredient, setSelectedIngredient] = useState({
     name: '',
@@ -13,7 +16,6 @@ export const CabinetAddItemForm = () => {
   });
   const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
 
-  const cabinetId = '631b2436b274cf976cc4bfe9';
   const onChangeDate = (_, selectedDate) => {
     const currentDate = selectedDate || selectedIngredient.expiryDate;
 
@@ -25,7 +27,7 @@ export const CabinetAddItemForm = () => {
   const saveItem = () => {
     if (selectedIngredient.name) {
       addItem({
-        cabinetId,
+        CABINET_ID,
         id: selectedIngredient.id,
         expiryDate: selectedIngredient.expiryDate,
       }).unwrap();
