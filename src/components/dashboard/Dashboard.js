@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { CABINET_ID } from '@env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Divider,
@@ -19,7 +20,7 @@ import {
   useGetCabinetItemsQuery,
   useGetRecipeByIngredientsQuery,
 } from '../../features/api/apiSlice';
-import { CABINET_ID } from '@env';
+
 // custom components
 import SearchBar from '../SearchBar';
 import Filters from '../filters/Filters';
@@ -114,15 +115,7 @@ const Dashboard = () => {
             name="options"
             size={28}
             color="black"
-            onPress={() => {
-              setFilterOptions({
-                diet: '',
-                intolerance: '',
-                type: '',
-                extras: '',
-              });
-              setShowFilters(!showFilters);
-            }}
+            onPress={() => setShowFilters(!showFilters)}
           />
         </HStack>
         {showFilters && (
