@@ -10,9 +10,6 @@ import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
 import { AuthContext } from '../../authNavigation/AuthProvider';
-// import firebase functions
-import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../../firebase';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -20,33 +17,6 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const { handleLogin } = useContext(AuthContext);
-
-  /*   const [user, setUser] = useState({}); */
-
-  /*   onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser);
-      setUser(currentUser);
-      console.log(user);
-      if (currentUser) {
-        console.log('user logged in:', user);
-      }
-    }); */
-
-  /*   const handleLogin = async () => {
-      try {
-        const user = await signInWithEmailAndPassword(auth, email, password);
-      } catch (error) {
-        alert(error.message);
-      }
-    }; */
-
-  // to be used when configuring signOut functionality in user profile // will need to import signOut from firebase/auth
-  // <button onPress={handleLogout}>
-  /*   const handleLogout = async () => {
-    await signOut(auth);:
-  }; */
-  // Logged in status
-  // <Text> Logged in as: <Text/> {user?.email}
 
   return (
     <>

@@ -11,11 +11,6 @@ import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
 import { AuthContext } from '../../authNavigation/AuthProvider';
-//import firebase functions
-// import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../firebase';
-// // import addCabinet
-// import useAddCabinetMutation from '../../features/api/apiSlice';
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -24,7 +19,6 @@ const RegisterScreen = () => {
   const [username, setUsername] = useState('');
 
   const { handleRegister } = useContext(AuthContext);
-  console.log(handleRegister);
 
   // Old Version
   /* const handleRegister = () => {
@@ -79,7 +73,9 @@ const RegisterScreen = () => {
               secureTextEntry
               onChangeText={(text) => setPassword(text)}
             />
-            <TouchableOpacity onPress={() => handleRegister(email, password)}>
+            <TouchableOpacity
+              onPress={() => handleRegister(email, password, username)}
+            >
               <View style={styles.button}>
                 <Text style={styles.buttonLabel}>{'Register'}</Text>
               </View>

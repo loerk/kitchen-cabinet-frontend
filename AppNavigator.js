@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
 
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
@@ -20,7 +19,6 @@ import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm'
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
-  console.log(user);
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
 
