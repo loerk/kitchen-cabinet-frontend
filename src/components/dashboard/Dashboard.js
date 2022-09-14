@@ -26,6 +26,9 @@ import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 
+// environment variable
+import { CABINET_ID } from '@env';
+
 const Dashboard = () => {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
