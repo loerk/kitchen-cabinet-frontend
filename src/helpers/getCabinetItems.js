@@ -1,6 +1,4 @@
-import React from 'react';
 import { useGetCabinetItemsQuery } from '../features/api/apiSlice';
-import { Text, Spinner, Image } from 'native-base';
 
 /**
  * @param {String} cabinetID
@@ -16,30 +14,7 @@ const getCabinetItems = (cabinetID) => {
     error,
   } = useGetCabinetItemsQuery(cabinetID);
 
-  if (isLoading) {
-    return <Spinner text="Loading..." />;
-  } else if (isSuccess) {
-    return items.map((item) => {
-      return {
-        item,
-        formatted: (
-          <Text key={item.id}>
-            {item.name}{' '}
-            <Image
-              key={item.id}
-              source={{
-                uri: `https://spoonacular.com/cdn/ingredients_500x500/${item.image}`,
-              }}
-              alt="ingredient image"
-              size="sm" // sizes: "xs", "sm", "md", "lg", "xl", "2xl"
-            />
-          </Text>
-        ),
-      };
-    });
-  } else if (isError) {
-    return <Text>{error.toString()}</Text>;
-  }
+  return { items, isLoading, isSuccess, isError, error };
 };
 
 export default getCabinetItems;

@@ -52,9 +52,7 @@ const Dashboard = () => {
       if (recipe.title.toLowerCase().includes(searchInput)) return true;
       return false;
     });
-    if (searchInput) {
-      setSearchedRecipes(filteredSuggestions);
-    }
+    if (searchInput) setSearchedRecipes(filteredSuggestions);
     if (!searchInput) setSearchedRecipes([]);
   }, [searchInput]);
 
@@ -165,23 +163,6 @@ const Dashboard = () => {
   );
 };
 
-// {searchInput ? (
-//   searchedRecipes?.map((searchedRecipe) => {
-//     return <RecipeCard key={searchedRecipe.id} item={searchedRecipe} />;
-//   })
-// ) : !searchInput && itemNames && !filteredRecipes.length ? (
-//   suggestedRecipes?.map((suggestedRecipe) => {
-//     return (
-//       <RecipeCard key={suggestedRecipe.id} item={suggestedRecipe} />
-//     );
-//   })
-// ) : filteredRecipes.length ? (
-//   filteredRecipes?.map((filteredRecipe) => {
-//     return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;
-//   })
-// ) : (
-//   <Text>Your cabinet is empty. Add an item.</Text>
-// )}
 const styles = StyleSheet.create({ container: { flex: 1 } });
 
 export default Dashboard;

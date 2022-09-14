@@ -65,7 +65,7 @@ export const apiSlice = createApi({
       invalidatesTags: ['Items'],
     }),
     deleteItem: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/cabinet/items/${id}`,
         method: 'DELETE',
       }),
