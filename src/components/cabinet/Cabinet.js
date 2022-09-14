@@ -9,13 +9,12 @@ import {
   Spinner,
   AlertDialog,
   Button,
-  Input,
-  Flex,
   VStack,
   Box,
 } from 'native-base';
-import { parseISO, formatDistanceToNow } from 'date-fns';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
+/* import { parseISO, formatDistanceToNow } from 'date-fns'; */
+
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -24,6 +23,7 @@ import { CABINET_ID } from '@env';
 
 // custom components
 import SearchBar from '../utils/SearchBar';
+import DateTimePicker from '../utils/DateTimePicker';
 
 import {
   useGetCabinetItemsQuery,
@@ -40,15 +40,17 @@ const Cabinet = () => {
   const [toBeEdited, setToBeEdited] = useState({
     id: '',
     name: '',
-    expiryDate: Date,
+    expiryDate: '',
   });
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
 
+  const [selectedDate, setSelectedDate] = useState('');
+
   /*   if(isSuccess){
-      cabinetItems.map(
+    cabinetItems.map(
       );
-  
+      
       const now = new Date()
       const expiryDate = new Date("2022-09-25T00:00:00.000Z")
       const milliNow = now.getTime()
@@ -92,16 +94,13 @@ const Cabinet = () => {
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
 
-  const onChangeDate = (_, selectedDate) => {
-    setToBeEdited((prevObj) => ({
-      ...prevObj,
-      expiryDate: selectedDate || toBeEdited.expiryDate,
-    }));
-  };
   const editItem = () => {
     /*  editCabinetItem({
        ...toBeEdited
      }).unwrap(); */
+
+    console.log(selectedDate);
+    console.log(toBeEdited);
     closeEditForm();
   };
 
@@ -122,13 +121,11 @@ const Cabinet = () => {
         <AlertDialog.Header>Edit Item</AlertDialog.Header>
         <AlertDialog.Body>
           Item Name: {toBeEdited.name}
-          Expiry Date:{' '}
+          Expiry Date:{toBeEdited.expiryDate}
           <DateTimePicker
-            style={{
-              width: 80,
-            }}
-            value={toBeEdited.expiryDate}
-            onChange={onChangeDate}
+            onSelectedChange={(date) =>
+              setToBeEdited((prevObj) => ({ ...prevObj, expiryDate: date }))
+            }
           />
         </AlertDialog.Body>
         <AlertDialog.Footer>

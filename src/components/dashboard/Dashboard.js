@@ -44,7 +44,7 @@ const Dashboard = () => {
 
   const { data: items } = useGetCabinetItemsQuery(CABINET_ID);
   const itemNames = items?.map((item) => item.name).join(',');
-  console.log(items);
+
   const { data: suggestedRecipes, isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
 
