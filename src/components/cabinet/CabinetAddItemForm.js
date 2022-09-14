@@ -10,17 +10,18 @@ import { CABINET_ID } from '@env';
 // custom components
 import DateTimePicker from '../utils/DateTimePicker';
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
-
 export const CabinetAddItemForm = () => {
   const [selectedIngredient, setSelectedIngredient] = useState({
     name: '',
     id: '',
-    expiryDate: new Date(),
+    expiryDate: '',
   });
   const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
+  selectedIngredient && console.log(selectedIngredient);
 
-  const onChangeDate = (_, selectedDate) => {
-    const currentDate = selectedDate || selectedIngredient.expiryDate;
+  const onChangeDate = (date) => {
+    setSelectedIngredient((prevObj) => ({ ...prevObj, expiryDate: date }));
+    const currentDate = date || selectedIngredient.expiryDate;
 
     setSelectedIngredient({
       ...selectedIngredient,
@@ -52,16 +53,16 @@ export const CabinetAddItemForm = () => {
             Pick an expiry Date
           </Text>
           <DateTimePicker
-            style={{
+            /*      style={{
               width: 80,
-            }}
-            value={selectedIngredient.expiryDate}
-            onChange={onChangeDate}
+            }} */
+            /* value={selectedIngredient.expiryDate}
+            onChange={onChangeDate} */
+            onSelectedChange={(date) => onChangeDate(date)}
           />
           {isLoading ? (
             <Button
               isLoading
-              bg={'pink.400'}
               cursor="pointer"
               mb="33"
               mt="60"
@@ -72,7 +73,6 @@ export const CabinetAddItemForm = () => {
             </Button>
           ) : (
             <Button
-              bg={'pink.400'}
               cursor="pointer"
               mb="33"
               mt="60"
