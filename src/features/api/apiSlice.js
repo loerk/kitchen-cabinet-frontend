@@ -18,8 +18,8 @@ export const apiSlice = createApi({
       query: (id) => `/cabinet/items/${id}`,
     }),
     getFilteredRecipes: builder.query({
-      query: ({ type, diet, intolerances }) =>
-        `/recipes/filter?type=${type}&intolerances=d${intolerances}&diet=${diet}`,
+      query: ({ type, diet, intolerance, extras, recipeIds }) =>
+        `/recipes/filter?type=${type}&intolerance=${intolerance}&extras=${extras}&diet=${diet}&ids=${recipeIds}`,
     }),
     getRecipeById: builder.query({
       query: (id) => `/recipes/id/${id}`,
