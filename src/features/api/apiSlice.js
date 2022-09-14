@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-const BASE_URL = 'http://192.168.178.26:8002';
+import { BASE_URL } from '@env';
 
 // Defines the single API slice object
 export const apiSlice = createApi({
@@ -19,8 +18,8 @@ export const apiSlice = createApi({
       query: (id) => `/cabinet/items/${id}`,
     }),
     getFilteredRecipes: builder.query({
-      query: ({ type, diet, intolerances, recipeIds }) =>
-        `/recipes/filter?type=${type}&intolerances=${intolerances}&diet=${diet}&ids=${recipeIds}`,
+      query: ({ type, diet, intolerance, extras, recipeIds }) =>
+        `/recipes/filter?type=${type}&intolerance=${intolerance}&extras=${extras}&diet=${diet}&ids=${recipeIds}`,
     }),
     getRecipeById: builder.query({
       query: (id) => `/recipes/id/${id}`,
