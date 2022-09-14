@@ -1,12 +1,15 @@
 import { View, Text, Center, Button } from 'native-base';
 
 import React, { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useAddItemMutation } from '../../features/api/apiSlice';
-import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
+/* import DateTimePicker from '@react-native-community/datetimepicker';
+ */ import { useAddItemMutation } from '../../features/api/apiSlice';
 
 // environment variable
 import { CABINET_ID } from '@env';
+
+// custom components
+import DateTimePicker from '../utils/DateTimePicker';
+import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 
 export const CabinetAddItemForm = () => {
   const [selectedIngredient, setSelectedIngredient] = useState({

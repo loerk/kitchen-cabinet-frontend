@@ -13,8 +13,6 @@ import {
   Box,
 } from 'native-base';
 
-/* import { parseISO, formatDistanceToNow } from 'date-fns'; */
-
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
