@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// environment variable
-import { BASE_URL } from '@env';
+
+
+const BASE_URL = 'http://192.168.1.241:8002';
+
 
 // Defines the single API slice object
 export const apiSlice = createApi({
@@ -37,10 +39,10 @@ export const apiSlice = createApi({
       query: (id) => `/recipes/instructions/${id}`,
     }),
     addCabinet: builder.mutation({
-      query: (name) => ({
+      query: ({ name, uid }) => ({
         url: '/cabinet',
         method: 'POST',
-        body: { name },
+        body: { name, uid },
       }),
     }),
     addItem: builder.mutation({

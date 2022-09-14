@@ -67,7 +67,7 @@ export default customTheme = extendTheme({
       },
       defaultProps: {
         size: 'xl',
-        fontFamily: 'Arial',
+        /* fontFamily: 'Arial', */
       },
     },
     Text: {

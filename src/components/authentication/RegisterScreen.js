@@ -7,14 +7,10 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
-//import firebase functions
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../firebase';
-// import addCabinet
-import useAddCabinetMutation from '../../features/api/apiSlice';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -22,7 +18,10 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
 
-  const handleRegister = () => {
+  const { handleRegister } = useContext(AuthContext);
+
+  // Old Version
+  /* const handleRegister = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -40,7 +39,7 @@ const RegisterScreen = () => {
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
       });
-  };
+  }; */
   return (
     <>
       <SafeAreaView style={styles.loginContainer}>
@@ -74,7 +73,9 @@ const RegisterScreen = () => {
               secureTextEntry
               onChangeText={(text) => setPassword(text)}
             />
-            <TouchableOpacity onPress={() => handleRegister()}>
+            <TouchableOpacity
+              onPress={() => handleRegister(email, password, username)}
+            >
               <View style={styles.button}>
                 <Text style={styles.buttonLabel}>{'Register'}</Text>
               </View>
@@ -93,41 +94,5 @@ const RegisterScreen = () => {
     </>
   );
 };
-
-{
-  /* <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View styles={styles.inputContainer}>
-        <TextInput
-          placeholder="Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={handleRegister}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView> */
-}
-
-/* '../../../assets/images/placeholder-logo.png' */
 
 export default RegisterScreen;

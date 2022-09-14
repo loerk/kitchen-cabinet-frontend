@@ -9,6 +9,7 @@ import customTheme from './src/theme';
 
 // stack navigator
 import AppNavigator from './AppNavigator';
+import { AuthProvider } from './src/authNavigation/AuthProvider';
 
 // redux
 import { Provider } from 'react-redux';
@@ -17,13 +18,15 @@ import store from './src/app/store';
 export default function App() {
   return (
     <Provider store={store}>
-      <NativeBaseProvider theme={customTheme}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <AppNavigator />
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </NativeBaseProvider>
+      <AuthProvider>
+        <NativeBaseProvider theme={customTheme}>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <AppNavigator />
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </NativeBaseProvider>
+      </AuthProvider>
     </Provider>
   );
 }
