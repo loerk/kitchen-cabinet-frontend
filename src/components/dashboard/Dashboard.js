@@ -21,9 +21,12 @@ import {
 } from '../../features/api/apiSlice';
 
 // custom components
-import SearchBar from '../SearchBar';
+import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
+
+// environment variable
+import { CABINET_ID } from '@env';
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
@@ -39,7 +42,7 @@ const Dashboard = () => {
   const [moreFilteredRecipes, setMoreFilteredRecipes] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
 
-  const { data: items } = useGetCabinetItemsQuery('6315f1e0801fa7692c1bb736');
+  const { data: items } = useGetCabinetItemsQuery(CABINET_ID);
   const itemNames = items?.map((item) => item.name).join(',');
   console.log(items);
   const { data: suggestedRecipes, isLoadingRecipes } =

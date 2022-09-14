@@ -8,20 +8,22 @@ import {
   Text,
   Spinner,
   AlertDialog,
-  FormControl,
   Button,
   Input,
-  Label,
   Flex,
   VStack,
   Box,
 } from 'native-base';
+import { parseISO, formatDistanceToNow } from 'date-fns';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
+// environment variable
+import { CABINET_ID } from '@env';
+
 // custom components
-import SearchBar from '../SearchBar';
+import SearchBar from '../utils/SearchBar';
 
 import {
   useGetCabinetItemsQuery,
@@ -38,10 +40,20 @@ const Cabinet = () => {
   const [toBeEdited, setToBeEdited] = useState({
     id: '',
     name: '',
-    /* expiryDate:  Date */
+    expiryDate: Date,
   });
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
+
+  /*   if(isSuccess){
+      cabinetItems.map(
+      );
+  
+      const now = new Date()
+      const expiryDate = new Date("2022-09-25T00:00:00.000Z")
+      const milliNow = now.getTime()
+      const milliEx = expiryDate.getTime()
+    } */
 
   const {
     data: cabinetItems,
@@ -49,9 +61,8 @@ const Cabinet = () => {
     isSuccess,
     isError,
     error,
-  } = useGetCabinetItemsQuery('6315f1e0801fa7692c1bb736'); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
+  } = useGetCabinetItemsQuery(CABINET_ID); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
 
-  isSuccess && console.log(cabinetItems);
   const [
     editCabinetItem,
     {
@@ -80,12 +91,18 @@ const Cabinet = () => {
 
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
+
+  const onChangeDate = (_, selectedDate) => {
+    setToBeEdited((prevObj) => ({
+      ...prevObj,
+      expiryDate: selectedDate || toBeEdited.expiryDate,
+    }));
+  };
   const editItem = () => {
     /*  editCabinetItem({
        ...toBeEdited
      }).unwrap(); */
     closeEditForm();
-    console.log(toBeEdited);
   };
 
   const deleteItem = () => {
@@ -98,23 +115,21 @@ const Cabinet = () => {
       leastDestructiveRef={cancelRefEdit}
       isOpen={isOpenEditForm}
       onClose={closeEditForm}
+      key={toBeEdited.id}
     >
       <AlertDialog.Content>
         <AlertDialog.CloseButton />
         <AlertDialog.Header>Edit Item</AlertDialog.Header>
         <AlertDialog.Body>
-          <FormControl>
-            <FormControl.Label>Item Name</FormControl.Label>
-            {toBeEdited.name}
-            <FormControl.Label>Expiry Date</FormControl.Label>
-            {/* <DateTimePicker
-              style={{
-                width: 80,
-              }}
-              value={toBeEdited.expiryDate}
-              onChange={(_, selectedDate) => setToBeEdited({ ...toBeEdited, expiryDate: selectedDate })}
-            /> */}
-          </FormControl>
+          Item Name: {toBeEdited.name}
+          Expiry Date:{' '}
+          <DateTimePicker
+            style={{
+              width: 80,
+            }}
+            value={toBeEdited.expiryDate}
+            onChange={onChangeDate}
+          />
         </AlertDialog.Body>
         <AlertDialog.Footer>
           <Button.Group space={2}>
@@ -132,37 +147,42 @@ const Cabinet = () => {
     </AlertDialog>
   );
 
+  const ConfirmDelete = () => (
+    <AlertDialog
+      leastDestructiveRef={cancelRefDelete}
+      isOpen={isOpenDeleteAlert}
+      onClose={closeDeleteAlert}
+      key={toBeDeleted.id}
+    >
+      <AlertDialog.Content>
+        <AlertDialog.CloseButton />
+        <AlertDialog.Header>Confirm Delete</AlertDialog.Header>
+        <AlertDialog.Body>
+          {`Are you sure you want to delete ${toBeDeleted.name} ?`}
+        </AlertDialog.Body>
+        <AlertDialog.Footer>
+          <Button.Group space={2}>
+            <Button
+              variant="unstyled"
+              colorScheme="coolGray"
+              onPress={closeDeleteAlert}
+              ref={cancelRefDelete}
+            >
+              Cancel
+            </Button>
+            <Button colorScheme="danger" onPress={deleteItem}>
+              Delete
+            </Button>
+          </Button.Group>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
+  );
+
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <EditForm />
-      <AlertDialog
-        leastDestructiveRef={cancelRefDelete}
-        isOpen={isOpenDeleteAlert}
-        onClose={closeDeleteAlert}
-      >
-        <AlertDialog.Content>
-          <AlertDialog.CloseButton />
-          <AlertDialog.Header>Confirm Delete</AlertDialog.Header>
-          <AlertDialog.Body>
-            {`Are you sure you want to delete ${toBeDeleted.name} ?`}
-          </AlertDialog.Body>
-          <AlertDialog.Footer>
-            <Button.Group space={2}>
-              <Button
-                variant="unstyled"
-                colorScheme="coolGray"
-                onPress={closeDeleteAlert}
-                ref={cancelRefDelete}
-              >
-                Cancel
-              </Button>
-              <Button colorScheme="danger" onPress={deleteItem}>
-                Delete
-              </Button>
-            </Button.Group>
-          </AlertDialog.Footer>
-        </AlertDialog.Content>
-      </AlertDialog>
+      <ConfirmDelete />
 
       <Center>
         <HStack alignItems="center">
@@ -232,6 +252,7 @@ const Cabinet = () => {
                   <HStack space="1">
                     <Image source={{ uri: `${image}` }} alt={name} size="sm" />
                     <Text
+                      style={{ color: 'red' }}
                       alignSelf="stretch"
                       isTruncated
                       maxW="200"

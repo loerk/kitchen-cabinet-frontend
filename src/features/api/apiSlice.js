@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const BASE_URL = 'http://192.168.178.123:8002';
+// environment variable
+import { BASE_URL } from '@env';
 
 // Defines the single API slice object
 export const apiSlice = createApi({
