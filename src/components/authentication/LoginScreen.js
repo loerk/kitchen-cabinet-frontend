@@ -6,37 +6,17 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
-// import firebase functions
-import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../../firebase';
-
-// import Authentication Screens
-// import RegisterScreen from './RegisterScreen';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  // to be used when configuring signOut functionality in user profile // will need to import signOut from firebase/auth
-  // <button onPress={handleLogout}>
-  /*   const handleLogout = async () => {
-    await signOut(auth);:
-  }; */
-  // Logged in status
-  // <Text> Logged in as: <Text/> {user?.email}
+  const { handleLogin } = useContext(AuthContext);
 
   return (
     <>
@@ -65,7 +45,7 @@ const LoginScreen = () => {
               secureTextEntry
               onChangeText={(text) => setPassword(text)}
             />
-            <TouchableOpacity onPress={() => handleLogin()}>
+            <TouchableOpacity onPress={() => handleLogin(email, password)}>
               <View style={styles.button}>
                 <Text style={styles.buttonLabel}>{'Sign in'}</Text>
               </View>
@@ -84,36 +64,5 @@ const LoginScreen = () => {
     </>
   );
 };
-
-{
-  /* <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View styles={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}
-          style={[styles.button]}
-        >
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView> */
-}
 
 export default LoginScreen;

@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { HStack, Switch, useColorMode, Text } from 'native-base';
+import { HStack, Switch, useColorMode, Text, View } from 'native-base';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Profile = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -31,6 +32,11 @@ const Profile = () => {
         value={isDarkMode}
         onValueChange={toggleSwitch}
       />
+      <TouchableOpacity onPress={() => handleLogOut()}>
+        <View style={styles.button}>
+          <Text style={styles.buttonLabel}>{'Logout'}</Text>
+        </View>
+      </TouchableOpacity>
     </HStack>
   );
 };
