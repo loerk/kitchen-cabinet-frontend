@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, VStack, CheckIcon, Button } from 'native-base';
+import { Select, VStack, CheckIcon, Button, HStack } from 'native-base';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
@@ -103,19 +103,22 @@ const Filter = ({
         <Select.Item label="snack" value="snack" />
         <Select.Item label="drink" value="drink" />
       </Select>
-      <Button
-        onPress={() => {
-          setIsPressed(true);
-          setShowFilters(false);
-          isSuccess
-            ? setMoreFilteredRecipes(recipes)
-            : console.log(
-                error /* 'Something went wrong with getting recipes based on applied filters' */
-              );
-        }}
-      >
-        Apply Filters
-      </Button>
+      <HStack space={2}>
+        <Button
+          onPress={() => {
+            setIsPressed(true);
+            setShowFilters(false);
+            isSuccess
+              ? setMoreFilteredRecipes(recipes)
+              : console.log(
+                  error /* 'Something went wrong with getting recipes based on applied filters' */
+                );
+          }}
+        >
+          Apply Filters
+        </Button>
+        <Button>Reset</Button>
+      </HStack>
     </VStack>
   );
 };
