@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
     width: 150,
     resizeMode: 'contain',
     borderRadius: 5,
+    width: '100%',
+    maxWidth: 280,
   },
   loginHeaderText: {
     marginTop: 15,

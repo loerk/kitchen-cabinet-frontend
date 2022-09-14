@@ -249,7 +249,7 @@ const Cabinet = () => {
                   <HStack space="1">
                     <Image source={{ uri: `${image}` }} alt={name} size="sm" />
                     <Text
-                      style={{ color: 'red' }}
+                      style={{ color: 'orange' }}
                       alignSelf="stretch"
                       isTruncated
                       maxW="200"

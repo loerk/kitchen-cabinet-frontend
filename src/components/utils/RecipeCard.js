@@ -7,7 +7,7 @@ export const RecipeCard = ({ item }) => {
     console.log('pressed');
   };
   return (
-    <Pressable onPress={handlePress} border="1" borderRadius="md" mx={6}>
+    <Pressable onPress={handlePress} border="1" /* borderRadius="md" */ mx={6}>
       <Divider
         my="2"
         _light={{
