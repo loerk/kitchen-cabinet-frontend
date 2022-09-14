@@ -31,6 +31,12 @@ const Dashboard = () => {
   const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
+    diet: '',
+    intolerances: '',
+    type: '',
+  });
+  const [moreFilteredRecipes, setMoreFilteredRecipes] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const [recipeIds, setRecipeIds] = useState([]);
   const [moreFilteredRecipes, setMoreFilteredRecipes] = useState([]);

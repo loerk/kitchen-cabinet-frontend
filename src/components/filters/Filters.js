@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Select, VStack, CheckIcon, Button, HStack } from 'native-base';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
@@ -13,10 +14,12 @@ const Filter = ({
   const [isPressed, setIsPressed] = useState(false);
 
   const { diet, intolerance, type, extras } = filterOptions;
+
   const {
     data: recipes,
     isSuccess,
     error,
+
   } = useGetFilteredRecipesQuery(
     isPressed
       ? { type, diet, intolerance, extras, recipeIds: recipeIds.join() }
@@ -31,6 +34,7 @@ const Filter = ({
   if (error) {
     console.log(error);
   }
+
 
   return (
     <VStack alignItems="center" space={4}>
@@ -109,7 +113,6 @@ const Filter = ({
         <Select.Item label="snack" value="snack" />
         <Select.Item label="drink" value="drink" />
       </Select>
-
       <Select
         selectedValue={extras}
         minWidth={200}
@@ -120,7 +123,7 @@ const Filter = ({
         }
         _selectedItem={{
           bg: '',
-          endIcon: <CheckIcon size={4} />,
+          endIcon: <CheckIcon size={4} />
         }}
       >
         <Select.Item label="" value="" />
