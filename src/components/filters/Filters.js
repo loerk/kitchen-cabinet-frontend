@@ -123,6 +123,27 @@ const Filter = ({
       >
         Apply Filters
       </Button>
+      <HStack space={6}>
+        <Button
+          onPress={() => {
+            setFilterOptions(() => ({
+              diet: '',
+              intolerance: '',
+              type: '',
+              extras: '',
+            }));
+          }}
+        >
+          Reset
+        </Button>
+        <Button
+          onPress={() => {
+            setIsPressed(true);
+          }}
+        >
+          Apply
+        </Button>
+      </HStack>
     </VStack>
   );
 };
