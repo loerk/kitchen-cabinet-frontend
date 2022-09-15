@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from '@env';
 
 import React, { memo, useCallback, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
@@ -9,7 +10,6 @@ Feather.loadFont();
 
 export const CabinetSelectItemAutocomplete = memo(
   ({ setSelectedIngredient, selectedIngredient }) => {
-    const BASE_URL = 'http://192.168.178.26:8002';
     const [loading, setLoading] = useState(false);
     const [suggestionsList, setSuggestionsList] = useState(null);
     const getSuggestions = useCallback(async (q) => {

@@ -1,4 +1,11 @@
-import { View, Text, Center, Button } from 'native-base';
+import {
+  View,
+  Text,
+  Center,
+  Button,
+  ScrollView,
+  useColorMode,
+} from 'native-base';
 
 import React, { useState } from 'react';
 /* import DateTimePicker from '@react-native-community/datetimepicker';
@@ -10,7 +17,9 @@ import { CABINET_ID } from '@env';
 // custom components
 import DateTimePicker from '../utils/DateTimePicker';
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
+
 export const CabinetAddItemForm = () => {
+  const { colorMode } = useColorMode();
   const [selectedIngredient, setSelectedIngredient] = useState({
     name: '',
     id: '',
@@ -40,7 +49,7 @@ export const CabinetAddItemForm = () => {
 
   return (
     <Center>
-      <View>
+      <ScrollView>
         <Text size="md" py={4} bold>
           Please select an Item
         </Text>
@@ -78,12 +87,13 @@ export const CabinetAddItemForm = () => {
               mt="60"
               onPress={saveItem}
               disabled={!selectedIngredient.name}
+              bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
             >
               Add Item
             </Button>
           )}
         </View>
-      </View>
+      </ScrollView>
       {isSuccess ? (
         <Text>
           You successfully added {selectedIngredient.name} to your cabinet!

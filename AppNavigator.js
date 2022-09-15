@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
+import { useColorMode } from 'native-base';
+import { useLinkTo } from '@react-navigation/native';
 
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
@@ -8,6 +11,7 @@ import ShoppingList from './src/components/ShoppingList';
 import Cabinet from './src/components/cabinet/Cabinet';
 import Diagrams from './src/components/Diagrams';
 import Loading from './src/components/Loading';
+import Profile from './src/components/Profile';
 // auth components
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -17,10 +21,13 @@ import { AuthContext } from './src/authNavigation/AuthProvider';
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
 
 const Tab = createBottomTabNavigator();
+
 const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
+  const colorMode = useColorMode();
+  const linkTo = useLinkTo();
 
   // Handle user state changes
   function AuthStateChanged(user) {
@@ -59,18 +66,40 @@ const AppNavigator = () => {
                 <MaterialIcons
                   name={iconName}
                   size={24}
-                  color={focused ? 'black' : 'gray'}
+                  color={focused ? '#891D47' : 'gray'}
                 />
               );
             },
-            tabBarActiveTintColor: 'black',
+            tabBarActiveTintColor: '#891D47',
             tabBarInactiveTintColor: 'gray',
             tabBarStyle: { height: '10%' },
             tabBarItemStyle: { padding: 5 },
+
+            headerStyle: {
+              backgroundColor: '#FCF5EA',
+            },
+            headerTintColor: '#891D47',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
           })}
         >
           <Tab.Screen name="Home" component={Dashboard} />
-          <Tab.Screen name="Cabinet" component={Cabinet} />
+          <Tab.Screen
+            name="Cabinet"
+            component={Cabinet}
+            options={{
+              headerRight: () => (
+                <EvilIcons
+                  name="user"
+                  size={34}
+                  color={
+                    colorMode === 'light' ? 'secondary.100' : 'primary.100'
+                  }
+                />
+              ),
+            }}
+          />
           <Tab.Screen name="Add" component={CabinetAddItemForm} />
           <Tab.Screen name="Shopping List" component={ShoppingList} />
           <Tab.Screen name="Diagrams" component={Diagrams} />
