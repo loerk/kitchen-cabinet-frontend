@@ -21,9 +21,10 @@ const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
           placeholder={placeholder}
           onChangeText={onChangeText}
           defaultValue={defaultValue}
+          autoCapitalize="none"
           variant="filled"
           width="100%"
-          borderRadius="10"
+          /*        borderRadius="10" */
           py="2"
           px="2"
           InputLeftElement={

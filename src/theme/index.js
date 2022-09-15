@@ -16,26 +16,19 @@ export default customTheme = extendTheme({
         mono: "OmedBrush"
     }, */
   colors: {
-    black: {
-      100: '#C4C4C4',
-      200: '#7C7C7C',
-      300: '#292929',
-      800: '#181725',
-    },
-    green: {
-      300: '#53B175',
-    },
     primary: {
-      50: '#E3F2F9',
-      100: '#C5E4F3',
-      200: '#A2D4EC',
+      100: '#FCF5EA',
+      /*       200: '#A2D4EC',
       300: '#7AC1E4',
       400: '#47A9DA',
       500: '#0088CC',
       600: '#007AB8',
       700: '#006BA1',
       800: '#005885',
-      900: '#003F5E',
+      900: '#003F5E', */
+    },
+    secondary: {
+      100: '#891D47',
     },
     // Redefining only one shade, rest of the color will remain same.
     amber: {
@@ -67,7 +60,8 @@ export default customTheme = extendTheme({
       },
       defaultProps: {
         size: 'xl',
-        fontFamily: 'Arial',
+        paddingLeft: 5,
+        /* fontFamily: 'Arial', */
       },
     },
     Text: {
@@ -78,6 +72,7 @@ export default customTheme = extendTheme({
       },
       defaultProps: {
         size: 'md',
+        /* paddingLeft: 5, */
         /* fontFamily: 'Times New Roman', */
       },
       sizes: {
