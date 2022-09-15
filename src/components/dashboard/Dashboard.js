@@ -102,7 +102,7 @@ const Dashboard = () => {
       <StatusBar
         barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
       />
-      <Text>Welcome</Text>
+      <Text style={{ paddingLeft: 18 }}>Welcome</Text>
       <Heading>{user.username && `${user.username}`}</Heading>
       <Divider />
       <Center>
