@@ -177,7 +177,7 @@ const Cabinet = () => {
   );
 
   return (
-    <ScrollView style={{ backgroundColor: 'white' }}>
+    <ScrollView bg={'white'}>
       <EditForm />
       <ConfirmDelete />
 
@@ -190,34 +190,53 @@ const Cabinet = () => {
           />
         </HStack>
 
-        <View>
+        <View w={'75%'}>
           {isSuccess && cabinetItems.length === 0 && (
             <Text>Your cabinet is empty. Add an item.</Text>
           )}
           {filteredItems ? (
             filteredItems.map(({ _id: id, name, image }) => (
-              <HStack space={3} alignItems="center" key={id}>
-                <Image source={{ uri: `${image}` }} alt={name} size="sm" />
-                <Text key={id}>{name}</Text>
-
-                <FontAwesome5
-                  name="edit"
-                  size={14}
-                  color="black"
-                  onPress={() => {
-                    setToBeEdited({ id, name });
-                    setIsOpenEditForm(!isOpenEditForm);
-                  }}
-                />
-                <AntDesign
-                  name="delete"
-                  size={16}
-                  color="black"
-                  onPress={() => {
-                    setToBeDeleted({ id, name });
-                    setIsOpenDeleteAlert(!isOpenDeleteAlert);
-                  }}
-                />
+              <HStack
+                flex={1}
+                justifyContent={'space-between'}
+                space={3}
+                mb={4}
+                alignItems="center"
+                key={id}
+              >
+                <Box flex={1} flexDir={'row'} alignItems={'center'}>
+                  <Image
+                    source={{ uri: `${image}` }}
+                    // borderRadius={'100'}
+                    alt={name}
+                    size="sm"
+                  />
+                  <Text ml={6} key={id}>
+                    {name.charAt(0).toUpperCase() + name.slice(1)}
+                  </Text>
+                </Box>
+                <Box>
+                  <HStack space={4}>
+                    <FontAwesome5
+                      name="edit"
+                      size={20}
+                      color="black"
+                      onPress={() => {
+                        setToBeEdited({ id, name });
+                        setIsOpenEditForm(!isOpenEditForm);
+                      }}
+                    />
+                    <AntDesign
+                      name="delete"
+                      size={23}
+                      color="black"
+                      onPress={() => {
+                        setToBeDeleted({ id, name });
+                        setIsOpenDeleteAlert(!isOpenDeleteAlert);
+                      }}
+                    />
+                  </HStack>
+                </Box>
               </HStack>
             ))
           ) : isSuccess ? (
