@@ -26,19 +26,9 @@ export const CabinetAddItemForm = () => {
     expiryDate: '',
   });
   const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
-  selectedIngredient && console.log(selectedIngredient);
-
-  const onChangeDate = (date) => {
-    setSelectedIngredient((prevObj) => ({ ...prevObj, expiryDate: date }));
-    const currentDate = date || selectedIngredient.expiryDate;
-
-    setSelectedIngredient({
-      ...selectedIngredient,
-      expiryDate: currentDate,
-    });
-  };
   const saveItem = () => {
     if (selectedIngredient.name) {
+      console.log(selectedIngredient.name);
       addItem({
         CABINET_ID,
         id: selectedIngredient.id,
@@ -48,7 +38,7 @@ export const CabinetAddItemForm = () => {
   };
 
   return (
-    <Center>
+    <>
       <ScrollView>
         <Text size="md" py={4} bold>
           Please select an Item
@@ -62,12 +52,17 @@ export const CabinetAddItemForm = () => {
             Pick an expiry Date
           </Text>
           <DateTimePicker
-            /*      style={{
+            /* style={{
               width: 80,
             }} */
             /* value={selectedIngredient.expiryDate}
             onChange={onChangeDate} */
-            onSelectedChange={(date) => onChangeDate(date)}
+            onSelectedChange={(date) =>
+              setSelectedIngredient((prevObj) => ({
+                ...prevObj,
+                expiryDate: date,
+              }))
+            }
           />
           {isLoading ? (
             <Button
@@ -104,6 +99,6 @@ export const CabinetAddItemForm = () => {
           Oops please check you cabinet, we are not sure if this worked
         </Text>
       ) : null}
-    </Center>
+    </>
   );
 };

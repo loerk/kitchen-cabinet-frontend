@@ -93,9 +93,7 @@ const Cabinet = () => {
   const cancelRefEdit = useRef(null);
 
   const editItem = () => {
-    /*  editCabinetItem({
-       ...toBeEdited
-     }).unwrap(); */
+    editCabinetItem(toBeEdited).unwrap();
 
     console.log(selectedDate);
     console.log(toBeEdited);
