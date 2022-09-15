@@ -26,9 +26,6 @@ import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 
-// environment variable
-import { CABINET_ID } from '@env';
-
 const Dashboard = () => {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
@@ -50,6 +47,7 @@ const Dashboard = () => {
 
   const { data: suggestedRecipes, isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
+
   // useEffect for filtering By title
   useEffect(() => {
     const filteredSuggestions = suggestedRecipes?.filter((recipe) => {
