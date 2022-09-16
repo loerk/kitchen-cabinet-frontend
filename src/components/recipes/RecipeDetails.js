@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Divider,
   HStack,
   Image,
@@ -12,7 +11,7 @@ import {
 } from 'native-base';
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
-import RenderHtml from 'react-native-render-html';
+// import RenderHtml from 'react-native-render-html';
 import { useGetRecipeByIdQuery } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { IngredientsList } from './IngredientsList';

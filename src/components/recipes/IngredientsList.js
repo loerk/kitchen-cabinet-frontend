@@ -8,8 +8,6 @@ export const IngredientsList = ({
   usedIngredientsNames,
   ingredients,
 }) => {
-  console.log({ missingIngredientsNames });
-  console.log({ usedIngredientsNames });
   if (!ingredients) return;
   return (
     <>

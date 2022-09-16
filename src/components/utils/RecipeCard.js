@@ -2,15 +2,12 @@ import {
   Actionsheet,
   AspectRatio,
   Box,
-  Center,
-  Divider,
   Heading,
   HStack,
   Image,
   Stack,
   Text,
   useDisclose,
-  VStack,
 } from 'native-base';
 import React from 'react';
 import { Pressable } from 'react-native';
@@ -19,7 +16,6 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
 //divider={<Divider />}
 export const RecipeCard = ({ item }) => {
-  console.log(item);
   const missingIngredientsNames = item.missedIngredients?.map(
     (ingredient) => ingredient.name
   );
