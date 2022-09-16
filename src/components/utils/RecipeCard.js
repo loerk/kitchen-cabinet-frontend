@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import { Pressable } from 'react-native';
 import { RecipeDetails } from '../recipes/RecipeDetails';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 //divider={<Divider />}
 export const RecipeCard = ({ item }) => {
@@ -72,8 +72,8 @@ export const RecipeCard = ({ item }) => {
               py="1.5"
               alignItems={'flex-end'}
             >
-              <AntDesign name="like2" size={22} color="white" />
-              <Text pl={4} bold size={'md'} color={'white'}>
+              <Entypo name="heart" size={22} color="white" />
+              <Text pl={1} bold size={'md'} color={'white'}>
                 {item.likes}
               </Text>
             </HStack>
@@ -94,14 +94,14 @@ export const RecipeCard = ({ item }) => {
                 mt="-1"
               ></Text>
             </Stack>
-            <HStack space={4} justifyContent="space-around">
+            <HStack justifyContent="space-around">
               <HStack>
                 <MaterialCommunityIcons
                   name="checkbox-marked-circle-outline"
                   size={24}
                   color="black"
                 />
-                <Text>{item.usedIngredientCount}</Text>
+                <Text pl={2}>{item.usedIngredientCount}</Text>
               </HStack>
               <HStack>
                 <MaterialCommunityIcons
@@ -109,7 +109,7 @@ export const RecipeCard = ({ item }) => {
                   size={24}
                   color="black"
                 />
-                <Text>{item.missedIngredientCount}</Text>
+                <Text pl={2}>{item.missedIngredientCount}</Text>
               </HStack>
             </HStack>
           </Stack>

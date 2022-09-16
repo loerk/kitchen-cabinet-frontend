@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Divider,
   HStack,
   Image,
@@ -9,13 +10,17 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 // import RenderHtml from 'react-native-render-html';
-import { useGetRecipeByIdQuery } from '../../features/api/apiSlice';
+import {
+  useAddFavouriteRecipeMutation,
+  useGetRecipeByIdQuery,
+} from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { IngredientsList } from './IngredientsList';
 import { OpenURLButton } from '../utils/ExternalLinking';
+import { CABINET_ID } from '@env';
 
 export const RecipeDetails = ({
   missingIngredientsNames,
@@ -27,6 +32,13 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
+  const [addFavouriteRecipe, { isSuccess, isLoading: isSaving }] =
+    useAddFavouriteRecipeMutation();
+
+  const saveFavourite = (id) => {
+    addFavouriteRecipe({ CABINET_ID, recipeId: id }).unwrap();
+  };
+
   const steps = recipeDetails?.analyzedInstructions[0]?.steps;
 
   // const { title, summary, image, instructions, steps } = recipeDetails;
@@ -186,12 +198,21 @@ export const RecipeDetails = ({
                       </OpenURLButton>
                     </View>
                   )}
+                  <Button
+                    mb={4}
+                    onPress={() => saveFavourite(recipeDetails.id)}
+                  >
+                    Add to favourites
+                  </Button>
+                  {isSaving && <Spinner text="Loading..." />}
+                  {isSuccess && (
+                    <Text>This recipe is now one of your favourites</Text>
+                  )}
                 </Box>
               </View>
             </VStack>
           </Box>
         </ScrollView>
-        {/* </Center> */}
       </View>
     )
   );

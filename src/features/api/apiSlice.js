@@ -49,6 +49,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Items'],
     }),
+    addFavouriteRecipe: builder.mutation({
+      query: ({ CABINET_ID, recipeId }) => ({
+        url: `/cabinet/favourite/${CABINET_ID}`,
+        method: 'PUT',
+        body: { recipeId },
+      }),
+    }),
     editCabinet: builder.mutation({
       query: ({ id, ...rest }) => ({
         url: `/cabinet/${id}`,
@@ -91,6 +98,7 @@ export const {
   useRecipeInstructionsQuery,
   useAddCabinetMutation,
   useAddItemMutation,
+  useAddFavouriteRecipeMutation,
   useEditCabinetMutation,
   useEditItemMutation,
   useDeleteItemMutation,
