@@ -132,7 +132,7 @@ const Dashboard = () => {
           Suggested Recipes:
         </Text>
       </Center>
-      <ScrollView>
+      <ScrollView horizontal={true} mt={4}>
         {moreFilteredRecipes?.length && !searchInput ? (
           filteredRecipes?.map((filteredRecipe) => {
             return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;
