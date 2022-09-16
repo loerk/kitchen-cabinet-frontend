@@ -134,8 +134,8 @@ const Dashboard = () => {
           {moreFilteredRecipes?.length
             ? moreFilteredRecipes.length
             : searchInput
-            ? searchedRecipes.length
-            : suggestedRecipes.length}
+            ? searchedRecipes?.length
+            : suggestedRecipes?.length}
         </Text>
       </Center>
       <ScrollView horizontal={true} mt={4}>
