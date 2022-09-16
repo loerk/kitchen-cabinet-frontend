@@ -10,7 +10,7 @@ import {
 } from 'native-base';
 import { CABINET_ID } from '@env';
 import { EvilIcons } from '@expo/vector-icons';
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useAddItemMutation } from '../../features/api/apiSlice';
 
 // custom components
