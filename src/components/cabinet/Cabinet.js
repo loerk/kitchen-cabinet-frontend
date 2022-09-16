@@ -21,7 +21,7 @@ import { CABINET_ID } from '@env';
 
 // custom components
 import SearchBar from '../utils/SearchBar';
-import DateTimePicker from '../utils/DateTimePicker';
+import DatePicker from '../utils/DatePicker';
 
 import {
   useGetCabinetItemsQuery,
@@ -44,16 +44,6 @@ const Cabinet = () => {
   const closeEditForm = () => setIsOpenEditForm(false);
 
   const [selectedDate, setSelectedDate] = useState('');
-
-  /*   if(isSuccess){
-    cabinetItems.map(
-      );
-      
-      const now = new Date()
-      const expiryDate = new Date("2022-09-25T00:00:00.000Z")
-      const milliNow = now.getTime()
-      const milliEx = expiryDate.getTime()
-    } */
 
   const {
     data: cabinetItems,
@@ -118,7 +108,7 @@ const Cabinet = () => {
         <AlertDialog.Body>
           Item Name: {toBeEdited.name}
           Expiry Date:{toBeEdited.expiryDate}
-          <DateTimePicker
+          <DatePicker
             onSelectedChange={(date) =>
               setToBeEdited((prevObj) => ({ ...prevObj, expiryDate: date }))
             }
