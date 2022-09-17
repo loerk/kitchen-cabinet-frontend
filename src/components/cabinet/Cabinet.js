@@ -207,54 +207,56 @@ const Cabinet = () => {
             <Text>Your cabinet is empty. Add an item.</Text>
           )}
           {filteredItems ? (
-            filteredItems.map(({ _id: id, name, image, expiryDate }) => (
-              <HStack
-                flex={1}
-                justifyContent={'space-between'}
-                space={3}
-                mb={4}
-                alignItems="center"
-                key={id}
-              >
-                <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                  <Image
-                    source={{ uri: `${image}` }}
-                    // borderRadius={'100'}
-                    alt={name}
-                    size="sm"
-                  />
-                  <Text ml={6} key={id}>
-                    {name.charAt(0).toUpperCase() + name.slice(1)}
-                  </Text>
-                </Box>
-                <Box>
-                  <HStack space={4}>
-                    <FontAwesome5
-                      name="edit"
-                      size={20}
-                      color="black"
-                      onPress={() => {
-                        setToBeEdited({
-                          id,
-                          name: name.charAt(0).toUpperCase() + name.slice(1),
-                          expiryDate,
-                        });
-                        setIsOpenEditForm(!isOpenEditForm);
-                      }}
+            filteredItems
+              .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
+              .map(({ _id: id, name, image, expiryDate }) => (
+                <HStack
+                  flex={1}
+                  justifyContent={'space-between'}
+                  space={3}
+                  mb={4}
+                  alignItems="center"
+                  key={id}
+                >
+                  <Box flex={1} flexDir={'row'} alignItems={'center'}>
+                    <Image
+                      source={{ uri: `${image}` }}
+                      // borderRadius={'100'}
+                      alt={name}
+                      size="sm"
                     />
-                    <AntDesign
-                      name="delete"
-                      size={23}
-                      color="black"
-                      onPress={() => {
-                        setToBeDeleted({ id, name });
-                        setIsOpenDeleteAlert(!isOpenDeleteAlert);
-                      }}
-                    />
-                  </HStack>
-                </Box>
-              </HStack>
-            ))
+                    <Text ml={6} key={id}>
+                      {name.charAt(0).toUpperCase() + name.slice(1)}
+                    </Text>
+                  </Box>
+                  <Box>
+                    <HStack space={4}>
+                      <FontAwesome5
+                        name="edit"
+                        size={20}
+                        color="black"
+                        onPress={() => {
+                          setToBeEdited({
+                            id,
+                            name: name.charAt(0).toUpperCase() + name.slice(1),
+                            expiryDate,
+                          });
+                          setIsOpenEditForm(!isOpenEditForm);
+                        }}
+                      />
+                      <AntDesign
+                        name="delete"
+                        size={23}
+                        color="black"
+                        onPress={() => {
+                          setToBeDeleted({ id, name });
+                          setIsOpenDeleteAlert(!isOpenDeleteAlert);
+                        }}
+                      />
+                    </HStack>
+                  </Box>
+                </HStack>
+              ))
           ) : isLoading ? (
             <Spinner text="Loading..." />
           ) : null}
