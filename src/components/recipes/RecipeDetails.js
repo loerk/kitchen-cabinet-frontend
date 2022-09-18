@@ -206,7 +206,9 @@ export const RecipeDetails = ({
                   </Button>
                   {isSaving && <Spinner text="Loading..." />}
                   {isSuccess && (
-                    <Text>This recipe is now one of your favourites</Text>
+                    <Text textAlign={'center'}>
+                      This recipe is now one of your favourites
+                    </Text>
                   )}
                 </Box>
               </View>

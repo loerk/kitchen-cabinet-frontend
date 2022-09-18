@@ -92,7 +92,7 @@ export const IngredientsList = ({
       </Button>
       {isLoading && <Spinner />}
       {isSuccess && (
-        <Text>
+        <Text textAlign={'center'}>
           You sucessfully added the missing items to your shoppinglist
         </Text>
       )}
