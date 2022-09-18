@@ -1,25 +1,57 @@
-import { Box, HStack, Text, VStack } from 'native-base';
+import {
+  Box,
+  Button,
+  Center,
+  HStack,
+  Spinner,
+  Text,
+  VStack,
+} from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useAddShoppinglistMutation } from '../../features/api/apiSlice';
+import { CABINET_ID } from '@env';
 
 export const IngredientsList = ({
   missingIngredientsNames,
   usedIngredientsNames,
   ingredients,
 }) => {
+  const [shoppinglist, setShoppinglist] = useState();
+  const [addShoppinglist, { isSuccess, isLoading }] =
+    useAddShoppinglistMutation();
+  useEffect(() => {
+    setShoppinglist(
+      ingredients
+        .map((ingredient) => {
+          if (missingIngredientsNames.includes(ingredient.name)) {
+            return {
+              name: ingredient.name,
+              id: ingredient.id,
+              amount:
+                Math.round(ingredient.measures.metric.amount) +
+                ingredient.measures.metric.unitShort,
+            };
+          } else {
+            return null;
+          }
+        })
+        .filter((item) => item !== null)
+    );
+  }, []);
+
+  const addToShoppinglist = () => {
+    addShoppinglist({ CABINET_ID, shoppinglist });
+  };
   if (!ingredients) return;
   return (
-    <>
+    <Center>
       {ingredients &&
         ingredients.map((ingredient) => {
           return (
-            <VStack
-              flex={1}
-              key={ingredient.id}
-              w={'100%'}
-              alignItems={'center'}
-            >
+            <VStack flex={1} mb={3} key={ingredient.id} w={'100%'}>
               <HStack
                 ml={20}
                 w={'80%'}
@@ -55,6 +87,15 @@ export const IngredientsList = ({
             </VStack>
           );
         })}
-    </>
+      <Button onPress={addToShoppinglist} mt={7} maxW={'50%'}>
+        Add to shopping list
+      </Button>
+      {isLoading && <Spinner />}
+      {isSuccess && (
+        <Text>
+          You sucessfully added the missing items to your shoppinglist
+        </Text>
+      )}
+    </Center>
   );
 };
