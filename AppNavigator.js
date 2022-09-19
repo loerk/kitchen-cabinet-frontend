@@ -9,7 +9,7 @@ import { useLinkTo } from '@react-navigation/native';
 import Dashboard from './src/components/dashboard/Dashboard';
 import ShoppingList from './src/components/ShoppingList';
 import Cabinet from './src/components/cabinet/Cabinet';
-import Diagrams from './src/components/Diagrams';
+import Diagrams from './src/components/diagrams/Diagrams';
 import Loading from './src/components/Loading';
 import Profile from './src/components/Profile';
 // auth components
