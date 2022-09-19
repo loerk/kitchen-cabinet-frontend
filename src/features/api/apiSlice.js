@@ -42,10 +42,10 @@ export const apiSlice = createApi({
       }),
     }),
     addItem: builder.mutation({
-      query: ({ cabinetId, id, expiryDate }) => ({
+      query: ({ CABINET_ID, id, expiryDate }) => ({
         url: 'cabinet/items/',
         method: 'POST',
-        body: { cabinetId, id, expiryDate },
+        body: { CABINET_ID, id, expiryDate },
       }),
       invalidatesTags: ['Items'],
     }),
@@ -54,6 +54,13 @@ export const apiSlice = createApi({
         url: `/cabinet/favourite/${CABINET_ID}`,
         method: 'PUT',
         body: { recipeId },
+      }),
+    }),
+    addShoppinglist: builder.mutation({
+      query: ({ CABINET_ID, shoppinglist }) => ({
+        url: `/cabinet/shoppinglist/${CABINET_ID}`,
+        method: 'PUT',
+        body: { shoppinglist },
       }),
     }),
     editCabinet: builder.mutation({
@@ -96,6 +103,7 @@ export const {
   useGetRecipeByIngredientsQuery,
   useIngredientsListQuery,
   useRecipeInstructionsQuery,
+  useAddShoppinglistMutation,
   useAddCabinetMutation,
   useAddItemMutation,
   useAddFavouriteRecipeMutation,
