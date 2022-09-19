@@ -95,6 +95,7 @@ const Dashboard = () => {
       setMoreFilteredRecipes([]);
     }
   }, [filterOptions]);
+
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: bgColor, color: !bgColor }]}
@@ -129,10 +130,15 @@ const Dashboard = () => {
           />
         )}
         <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
-          Suggested Recipes:
+          Suggested Recipes:{' '}
+          {moreFilteredRecipes?.length
+            ? moreFilteredRecipes.length
+            : searchInput
+            ? searchedRecipes?.length
+            : suggestedRecipes?.length}
         </Text>
       </Center>
-      <ScrollView>
+      <ScrollView horizontal={true} mt={4}>
         {moreFilteredRecipes?.length && !searchInput ? (
           filteredRecipes?.map((filteredRecipe) => {
             return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;

@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   HStack,
   Image,
   Center,
+  Pressable,
   View,
   ScrollView,
   Text,
   Spinner,
   AlertDialog,
   Button,
-  VStack,
   Box,
 } from 'native-base';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -21,13 +21,18 @@ import { CABINET_ID } from '@env';
 
 // custom components
 import SearchBar from '../utils/SearchBar';
-import DateTimePicker from '../utils/DateTimePicker';
+import DatePicker from '../utils/DatePicker';
 
 import {
   useGetCabinetItemsQuery,
   useDeleteItemMutation,
   useEditItemMutation,
 } from '../../features/api/apiSlice';
+
+const date = new Date();
+const INITIAL_DATE = `${date.getFullYear()}-${String(
+  date.getMonth() + 1
+).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 const Cabinet = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -40,20 +45,16 @@ const Cabinet = () => {
     name: '',
     expiryDate: '',
   });
+  const [showCalendar, setShowCalendar] = useState(false);
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
+  const [selected, setSelected] = useState(INITIAL_DATE);
 
-  const [selectedDate, setSelectedDate] = useState('');
-
-  /*   if(isSuccess){
-    cabinetItems.map(
-      );
-      
-      const now = new Date()
-      const expiryDate = new Date("2022-09-25T00:00:00.000Z")
-      const milliNow = now.getTime()
-      const milliEx = expiryDate.getTime()
-    } */
+  const onDayPress = useCallback((day) => {
+    setSelected(day.dateString);
+    setToBeEdited((prevObj) => ({ ...prevObj, expiryDate: day.dateString }));
+    setShowCalendar(false);
+  }, []);
 
   const {
     data: cabinetItems,
@@ -95,7 +96,7 @@ const Cabinet = () => {
   const editItem = () => {
     editCabinetItem(toBeEdited).unwrap();
 
-    console.log(selectedDate);
+    console.log(selected);
     console.log(toBeEdited);
     closeEditForm();
   };
@@ -114,15 +115,30 @@ const Cabinet = () => {
     >
       <AlertDialog.Content>
         <AlertDialog.CloseButton />
-        <AlertDialog.Header>Edit Item</AlertDialog.Header>
+        <AlertDialog.Header>Edit</AlertDialog.Header>
         <AlertDialog.Body>
-          Item Name: {toBeEdited.name}
-          Expiry Date:{toBeEdited.expiryDate}
-          <DateTimePicker
-            onSelectedChange={(date) =>
-              setToBeEdited((prevObj) => ({ ...prevObj, expiryDate: date }))
-            }
-          />
+          <Text bold>Item Name:</Text>
+          <Text>{toBeEdited.name}</Text>
+          <Text bold mt={5}>
+            Expiry Date:
+          </Text>
+          <Pressable onPress={() => setShowCalendar(true)}>
+            <HStack>
+              <Text>{toBeEdited.expiryDate} </Text>
+              <MaterialCommunityIcons
+                name="calendar-edit"
+                size={24}
+                color="black"
+              />
+            </HStack>
+          </Pressable>
+          {showCalendar && (
+            <DatePicker
+              INITIAL_DATE={INITIAL_DATE}
+              onDayPress={onDayPress}
+              selected={selected}
+            />
+          )}
         </AlertDialog.Body>
         <AlertDialog.Footer>
           <Button.Group space={2}>
@@ -151,7 +167,7 @@ const Cabinet = () => {
         <AlertDialog.CloseButton />
         <AlertDialog.Header>Confirm Delete</AlertDialog.Header>
         <AlertDialog.Body>
-          {`Are you sure you want to delete ${toBeDeleted.name} ?`}
+          <Text>{`Are you sure you want to delete ${toBeDeleted.name} ?`}</Text>
         </AlertDialog.Body>
         <AlertDialog.Footer>
           <Button.Group space={2}>
@@ -191,7 +207,7 @@ const Cabinet = () => {
             <Text>Your cabinet is empty. Add an item.</Text>
           )}
           {filteredItems ? (
-            filteredItems.map(({ _id: id, name, image }) => (
+            filteredItems.map(({ _id: id, name, image, expiryDate }) => (
               <HStack
                 flex={1}
                 justifyContent={'space-between'}
@@ -202,7 +218,9 @@ const Cabinet = () => {
               >
                 <Box flex={1} flexDir={'row'} alignItems={'center'}>
                   <Image
-                    source={{ uri: `${image}` }}
+                    source={{
+                      uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
+                    }}
                     // borderRadius={'100'}
                     alt={name}
                     size="sm"
@@ -218,7 +236,11 @@ const Cabinet = () => {
                       size={20}
                       color="black"
                       onPress={() => {
-                        setToBeEdited({ id, name });
+                        setToBeEdited({
+                          id,
+                          name: name.charAt(0).toUpperCase() + name.slice(1),
+                          expiryDate,
+                        });
                         setIsOpenEditForm(!isOpenEditForm);
                       }}
                     />
@@ -234,48 +256,6 @@ const Cabinet = () => {
                   </HStack>
                 </Box>
               </HStack>
-            ))
-          ) : isSuccess ? (
-            cabinetItems.map(({ _id: id, name, image, expiryDate }) => (
-              <VStack key={id}>
-                <Box px="4">
-                  <HStack>
-                    <FontAwesome5
-                      name="edit"
-                      size={14}
-                      color="black"
-                      onPress={() => {
-                        setToBeEdited({ id, name, expiryDate });
-                        setIsOpenEditForm(!isOpenEditForm);
-                      }}
-                    />
-                    <AntDesign
-                      name="delete"
-                      size={16}
-                      color="black"
-                      onPress={() => {
-                        setToBeDeleted({ id, name });
-                        setIsOpenDeleteAlert(!isOpenDeleteAlert);
-                      }}
-                    />
-                  </HStack>
-                </Box>
-                <Box px="4" pt="4">
-                  <HStack space="1">
-                    <Image source={{ uri: `${image}` }} alt={name} size="sm" />
-                    <Text
-                      style={{ color: 'orange' }}
-                      alignSelf="stretch"
-                      isTruncated
-                      maxW="200"
-                      w="80%"
-                      px="4"
-                    >
-                      {name}
-                    </Text>
-                  </HStack>
-                </Box>
-              </VStack>
             ))
           ) : isLoading ? (
             <Spinner text="Loading..." />

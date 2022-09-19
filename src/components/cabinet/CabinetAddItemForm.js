@@ -1,34 +1,49 @@
 import {
+  HStack,
+  Center,
   View,
   Text,
-  Center,
   Button,
   ScrollView,
   useColorMode,
+  AlertDialog,
 } from 'native-base';
-
-import React, { useState } from 'react';
-/* import DateTimePicker from '@react-native-community/datetimepicker';
- */ import { useAddItemMutation } from '../../features/api/apiSlice';
-
-// environment variable
 import { CABINET_ID } from '@env';
+import { EvilIcons } from '@expo/vector-icons';
+import React, { useState, useCallback, useRef } from 'react';
+import { useAddItemMutation } from '../../features/api/apiSlice';
 
 // custom components
-import DateTimePicker from '../utils/DateTimePicker';
+/* import DateTimePicker from '../utils/DateTimePicker';*/
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
+import DatePicker from '../utils/DatePicker';
+console.log(CABINET_ID);
+const date = new Date();
+const INITIAL_DATE = `${date.getFullYear()}-${String(
+  date.getMonth() + 1
+).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 export const CabinetAddItemForm = () => {
   const { colorMode } = useColorMode();
+  const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+  const closeCalendar = () => setIsOpenCalendar(false);
+  const cancelRef = useRef(null);
   const [selectedIngredient, setSelectedIngredient] = useState({
     name: '',
     id: '',
     expiryDate: '',
   });
   const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
+
+  const [selected, setSelected] = useState(INITIAL_DATE);
+
+  const onDayPress = useCallback((day) => {
+    setSelected(day.dateString);
+  }, []);
+
+  selectedIngredient && console.log(selectedIngredient);
   const saveItem = () => {
     if (selectedIngredient.name) {
-      console.log(selectedIngredient.name);
       addItem({
         CABINET_ID,
         id: selectedIngredient.id,
@@ -40,30 +55,63 @@ export const CabinetAddItemForm = () => {
   return (
     <>
       <ScrollView>
-        <Text size="md" py={4} bold>
-          Please select an Item
-        </Text>
+        <Center>
+          <Text size="md" py={4} bold>
+            Please select an Item
+          </Text>
+        </Center>
         <CabinetSelectItemAutocomplete
           setSelectedIngredient={setSelectedIngredient}
           selectedIngredient={selectedIngredient}
         />
         <View>
-          <Text bold size="md" pb={2}>
-            Pick an expiry Date
-          </Text>
-          <DateTimePicker
-            /* style={{
-              width: 80,
-            }} */
-            /* value={selectedIngredient.expiryDate}
-            onChange={onChangeDate} */
-            onSelectedChange={(date) =>
-              setSelectedIngredient((prevObj) => ({
-                ...prevObj,
-                expiryDate: date,
-              }))
-            }
-          />
+          <HStack justifyContent="center" alignItems="flex-end">
+            <Text bold size="md" pb={2}>
+              Pick an expiry Date
+            </Text>
+            <EvilIcons
+              name="calendar"
+              size={44}
+              color="black"
+              onPress={() => setIsOpenCalendar(!isOpenCalendar)}
+            />
+          </HStack>
+          {selectedIngredient.expiryDate ? (
+            <Center>
+              <Text>{selectedIngredient.expiryDate}</Text>
+            </Center>
+          ) : null}
+          <AlertDialog
+            leastDestructiveRef={cancelRef}
+            isOpen={isOpenCalendar}
+            onClose={closeCalendar}
+          >
+            <AlertDialog.Content>
+              <AlertDialog.CloseButton />
+              <AlertDialog.Header></AlertDialog.Header>
+              <AlertDialog.Body>
+                <DatePicker
+                  INITIAL_DATE={INITIAL_DATE}
+                  onDayPress={onDayPress}
+                  selected={selected}
+                />
+              </AlertDialog.Body>
+              <AlertDialog.Footer>
+                <Button
+                  onPress={() => {
+                    setSelectedIngredient((prevObj) => ({
+                      ...prevObj,
+                      expiryDate: selected,
+                    }));
+                    closeCalendar();
+                  }}
+                >
+                  Set Date
+                </Button>
+              </AlertDialog.Footer>
+            </AlertDialog.Content>
+          </AlertDialog>
+
           {isLoading ? (
             <Button
               isLoading
