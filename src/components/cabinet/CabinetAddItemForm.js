@@ -17,7 +17,7 @@ import { useAddItemMutation } from '../../features/api/apiSlice';
 /* import DateTimePicker from '../utils/DateTimePicker';*/
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
-
+console.log(CABINET_ID);
 const date = new Date();
 const INITIAL_DATE = `${date.getFullYear()}-${String(
   date.getMonth() + 1

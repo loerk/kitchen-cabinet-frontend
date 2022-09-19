@@ -42,10 +42,10 @@ export const apiSlice = createApi({
       }),
     }),
     addItem: builder.mutation({
-      query: ({ cabinetId, id, expiryDate }) => ({
+      query: ({ CABINET_ID, id, expiryDate }) => ({
         url: 'cabinet/items/',
         method: 'POST',
-        body: { cabinetId, id, expiryDate },
+        body: { CABINET_ID, id, expiryDate },
       }),
       invalidatesTags: ['Items'],
     }),

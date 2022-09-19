@@ -218,7 +218,9 @@ const Cabinet = () => {
               >
                 <Box flex={1} flexDir={'row'} alignItems={'center'}>
                   <Image
-                    source={{ uri: `${image}` }}
+                    source={{
+                      uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
+                    }}
                     // borderRadius={'100'}
                     alt={name}
                     size="sm"
