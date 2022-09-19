@@ -6,11 +6,13 @@ import {
 } from 'firebase/auth';
 import React, { createContext, useState } from 'react';
 import { auth } from '../../firebase';
+import { useAddCabinetMutation } from '../features/api/apiSlice';
 
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [addCabinet] = useAddCabinetMutation();
 
   const handleRegister = async (email, password, username) => {
     try {
@@ -21,6 +23,10 @@ export const AuthProvider = ({ children }) => {
       );
       await updateProfile(auth.currentUser, { displayName: username });
       console.log(newUser);
+      addCabinet({
+        name: auth.currentUser.displayName,
+        uid: auth.currentUser.uid,
+      }).unwrap();
     } catch (error) {
       alert(error.message);
       console.log(error.message);
