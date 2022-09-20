@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { CABINET_ID } from '@env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -12,7 +13,10 @@ import {
   ScrollView,
   Spinner,
   HStack,
+  VStack,
 } from 'native-base';
+import { EvilIcons } from '@expo/vector-icons';
+
 import { Ionicons } from '@expo/vector-icons';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
@@ -27,6 +31,7 @@ import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 
 const Dashboard = () => {
+  const navigation = useNavigation();
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
@@ -103,9 +108,34 @@ const Dashboard = () => {
       <StatusBar
         barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
       />
-      <Text style={{ paddingLeft: 18 }}>Welcome</Text>
-      <Heading>{user.username && `${user.username}`}</Heading>
-      <Divider />
+
+      <HStack>
+        <VStack>
+          <Text style={{ paddingLeft: 18 }}>Welcome</Text>
+          <Heading>{user.username && `${user.username}`}</Heading>
+        </VStack>
+        <HStack
+          w={'65%'}
+          space={2}
+          justifyContent={'flex-end'}
+          alignItems={'center'}
+        >
+          <EvilIcons
+            name="heart"
+            size={44}
+            onPress={() => navigation.navigate('Favorites')}
+            color={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+          />
+          <EvilIcons
+            name="user"
+            size={44}
+            onPress={() => navigation.navigate('Profile')}
+            color={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+          />
+          {/* <HamburgerMenu options={['Profile', 'Favorites']} /> */}
+        </HStack>
+        <Divider />
+      </HStack>
       <Center>
         <HStack alignItems="center">
           <SearchBar
