@@ -1,10 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons } from '@expo/vector-icons';
-import { EvilIcons } from '@expo/vector-icons';
-import { useColorMode } from 'native-base';
-import { useLinkTo } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
+import { MaterialIcons } from '@expo/vector-icons';
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
 import ShoppingList from './src/components/ShoppingList';
@@ -19,16 +17,14 @@ import AuthStack from './src/authNavigation/AuthNavigator';
 import { AuthContext } from './src/authNavigation/AuthProvider';
 
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
+import Favorites from './src/components/Favorites';
 
 const Tab = createBottomTabNavigator();
-
+const Stack = createStackNavigator();
 const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
-  const colorMode = useColorMode();
-  const linkTo = useLinkTo();
-
   // Handle user state changes
   function AuthStateChanged(user) {
     setUser(user);
@@ -70,6 +66,7 @@ const AppNavigator = () => {
                 />
               );
             },
+            // headerShown: false,
             tabBarActiveTintColor: '#891D47',
             tabBarInactiveTintColor: 'gray',
             tabBarStyle: { height: '10%' },
@@ -84,22 +81,8 @@ const AppNavigator = () => {
             },
           })}
         >
-          <Tab.Screen name="Home" component={Dashboard} />
-          <Tab.Screen
-            name="Cabinet"
-            component={Cabinet}
-            options={{
-              headerRight: () => (
-                <EvilIcons
-                  name="user"
-                  size={34}
-                  color={
-                    colorMode === 'light' ? 'secondary.100' : 'primary.100'
-                  }
-                />
-              ),
-            }}
-          />
+          <Tab.Screen name="Home" component={DashboardScreenNavigator} />
+          <Tab.Screen name="Cabinet" component={Cabinet} />
           <Tab.Screen name="Add" component={CabinetAddItemForm} />
           <Tab.Screen name="Shopping List" component={ShoppingList} />
           <Tab.Screen name="Diagrams" component={Diagrams} />
@@ -112,3 +95,31 @@ const AppNavigator = () => {
 };
 
 export default AppNavigator;
+
+export const DashboardScreenNavigator = () => {
+  return (
+    <Stack.Navigator initialRouteName="Dashboard">
+      <Stack.Screen
+        name="Home"
+        component={Dashboard}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Favorites"
+        component={Favorites}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};

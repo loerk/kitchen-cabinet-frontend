@@ -52,14 +52,14 @@ export const apiSlice = createApi({
     addFavouriteRecipe: builder.mutation({
       query: ({ CABINET_ID, recipeId }) => ({
         url: `/cabinet/favourite/${CABINET_ID}`,
-        method: 'PUT',
+        method: 'POST',
         body: { recipeId },
       }),
     }),
     addShoppinglist: builder.mutation({
       query: ({ CABINET_ID, shoppinglist }) => ({
         url: `/cabinet/shoppinglist/${CABINET_ID}`,
-        method: 'PUT',
+        method: 'POST',
         body: { shoppinglist },
       }),
     }),
