@@ -18,6 +18,7 @@ import {
   Box,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -35,7 +36,7 @@ import {
 } from '../../features/api/apiSlice';
 
 const date = new Date();
-const INITIAL_DATE = `${date.getFullYear()}-${String(
+const CURRENT_DATE = `${date.getFullYear()}-${String(
   date.getMonth() + 1
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
@@ -53,7 +54,7 @@ const Cabinet = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
-  const [selected, setSelected] = useState(INITIAL_DATE);
+  const [selected, setSelected] = useState(CURRENT_DATE);
 
   const toast = useToast();
 
@@ -140,7 +141,7 @@ const Cabinet = () => {
           </Pressable>
           {showCalendar && (
             <DatePicker
-              INITIAL_DATE={INITIAL_DATE}
+              INITIAL_DATE={CURRENT_DATE}
               onDayPress={onDayPress}
               selected={selected}
             />
@@ -214,80 +215,91 @@ const Cabinet = () => {
           {filteredItems ? (
             filteredItems
               .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
-              .map(({ _id: id, name, image, expiryDate }) => (
-                <>
-                  <HStack
-                    flex={1}
-                    justifyContent={'space-between'}
-                    space={3}
-                    mb={4}
-                    alignItems="center"
-                    key={id}
-                  >
-                    <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                      <Image
-                        source={{
-                          uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
-                        }}
-                        // borderRadius={'100'}
-                        alt={name}
-                        size="sm"
-                      />
-                      <View ml={6}>
-                        <Text bold>
-                          {name
-                            .split(' ')
-                            .map(
-                              (name) =>
-                                name.charAt(0).toUpperCase() + name.slice(1)
-                            )
-                            .join(' ')}
-                        </Text>
-                        <Text fontSize="sm">
-                          {'Expiry Date: \n'}
-                          {expiryDate}
-                        </Text>
-                      </View>
-                    </Box>
-                    <Box>
-                      <HStack space={4}>
-                        <FontAwesome5
-                          name="edit"
-                          size={20}
-                          color="black"
-                          onPress={() => {
-                            setToBeEdited({
-                              id,
-                              name:
-                                name.charAt(0).toUpperCase() + name.slice(1),
-                              expiryDate,
-                            });
-                            setIsOpenEditForm(!isOpenEditForm);
-                          }}
-                        />
-                        <AntDesign
-                          name="delete"
-                          size={23}
-                          color="black"
-                          onPress={() => {
-                            setToBeDeleted({ id, name });
-                            setIsOpenDeleteAlert(!isOpenDeleteAlert);
-                          }}
-                        />
+              .map(({ _id: id, name, image, expiryDate }) => {
+                const isExpired =
+                  +new Date(CURRENT_DATE) > +new Date(expiryDate);
+                return (
+                  <>
+                    {isExpired && (
+                      <HStack alignItems="center" mb={1}>
+                        <MaterialIcons name="dangerous" size={30} color="red" />
+                        <Text color="red.500">Expired!</Text>
                       </HStack>
-                    </Box>
-                  </HStack>
-                  <Divider
-                    my="2"
-                    _light={{
-                      bg: 'muted.800',
-                    }}
-                    _dark={{
-                      bg: 'muted.50',
-                    }}
-                  />
-                </>
-              ))
+                    )}
+                    <HStack
+                      bg={isExpired ? 'red.100' : null}
+                      flex={1}
+                      justifyContent={'space-between'}
+                      space={3}
+                      mb={4}
+                      alignItems="center"
+                      key={id}
+                    >
+                      <Box flex={1} flexDir={'row'} alignItems={'center'}>
+                        <Image
+                          source={{
+                            uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
+                          }}
+                          // borderRadius={'100'}
+                          alt={name}
+                          size="sm"
+                        />
+                        <View ml={6}>
+                          <Text bold>
+                            {name
+                              .split(' ')
+                              .map(
+                                (name) =>
+                                  name.charAt(0).toUpperCase() + name.slice(1)
+                              )
+                              .join(' ')}
+                          </Text>
+                          <Text fontSize="sm">
+                            {'Expiry Date: \n'}
+                            {expiryDate}
+                          </Text>
+                        </View>
+                      </Box>
+                      <Box>
+                        <HStack space={4} alignItems="center">
+                          <FontAwesome5
+                            name="edit"
+                            size={20}
+                            color="black"
+                            onPress={() => {
+                              setToBeEdited({
+                                id,
+                                name:
+                                  name.charAt(0).toUpperCase() + name.slice(1),
+                                expiryDate,
+                              });
+                              setIsOpenEditForm(!isOpenEditForm);
+                            }}
+                          />
+                          <AntDesign
+                            name="delete"
+                            size={23}
+                            color="black"
+                            onPress={() => {
+                              setToBeDeleted({ id, name });
+                              setIsOpenDeleteAlert(!isOpenDeleteAlert);
+                            }}
+                          />
+                        </HStack>
+                      </Box>
+                    </HStack>
+                    <Divider
+                      my="2"
+                      _light={{
+                        bg: 'muted.800',
+                      }}
+                      _dark={{
+                        bg: 'muted.50',
+                      }}
+                    />
+                  </>
+                );
+              })
           ) : isLoading ? (
             <Spinner text="Loading..." />
           ) : null}
