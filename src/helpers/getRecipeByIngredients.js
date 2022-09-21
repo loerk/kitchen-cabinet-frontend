@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGetRecipeByIngredientsQuery } from '../features/api/apiSlice';
 import { Text, Spinner } from 'native-base';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * @param {Array} ingredients
@@ -21,7 +22,7 @@ const getRecipeByIngredients = (ingredients) => {
   } else if (isSuccess) {
     return recipes.map((recipe) => {
       return (
-        <Text key={recipe.id}>
+        <Text key={uuidv4()}>
           {recipe.title} ( Used Ingredients: {recipe.usedIngredientCount} ){' '}
           {/* {recipe.missedIngredients.map((item) => (<Text key={}>{item}</Text>))*/}
         </Text>

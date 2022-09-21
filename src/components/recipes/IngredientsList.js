@@ -8,6 +8,7 @@ import {
   VStack,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { v4 as uuidv4 } from 'uuid';
 
 import React, { useEffect, useState } from 'react';
 
@@ -56,7 +57,7 @@ export const IngredientsList = ({
       {ingredients &&
         ingredients.map((ingredient) => {
           return (
-            <VStack flex={1} mb={3} key={ingredient.id} w={'100%'}>
+            <VStack flex={1} mb={3} key={uuidv4()} w={'100%'}>
               <HStack
                 ml={20}
                 w={'80%'}
