@@ -147,6 +147,7 @@ const Cabinet = () => {
               INITIAL_DATE={CURRENT_DATE}
               onDayPress={onDayPress}
               selected={selected}
+              expiryDate={toBeEdited.expiryDate}
             />
           )}
         </AlertDialog.Body>
@@ -228,7 +229,7 @@ const Cabinet = () => {
                       flex={1}
                       justifyContent={'space-between'}
                       space={3}
-                      mb={4}
+                      p={2}
                       alignItems="center"
                       key={id}
                     >
@@ -253,11 +254,11 @@ const Cabinet = () => {
                           </Text>
                           <Text fontSize="sm">
                             {'Expiry Date: \n'}
-                            {expiryDate}
+                            {expiryDate.split('-').reverse().join('-')}
                           </Text>
                         </View>
                       </Box>
-                      <Box alignItems="center" mr={2}>
+                      <Box alignItems="center">
                         <HStack space={4} alignItems="center">
                           <FontAwesome5
                             name="edit"
@@ -284,7 +285,7 @@ const Cabinet = () => {
                           />
                         </HStack>
                         {isExpired && (
-                          <HStack alignItems="center" mt={1}>
+                          <HStack mt={1}>
                             <MaterialIcons
                               name="dangerous"
                               size={20}
@@ -298,7 +299,6 @@ const Cabinet = () => {
                       </Box>
                     </HStack>
                     <Divider
-                      my="2"
                       _light={{
                         bg: 'muted.800',
                       }}

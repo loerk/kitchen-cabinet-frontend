@@ -2,19 +2,13 @@ import React, { useMemo } from 'react';
 import { Calendar, CalendarUtils } from 'react-native-calendars';
 import { StyleSheet } from 'react-native';
 
-const DatePicker = ({ INITIAL_DATE, onDayPress, selected }) => {
-  const getDate = (count) => {
-    const date = new Date(INITIAL_DATE);
-    const newDate = date.setDate(date.getDate() + count);
-    return CalendarUtils.getCalendarDateString(newDate);
-  };
-
+const DatePicker = ({ INITIAL_DATE, onDayPress, selected, expiryDate }) => {
   const marked = useMemo(() => {
     return {
-      /*   [getDate(-1)]: {
-          dotColor: 'red',
-          marked: true
-        }, */
+      [expiryDate]: {
+        dotColor: 'red',
+        marked: true,
+      },
       [selected]: {
         selected: true,
         disableTouchEvent: true,
