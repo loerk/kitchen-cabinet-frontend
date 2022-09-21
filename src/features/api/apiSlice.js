@@ -34,6 +34,12 @@ export const apiSlice = createApi({
     getRecipeInstructions: builder.query({
       query: (id) => `/recipes/instructions/${id}`,
     }),
+    getFavorites: builder.query({
+      query: (id) => `/cabinet/favorites/${id}`,
+    }),
+    getShoppinglist: builder.query({
+      query: (id) => `/cabinet/shoppinglist/${id}`,
+    }),
     addCabinet: builder.mutation({
       query: ({ name, uid }) => ({
         url: '/cabinet',
@@ -101,6 +107,8 @@ export const {
   useGetFilteredRecipesQuery,
   useGetRecipeByIdQuery,
   useGetRecipeByIngredientsQuery,
+  useGetFavoritesQuery,
+  useGetShoppinglistQuery,
   useIngredientsListQuery,
   useRecipeInstructionsQuery,
   useAddShoppinglistMutation,

@@ -34,6 +34,9 @@ export default customTheme = extendTheme({
     amber: {
       400: '#d97706',
     },
+    gray: {
+      100: 'gray',
+    },
   },
   components: {
     /* Button: {
@@ -45,6 +48,16 @@ export default customTheme = extendTheme({
           colorScheme: 'red',
         },
       }, */
+    View: {
+      defaultProps: {
+        paddingTop: '10%',
+        backgroundColor: 'white',
+        minHeight: '100%',
+
+        /* fontFamily: 'Arial', */
+      },
+      // marginTop: '10',
+    },
     Divider: {
       baseStyle: ({ colorMode }) => {
         return {
