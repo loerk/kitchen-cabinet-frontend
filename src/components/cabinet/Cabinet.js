@@ -78,6 +78,7 @@ const Cabinet = () => {
       isLoading: isLoadingEdit,
       isSuccess: isSuccessEdit,
       isError: isErrorEdit,
+      error: editError,
     },
   ] = useEditItemMutation();
   const [
@@ -102,11 +103,13 @@ const Cabinet = () => {
   const cancelRefEdit = useRef(null);
 
   const editItem = () => {
-    editCabinetItem(toBeEdited).unwrap();
-
-    console.log(selected);
-    console.log(toBeEdited);
-    closeEditForm();
+    editCabinetItem(toBeEdited)
+      .unwrap()
+      .then((payload) => {
+        console.log(payload);
+        closeEditForm();
+      })
+      .catch((error) => console.log(error));
   };
 
   const deleteItem = () => {
