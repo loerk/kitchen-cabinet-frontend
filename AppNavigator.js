@@ -71,7 +71,7 @@ const AppNavigator = () => {
             headerShown: false,
             tabBarActiveTintColor: colors.primary,
             tabBarInactiveTintColor: colors.gray,
-            tabBarStyle: { height: '10%' },
+            tabBarStyle: { height: '10%', backgroundColor: '#FCF5EA' },
             tabBarItemStyle: { padding: 5 },
 
             headerStyle: {
@@ -111,6 +111,10 @@ export const DashboardScreenNavigator = () => {
       <Stack.Screen
         options={{
           headerBackTitleVisible: false,
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#FCF5EA',
+          },
         }}
         name="Profile"
         component={Profile}
@@ -118,6 +122,10 @@ export const DashboardScreenNavigator = () => {
       <Stack.Screen
         options={{
           headerBackTitleVisible: false,
+          headerTintColor: 'black',
+          headerStyle: {
+            backgroundColor: '#FCF5EA',
+          },
         }}
         name="Favorites"
         component={Favorites}
