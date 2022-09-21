@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Select, VStack, CheckIcon, Button, HStack } from 'native-base';
+import {
+  Select,
+  VStack,
+  CheckIcon,
+  Button,
+  HStack,
+  useColorMode,
+} from 'native-base';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 
@@ -13,12 +20,12 @@ const Filter = ({
   const [isPressed, setIsPressed] = useState(false);
 
   const { diet, intolerance, type, extras } = filterOptions;
+  const { colorMode } = useColorMode();
 
   const {
     data: recipes,
     isSuccess,
     error,
-
   } = useGetFilteredRecipesQuery(
     isPressed
       ? { type, diet, intolerance, extras, recipeIds: recipeIds.join() }
@@ -34,12 +41,12 @@ const Filter = ({
     console.log(error);
   }
 
-
   return (
-    <VStack alignItems="center" space={4}>
+    <VStack alignItems="center" space={4} bgColor={'#FCF5EA'}>
       <Select
         selectedValue={diet}
         minWidth={200}
+        size={'md'}
         accessibilityLabel="Select Diet"
         placeholder="Diet"
         onValueChange={(selectedValue) =>
@@ -62,6 +69,7 @@ const Filter = ({
         minWidth={200}
         accessibilityLabel="Select Intolerances"
         placeholder="Intolerances"
+        size={'md'}
         onValueChange={(selectedValue) =>
           setFilterOptions((options) => ({
             ...options,
@@ -87,6 +95,7 @@ const Filter = ({
       <Select
         selectedValue={type}
         minWidth={200}
+        size={'md'}
         accessibilityLabel="Select Recipe Type"
         placeholder="Recipe Type"
         onValueChange={(selectedValue) =>
@@ -115,14 +124,18 @@ const Filter = ({
       <Select
         selectedValue={extras}
         minWidth={200}
+        size={'md'}
         accessibilityLabel="Select Extras"
         placeholder="Extras"
         onValueChange={(selectedValue) =>
-          setFilterOptions((options) => ({ ...options, extras: selectedValue }))
+          setFilterOptions((options) => ({
+            ...options,
+            extras: selectedValue,
+          }))
         }
         _selectedItem={{
           bg: '',
-          endIcon: <CheckIcon size={4} />
+          endIcon: <CheckIcon size={4} />,
         }}
       >
         <Select.Item label="" value="" />
@@ -134,6 +147,7 @@ const Filter = ({
       </Select>
       <HStack space={6}>
         <Button
+          bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
           onPress={() => {
             setFilterOptions(() => ({
               diet: '',
@@ -146,6 +160,7 @@ const Filter = ({
           Reset
         </Button>
         <Button
+          bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
           onPress={() => {
             setIsPressed(true);
           }}

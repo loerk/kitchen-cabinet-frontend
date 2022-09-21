@@ -1,6 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { v4 as uuidv4 } from 'uuid';
+
 import { CABINET_ID } from '@env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -14,10 +15,12 @@ import {
   Spinner,
   HStack,
   VStack,
+  Box,
+  useTheme,
+  View,
 } from 'native-base';
-import { EvilIcons } from '@expo/vector-icons';
 
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import {
@@ -29,9 +32,10 @@ import {
 import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
+import { HamburgerMenu } from '../utils/HamburgerMenu';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Dashboard = () => {
-  const navigation = useNavigation();
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
@@ -102,97 +106,84 @@ const Dashboard = () => {
   }, [filterOptions]);
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: bgColor, color: !bgColor }]}
-    >
-      <StatusBar
-        barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
-      />
+    <View>
+      <ScrollView keyboardShouldPersistTaps="handled">
+        <SafeAreaView>
+          <StatusBar
+            barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+          />
+          <HStack>
+            <VStack>
+              <Text style={{ paddingLeft: 18 }}>Welcome</Text>
+              <Heading>{user.username && `${user.username}`}</Heading>
+            </VStack>
+            <Box w={'100%'} justifyContent={'center'} alignItems={'flex-end'}>
+              <HamburgerMenu options={['Profile', 'Favorites']} />
+            </Box>
+            <Divider />
+          </HStack>
 
-      <HStack>
-        <VStack>
-          <Text style={{ paddingLeft: 18 }}>Welcome</Text>
-          <Heading>{user.username && `${user.username}`}</Heading>
-        </VStack>
-        <HStack
-          w={'65%'}
-          space={2}
-          justifyContent={'flex-end'}
-          alignItems={'center'}
-        >
-          <EvilIcons
-            name="heart"
-            size={44}
-            onPress={() => navigation.navigate('Favorites')}
-            color={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
-          />
-          <EvilIcons
-            name="user"
-            size={44}
-            onPress={() => navigation.navigate('Profile')}
-            color={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
-          />
-          {/* <HamburgerMenu options={['Profile', 'Favorites']} /> */}
-        </HStack>
-        <Divider />
-      </HStack>
-      <Center>
-        <HStack alignItems="center">
-          <SearchBar
-            placeholder="Search a recipe"
-            onChangeText={(newValue) => setSearchInput(newValue)}
-            defaultValue={searchInput}
-          />
-          <Ionicons
-            name="options"
-            size={28}
-            color="black"
-            onPress={() => setShowFilters(!showFilters)}
-          />
-        </HStack>
-        {showFilters && (
-          <Filters
-            setMoreFilteredRecipes={setMoreFilteredRecipes}
-            setShowFilters={setShowFilters}
-            recipeIds={recipeIds}
-            setFilterOptions={setFilterOptions}
-            filterOptions={filterOptions}
-          />
-        )}
-        <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
-          Suggested Recipes:{' '}
-          {moreFilteredRecipes?.length
-            ? moreFilteredRecipes.length
-            : searchInput
-            ? searchedRecipes?.length
-            : suggestedRecipes?.length}
-        </Text>
-      </Center>
-      <ScrollView horizontal={true} mt={4}>
-        {moreFilteredRecipes?.length && !searchInput ? (
-          filteredRecipes?.map((filteredRecipe) => {
-            return <RecipeCard key={filteredRecipe.id} item={filteredRecipe} />;
-          })
-        ) : searchInput ? (
-          searchedRecipes?.map((searchedRecipe) => {
-            return <RecipeCard key={searchedRecipe.id} item={searchedRecipe} />;
-          })
-        ) : !searchInput && itemNames && !searchedRecipes.length ? (
-          suggestedRecipes?.map((suggestedRecipe) => {
-            return (
-              <RecipeCard key={suggestedRecipe.id} item={suggestedRecipe} />
-            );
-          })
-        ) : (
-          <Text>Your cabinet is empty. Add an item.</Text>
-        )}
+          <HStack
+            mt={7}
+            alignItems="center"
+            justifyContent={'center'}
+            w={'100%'}
+            space={2}
+          >
+            <SearchBar
+              placeholder="Search a recipe"
+              onChangeText={(newValue) => setSearchInput(newValue)}
+              defaultValue={searchInput}
+            />
+            <AntDesign
+              name="filter"
+              size={28}
+              color="black"
+              onPress={() => setShowFilters(!showFilters)}
+            />
+          </HStack>
+          <Center mt={5}>
+            {showFilters && (
+              <Filters
+                setMoreFilteredRecipes={setMoreFilteredRecipes}
+                setShowFilters={setShowFilters}
+                recipeIds={recipeIds}
+                setFilterOptions={setFilterOptions}
+                filterOptions={filterOptions}
+              />
+            )}
+            <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
+              Suggested Recipes:{' '}
+              {moreFilteredRecipes?.length
+                ? moreFilteredRecipes.length
+                : searchInput
+                ? searchedRecipes?.length
+                : suggestedRecipes?.length}
+            </Text>
+          </Center>
+          <ScrollView horizontal={true} mt={4}>
+            {moreFilteredRecipes?.length && !searchInput ? (
+              filteredRecipes?.map((filteredRecipe) => {
+                return <RecipeCard key={uuidv4()} item={filteredRecipe} />;
+              })
+            ) : searchInput ? (
+              searchedRecipes?.map((searchedRecipe) => {
+                return <RecipeCard key={uuidv4()} item={searchedRecipe} />;
+              })
+            ) : !searchInput && itemNames && !searchedRecipes.length ? (
+              suggestedRecipes?.map((suggestedRecipe) => {
+                return <RecipeCard key={uuidv4()} item={suggestedRecipe} />;
+              })
+            ) : (
+              <Text>Your cabinet is empty. Add an item.</Text>
+            )}
 
-        {isLoadingRecipes && <Spinner text="Loading..." />}
+            {isLoadingRecipes && <Spinner text="Loading..." />}
+          </ScrollView>
+        </SafeAreaView>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({ container: { flex: 1 } });
 
 export default Dashboard;

@@ -40,6 +40,7 @@
     "react-native-svg": "12.3.0",
     "react-redux": "^8.0.2",
     "rn-content-loader": "^0.0.6",
+    "uuid": "^9.0.0",
     "victory-native": "^36.6.7"
   },
   "devDependencies": {
