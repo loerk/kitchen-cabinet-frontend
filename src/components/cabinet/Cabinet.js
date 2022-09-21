@@ -229,10 +229,10 @@ const Cabinet = () => {
                   <>
                     <HStack
                       bg={
-                        aboutToExpire
-                          ? 'orange.100'
-                          : isExpired
+                        isExpired
                           ? 'red.100'
+                          : aboutToExpire
+                          ? 'orange.100'
                           : null
                       }
                       flex={1}
@@ -263,9 +263,20 @@ const Cabinet = () => {
                           </Text>
                           <Text fontSize="sm">
                             {'Expiry Date: \n'}
-                            {isTwoWeeksLeft
-                              ? `${remainingDaysLeft} days left`
-                              : expiryDate.split('-').reverse().join('-')}
+                            {isTwoWeeksLeft ? (
+                              remainingDaysLeft >= 0 ? (
+                                `${remainingDaysLeft} day${
+                                  remainingDaysLeft !== 1 ? 's' : ''
+                                } left`
+                              ) : (
+                                <Text style={{ color: 'red' }}>
+                                  {Math.abs(remainingDaysLeft)} day
+                                  {remainingDaysLeft !== -1 ? 's' : ''} ago
+                                </Text>
+                              )
+                            ) : (
+                              expiryDate.split('-').reverse().join('-')
+                            )}
                           </Text>
                         </View>
                       </Box>
@@ -295,7 +306,18 @@ const Cabinet = () => {
                             }}
                           />
                         </HStack>
-                        {aboutToExpire && (
+                        {isExpired ? (
+                          <HStack mt={1}>
+                            <MaterialIcons
+                              name="dangerous"
+                              size={20}
+                              color="red"
+                            />
+                            <Text color="red.500" fontSize="sm">
+                              Expired!
+                            </Text>
+                          </HStack>
+                        ) : aboutToExpire ? (
                           <HStack mt={1}>
                             <AntDesign
                               name="warning"
@@ -307,19 +329,7 @@ const Cabinet = () => {
                               Expiring!
                             </Text>
                           </HStack>
-                        )}
-                        {isExpired && (
-                          <HStack mt={1}>
-                            <MaterialIcons
-                              name="dangerous"
-                              size={20}
-                              color="red"
-                            />
-                            <Text color="red.500" fontSize="sm">
-                              Expired!
-                            </Text>
-                          </HStack>
-                        )}
+                        ) : null}
                       </Box>
                     </HStack>
                     <Divider
