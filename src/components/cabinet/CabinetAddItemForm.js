@@ -1,5 +1,4 @@
 import {
-  HStack,
   Center,
   View,
   Text,
@@ -8,7 +7,6 @@ import {
   useColorMode,
   AlertDialog,
   Box,
-  VStack,
 } from 'native-base';
 import { CABINET_ID } from '@env';
 import { EvilIcons } from '@expo/vector-icons';
@@ -19,7 +17,7 @@ import { useAddItemMutation } from '../../features/api/apiSlice';
 /* import DateTimePicker from '../utils/DateTimePicker';*/
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
-console.log(CABINET_ID);
+
 const date = new Date();
 const INITIAL_DATE = `${date.getFullYear()}-${String(
   date.getMonth() + 1
@@ -58,10 +56,10 @@ export const CabinetAddItemForm = () => {
     <View>
       <ScrollView>
         <Center mt={'20%'}>
-          <Text size="md" py={4} bold>
+          <Text size="md" pt={4} bold>
             Please select an Item
           </Text>
-
+          <Text pb={4}>(Type 3+ letters)</Text>
           <CabinetSelectItemAutocomplete
             setSelectedIngredient={setSelectedIngredient}
             selectedIngredient={selectedIngredient}

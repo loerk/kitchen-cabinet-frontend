@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { BASE_URL } from '@env';
 
-import React, { memo, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
 import Feather from 'react-native-vector-icons/Feather';
-import { Box, Center, useTheme } from 'native-base';
+import { Box } from 'native-base';
 Feather.loadFont();
 
 export const CabinetSelectItemAutocomplete = ({
@@ -35,7 +35,6 @@ export const CabinetSelectItemAutocomplete = ({
       setLoading(false);
     }
   }, []);
-  const { colors } = useTheme();
   return (
     <View flex={1} alignItems={'center'}>
       <Box
@@ -74,12 +73,13 @@ export const CabinetSelectItemAutocomplete = ({
             height: 30,
             alignSelf: 'center',
           }}
-          // inputContainerStyle={{
-          //   borderWidth: '1',
-          //   borderColor: 'black',
-          //   backgroundColor: '#fff',
-          //   width: 200,
-          // }}
+          inputContainerStyle={{
+            //borderWidth: '1',
+            //borderColor: '#891D4740',
+
+            backgroundColor: '#891D4710',
+            // width: 200,
+          }}
           containerStyle={{ flexGrow: 1, flexShrink: 1 }}
           ChevronIconComponent={
             <Feather name="chevron-down" size={20} color="#383b42" />

@@ -6,10 +6,10 @@ import {
   ScrollView,
   Spinner,
   StatusBar,
-  Text,
   useColorMode,
 } from 'native-base';
 import { CABINET_ID } from '@env';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useState } from 'react';
 import SearchBar from './utils/SearchBar';
@@ -36,32 +36,32 @@ const Favorites = () => {
   }, [searchInput]);
   if (isLoading) return <Spinner />;
   return (
-    <SafeAreaView>
-      <StatusBar
-        barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
-      />
-      {/* <Text size={'lg'} bold textAlign={'center'}>
-        Your Favorites
-      </Text> */}
-      <Divider />
-
-      <Center>
-        <SearchBar
-          placeholder="Search a recipe"
-          onChangeText={(newValue) => setSearchInput(newValue)}
-          defaultValue={searchInput}
+    <ScrollView keyboardShouldPersistTaps="handled" bg={'#FCF5EA'}>
+      <SafeAreaView>
+        <StatusBar
+          barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
         />
-      </Center>
-      <ScrollView mt={4}>
-        {searchInput
-          ? searchedRecipes?.map((recipe) => (
-              <RecipeCard key={recipe.id} item={recipe} />
-            ))
-          : favouriteRecipes?.map((recipe) => (
-              <RecipeCard key={recipe.id} item={recipe} />
-            ))}
-      </ScrollView>
-    </SafeAreaView>
+
+        <Divider />
+
+        <Center>
+          <SearchBar
+            placeholder="Search a recipe"
+            onChangeText={(newValue) => setSearchInput(newValue)}
+            defaultValue={searchInput}
+          />
+        </Center>
+        <ScrollView mt={4}>
+          {searchInput
+            ? searchedRecipes?.map((recipe) => (
+                <RecipeCard key={uuidv4()} item={recipe} />
+              ))
+            : favouriteRecipes?.map((recipe) => (
+                <RecipeCard key={uuidv4()} item={recipe} />
+              ))}
+        </ScrollView>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
