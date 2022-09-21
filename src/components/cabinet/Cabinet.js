@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   HStack,
-  VStack,
   Image,
   Center,
   useToast,
   Pressable,
-  Badge,
   Divider,
-  Alert,
   View,
   ScrollView,
   Text,
@@ -222,10 +219,22 @@ const Cabinet = () => {
               .map(({ _id: id, name, image, expiryDate }) => {
                 const isExpired =
                   +new Date(CURRENT_DATE) > +new Date(expiryDate);
+                const remainingDaysLeft = Math.round(
+                  (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
+                    (1000 * 60 * 60 * 24)
+                );
+                const isTwoWeeksLeft = remainingDaysLeft <= 14;
+                const aboutToExpire = remainingDaysLeft < 5;
                 return (
                   <>
                     <HStack
-                      bg={isExpired ? 'red.100' : null}
+                      bg={
+                        aboutToExpire
+                          ? 'orange.100'
+                          : isExpired
+                          ? 'red.100'
+                          : null
+                      }
                       flex={1}
                       justifyContent={'space-between'}
                       space={3}
@@ -254,12 +263,14 @@ const Cabinet = () => {
                           </Text>
                           <Text fontSize="sm">
                             {'Expiry Date: \n'}
-                            {expiryDate.split('-').reverse().join('-')}
+                            {isTwoWeeksLeft
+                              ? `${remainingDaysLeft} days left`
+                              : expiryDate.split('-').reverse().join('-')}
                           </Text>
                         </View>
                       </Box>
                       <Box alignItems="center">
-                        <HStack space={4} alignItems="center">
+                        <HStack space={4} alignItems="center" mt={5}>
                           <FontAwesome5
                             name="edit"
                             size={20}
@@ -284,6 +295,19 @@ const Cabinet = () => {
                             }}
                           />
                         </HStack>
+                        {aboutToExpire && (
+                          <HStack mt={1}>
+                            <AntDesign
+                              name="warning"
+                              size={20}
+                              color="darkorange"
+                            />
+                            <Text color="orange.400" fontSize="sm">
+                              {' '}
+                              Expiring!
+                            </Text>
+                          </HStack>
+                        )}
                         {isExpired && (
                           <HStack mt={1}>
                             <MaterialIcons
