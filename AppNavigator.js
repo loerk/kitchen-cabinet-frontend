@@ -18,6 +18,7 @@ import { AuthContext } from './src/authNavigation/AuthProvider';
 
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
 import Favorites from './src/components/Favorites';
+import { useTheme } from 'native-base';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
+  const { colors } = useTheme();
   // Handle user state changes
   function AuthStateChanged(user) {
     setUser(user);
@@ -66,16 +68,16 @@ const AppNavigator = () => {
                 />
               );
             },
-            // headerShown: false,
-            tabBarActiveTintColor: '#891D47',
-            tabBarInactiveTintColor: 'gray',
+            headerShown: false,
+            tabBarActiveTintColor: colors.primary,
+            tabBarInactiveTintColor: colors.gray,
             tabBarStyle: { height: '10%' },
             tabBarItemStyle: { padding: 5 },
 
             headerStyle: {
-              backgroundColor: '#FCF5EA',
+              backgroundColor: colors.secondary,
             },
-            headerTintColor: '#891D47',
+            headerTintColor: colors.primary,
             headerTitleStyle: {
               fontWeight: 'bold',
             },
@@ -98,27 +100,27 @@ export default AppNavigator;
 
 export const DashboardScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Dashboard">
+    <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="Dashboard"
         component={Dashboard}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
+        options={{
+          headerBackTitleVisible: false,
+        }}
         name="Profile"
         component={Profile}
-        options={{
-          headerShown: false,
-        }}
       />
       <Stack.Screen
+        options={{
+          headerBackTitleVisible: false,
+        }}
         name="Favorites"
         component={Favorites}
-        options={{
-          headerShown: false,
-        }}
       />
     </Stack.Navigator>
   );
