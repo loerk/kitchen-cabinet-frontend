@@ -15,9 +15,8 @@ import {
   HStack,
   VStack,
 } from 'native-base';
-import { EvilIcons } from '@expo/vector-icons';
 
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import {
@@ -29,6 +28,7 @@ import {
 import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
+import { HamburgerMenu } from '../utils/HamburgerMenu';
 
 const Dashboard = () => {
   const navigation = useNavigation();
