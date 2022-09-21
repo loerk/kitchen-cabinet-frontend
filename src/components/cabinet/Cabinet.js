@@ -19,11 +19,11 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
   FontAwesome5,
-  AntDesign
+  AntDesign,
 } from '@expo/vector-icons';
 import { Keyboard } from 'react-native';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-
 
 // environment variable
 import { CABINET_ID } from '@env';
@@ -223,13 +223,15 @@ const Cabinet = () => {
               )}
               {filteredItems ? (
                 filteredItems
-                  .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
+                  .sort(
+                    (a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate)
+                  )
                   .map(({ _id: id, name, image, expiryDate }) => {
                     const isExpired =
                       +new Date(CURRENT_DATE) > +new Date(expiryDate);
                     const remainingDaysLeft = Math.round(
                       (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
-                      (1000 * 60 * 60 * 24)
+                        (1000 * 60 * 60 * 24)
                     );
                     const isTwoWeeksLeft = remainingDaysLeft <= 14;
                     const aboutToExpire = remainingDaysLeft < 5;
@@ -240,8 +242,8 @@ const Cabinet = () => {
                             isExpired
                               ? 'red.100'
                               : aboutToExpire
-                                ? 'orange.100'
-                                : null
+                              ? 'orange.100'
+                              : null
                           }
                           flex={1}
                           justifyContent={'space-between'}
@@ -261,7 +263,6 @@ const Cabinet = () => {
                             />
 
                             <Text bold ml={6}>
-
                               {name
                                 .split(' ')
                                 .map(
@@ -274,7 +275,8 @@ const Cabinet = () => {
                               {'Expiry Date: \n'}
                               {isTwoWeeksLeft ? (
                                 remainingDaysLeft >= 0 ? (
-                                  `${remainingDaysLeft} day${remainingDaysLeft !== 1 ? 's' : ''
+                                  `${remainingDaysLeft} day${
+                                    remainingDaysLeft !== 1 ? 's' : ''
                                   } left`
                                 ) : (
                                   <Text style={{ color: 'red' }}>
@@ -286,7 +288,6 @@ const Cabinet = () => {
                                 expiryDate.split('-').reverse().join('/')
                               )}
                             </Text>
-
                           </Box>
                           <Box alignItems="center">
                             <HStack space={4} alignItems="center" mt={5}>
@@ -298,7 +299,8 @@ const Cabinet = () => {
                                   setToBeEdited({
                                     id,
                                     name:
-                                      name.charAt(0).toUpperCase() + name.slice(1),
+                                      name.charAt(0).toUpperCase() +
+                                      name.slice(1),
                                     expiryDate,
                                   });
                                   setIsOpenEditForm(!isOpenEditForm);
@@ -315,34 +317,32 @@ const Cabinet = () => {
                               />
                             </HStack>
 
-                            {
-                              isExpired ? (
-                                <HStack mt={1}>
-                                  <MaterialIcons
-                                    name="dangerous"
-                                    size={20}
-                                    color="red"
-                                  />
-                                  <Text color="red.500" fontSize="sm">
-                                    Expired!
-                                  </Text>
-                                </HStack>
-                              ) : aboutToExpire ? (
-                                <HStack mt={1}>
-                                  <AntDesign
-                                    name="warning"
-                                    size={20}
-                                    color="darkorange"
-                                  />
-                                  <Text color="orange.400" fontSize="sm">
-                                    {' '}
-                                    Expiring!
-                                  </Text>
-                                </HStack>
-                              ) : null
-                            }
-                          </Box >
-                        </HStack >
+                            {isExpired ? (
+                              <HStack mt={1}>
+                                <MaterialIcons
+                                  name="dangerous"
+                                  size={20}
+                                  color="red"
+                                />
+                                <Text color="red.500" fontSize="sm">
+                                  Expired!
+                                </Text>
+                              </HStack>
+                            ) : aboutToExpire ? (
+                              <HStack mt={1}>
+                                <AntDesign
+                                  name="warning"
+                                  size={20}
+                                  color="darkorange"
+                                />
+                                <Text color="orange.400" fontSize="sm">
+                                  {' '}
+                                  Expiring!
+                                </Text>
+                              </HStack>
+                            ) : null}
+                          </Box>
+                        </HStack>
                         <Divider
                           _light={{
                             bg: 'muted.800',
@@ -357,7 +357,7 @@ const Cabinet = () => {
               ) : isLoading ? (
                 <Spinner text="Loading..." />
               ) : null}
-            </Box >
+            </Box>
             {/*  {isSuccessEdit && onOpenSuccessMsg()}
         <Alert w='100%' variant='solid' colorScheme='success' status='success' isOpen={isSuccessMsgOpen} onClose={onSuccessMsgClose}>
           <VStack space={2} flexShrink={1} w='100%'>
@@ -376,12 +376,10 @@ const Cabinet = () => {
             </HStack>
           </VStack>
         </Alert> */}
-
           </ScrollView>
-        </Center >
-      </View >
-    </TouchableWithoutFeedback >
-
+        </Center>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
