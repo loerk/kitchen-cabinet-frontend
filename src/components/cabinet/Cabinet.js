@@ -223,12 +223,6 @@ const Cabinet = () => {
                   +new Date(CURRENT_DATE) > +new Date(expiryDate);
                 return (
                   <>
-                    {isExpired && (
-                      <HStack alignItems="center" mb={1}>
-                        <MaterialIcons name="dangerous" size={30} color="red" />
-                        <Text color="red.500">Expired!</Text>
-                      </HStack>
-                    )}
                     <HStack
                       bg={isExpired ? 'red.100' : null}
                       flex={1}
@@ -263,7 +257,7 @@ const Cabinet = () => {
                           </Text>
                         </View>
                       </Box>
-                      <Box>
+                      <Box alignItems="center" mr={2}>
                         <HStack space={4} alignItems="center">
                           <FontAwesome5
                             name="edit"
@@ -289,6 +283,18 @@ const Cabinet = () => {
                             }}
                           />
                         </HStack>
+                        {isExpired && (
+                          <HStack alignItems="center" mt={1}>
+                            <MaterialIcons
+                              name="dangerous"
+                              size={20}
+                              color="red"
+                            />
+                            <Text color="red.500" fontSize="sm">
+                              Expired!
+                            </Text>
+                          </HStack>
+                        )}
                       </Box>
                     </HStack>
                     <Divider
