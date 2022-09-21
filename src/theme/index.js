@@ -51,7 +51,7 @@ export default customTheme = extendTheme({
     View: {
       defaultProps: {
         paddingTop: '10%',
-        backgroundColor: 'white',
+        backgroundColor: '#FCF5EA',
         minHeight: '100%',
 
         /* fontFamily: 'Arial', */
@@ -93,10 +93,10 @@ export default customTheme = extendTheme({
           fontSize: '64px',
         },
         lg: {
-          fontSize: '32px',
+          fontSize: '24px',
         },
         md: {
-          fontSize: '16px',
+          fontSize: '18px',
         },
         sm: {
           fontSize: '12px',
