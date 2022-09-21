@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
 import { FlatList, Text, View } from 'native-base';
 import { VictoryPie } from 'victory-native';
-// environment variable
-import { CABINET_ID } from '@env';
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 import { useGetCabinetItemsQuery } from '../../features/api/apiSlice';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function Diagrams() {
+  const { cabinetId } = useContext(AuthContext);
   const { width } = Dimensions.get('window');
   const [selectedCategory, setSelectedCategory] = useState('');
   const {
@@ -16,7 +17,7 @@ export default function Diagrams() {
     isSuccess,
     isError,
     error,
-  } = useGetCabinetItemsQuery(CABINET_ID);
+  } = useGetCabinetItemsQuery(cabinetId);
   const colorScale = [
     '#3b85c0',
     '#fb7b8b',

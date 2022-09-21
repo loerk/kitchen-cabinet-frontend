@@ -47,23 +47,23 @@ export const apiSlice = createApi({
       }),
     }),
     addItem: builder.mutation({
-      query: ({ CABINET_ID, id, expiryDate }) => ({
+      query: ({ cabinetId, id, expiryDate }) => ({
         url: 'cabinet/items/',
         method: 'POST',
-        body: { CABINET_ID, id, expiryDate },
+        body: { cabinetId, id, expiryDate },
       }),
       invalidatesTags: ['Items'],
     }),
     addFavouriteRecipe: builder.mutation({
-      query: ({ CABINET_ID, recipeId }) => ({
-        url: `/cabinet/favourite/${CABINET_ID}`,
+      query: ({ cabinetId, recipeId }) => ({
+        url: `/cabinet/favourite/${cabinetId}`,
         method: 'PUT',
         body: { recipeId },
       }),
     }),
     addShoppinglist: builder.mutation({
-      query: ({ CABINET_ID, shoppinglist }) => ({
-        url: `/cabinet/shoppinglist/${CABINET_ID}`,
+      query: ({ cabinetId, shoppinglist }) => ({
+        url: `/cabinet/shoppinglist/${cabinetId}`,
         method: 'PUT',
         body: { shoppinglist },
       }),

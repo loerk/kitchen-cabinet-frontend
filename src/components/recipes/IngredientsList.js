@@ -9,16 +9,18 @@ import {
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import { useAddShoppinglistMutation } from '../../features/api/apiSlice';
-import { CABINET_ID } from '@env';
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 export const IngredientsList = ({
   missingIngredientsNames,
   usedIngredientsNames,
   ingredients,
 }) => {
+  const { cabinetId } = useContext(AuthContext);
   const [shoppinglist, setShoppinglist] = useState();
   const [addShoppinglist, { isSuccess, isLoading }] =
     useAddShoppinglistMutation();
@@ -43,7 +45,7 @@ export const IngredientsList = ({
   }, []);
 
   const addToShoppinglist = () => {
-    addShoppinglist({ CABINET_ID, shoppinglist });
+    addShoppinglist({ cabinetId, shoppinglist });
   };
   if (!ingredients) return;
   return (
