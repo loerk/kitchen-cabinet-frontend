@@ -7,8 +7,13 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   tagTypes: ['Items'],
   endpoints: (builder) => ({
+    // id: cabinet ID
     getCabinetById: builder.query({
       query: (id) => `/cabinet/${id}`,
+    }),
+    getCabinetByUid: builder.query({
+      // uid: user ID
+      query: (uid) => `/cabinet/uid/${uid}`,
     }),
     getCabinetItems: builder.query({
       query: (id) => `/cabinet/items/all/${id}`,
@@ -96,6 +101,7 @@ export const apiSlice = createApi({
 
 export const {
   useGetCabinetByIdQuery,
+  useGetCabinetByUidQuery,
   useGetCabinetItemsQuery,
   useGetCabinetItemQuery,
   useGetFilteredRecipesQuery,

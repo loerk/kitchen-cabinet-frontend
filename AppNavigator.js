@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
   const colorMode = useColorMode();

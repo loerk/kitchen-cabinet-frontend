@@ -4,15 +4,29 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../../firebase';
-import { useAddCabinetMutation } from '../features/api/apiSlice';
+import {
+  useAddCabinetMutation,
+  useGetCabinetByUidQuery,
+} from '../features/api/apiSlice';
+import { skipToken } from '@reduxjs/toolkit/query/react';
 
 export const AuthContext = createContext({});
 
+// eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [uid, setUid] = useState(null);
   const [addCabinet] = useAddCabinetMutation();
+  // eslint-disable-next-line no-unused-vars
+  const { data: cabinetId } = useGetCabinetByUidQuery(uid ? uid : skipToken);
+
+  useEffect(() => {
+    if (user !== null) {
+      setUid(user.uid);
+    }
+  });
 
   const handleRegister = async (email, password, username) => {
     try {
@@ -33,9 +47,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = async (email, password, uid) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const signedIn = await signInWithEmailAndPassword(auth, email, password);
+      if (signedIn) {
+        // eslint-disable-next-line no-unused-vars
+        setUid((uid = auth.currentUser.uid));
+      }
     } catch (error) {
       alert(error.message);
       console.log(error.message);
@@ -58,6 +76,7 @@ export const AuthProvider = ({ children }) => {
         handleLogin,
         handleRegister,
         handleLogout,
+        cabinetId,
       }}
     >
       {children}

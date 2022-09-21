@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useContext,
+} from 'react';
 import {
   HStack,
   Image,
@@ -16,12 +22,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-// environment variable
-import { CABINET_ID } from '@env';
-
 // custom components
 import SearchBar from '../utils/SearchBar';
 import DatePicker from '../utils/DatePicker';
+
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 import {
   useGetCabinetItemsQuery,
@@ -35,6 +41,7 @@ const INITIAL_DATE = `${date.getFullYear()}-${String(
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 const Cabinet = () => {
+  const { cabinetId } = useContext(AuthContext);
   const [searchInput, setSearchInput] = useState('');
   const [filteredItems, setFilteredItems] = useState(''); // based on search input
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
@@ -62,7 +69,7 @@ const Cabinet = () => {
     isSuccess,
     isError,
     error,
-  } = useGetCabinetItemsQuery(CABINET_ID); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
+  } = useGetCabinetItemsQuery(cabinetId); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
 
   const [
     editCabinetItem,

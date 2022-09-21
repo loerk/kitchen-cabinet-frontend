@@ -115,7 +115,7 @@ export const RecipeDetails = ({
                   }}
                 >
                   <Text bold>ready in</Text>
-                  <Text pt={5} bold style={{ fontSize: '35%' }}>
+                  <Text pt={5} bold /* style={{ fontSize: '35%' }} */>
                     {recipeDetails.readyInMinutes}
                   </Text>
                 </Box>
@@ -180,7 +180,7 @@ export const RecipeDetails = ({
                           <Text
                             maxW={'90%'}
                             mb={10}
-                            style={{ fontSize: '19rem' }}
+                            /* style={{ fontSize: '19rem' }} */
                           >
                             {step.step}
                           </Text>
