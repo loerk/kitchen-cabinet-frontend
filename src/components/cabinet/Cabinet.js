@@ -12,9 +12,12 @@ import {
   Button,
   Box,
 } from 'native-base';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import {
+  MaterialCommunityIcons,
+  FontAwesome5,
+  AntDesign,
+} from '@expo/vector-icons';
+import { Keyboard } from 'react-native';
 import { v4 as uuidv4 } from 'uuid';
 
 // environment variable
@@ -29,6 +32,7 @@ import {
   useDeleteItemMutation,
   useEditItemMutation,
 } from '../../features/api/apiSlice';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const date = new Date();
 const INITIAL_DATE = `${date.getFullYear()}-${String(
@@ -186,86 +190,88 @@ const Cabinet = () => {
   );
 
   return (
-    <View>
-      <EditForm />
-      <ConfirmDelete />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View keyboardShouldPersistTaps="handled">
+        <EditForm />
+        <ConfirmDelete />
 
-      <Center>
-        <HStack alignItems="center" mb={5}>
-          <SearchBar
-            placeholder="Search an item"
-            onChangeText={(newValue) => setSearchInput(newValue)}
-            defaultValue={searchInput}
-          />
-        </HStack>
-        <ScrollView w={'80%'} pr={4}>
-          <Box>
-            {isSuccess && cabinetItems.length === 0 && (
-              <Text>Your cabinet is empty. Add an item.</Text>
-            )}
-            {filteredItems ? (
-              filteredItems
-                .sort(
-                  (a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate)
-                )
-                .map(({ _id: id, name, image, expiryDate }) => (
-                  <HStack
-                    flex={1}
-                    justifyContent={'space-between'}
-                    space={3}
-                    mb={4}
-                    alignItems="center"
-                    key={uuidv4()}
-                  >
-                    <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                      <Image
-                        source={{
-                          uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
-                        }}
-                        // borderRadius={'100'}
-                        alt={name}
-                        size="sm"
-                      />
-                      <Text ml={6}>
-                        {name.charAt(0).toUpperCase() + name.slice(1)}
-                      </Text>
-                    </Box>
-                    <Box>
-                      <HStack space={4}>
-                        <FontAwesome5
-                          name="edit"
-                          size={20}
-                          color="black"
-                          onPress={() => {
-                            setToBeEdited({
-                              id,
-                              name:
-                                name.charAt(0).toUpperCase() + name.slice(1),
-                              expiryDate,
-                            });
-                            setIsOpenEditForm(!isOpenEditForm);
+        <Center>
+          <HStack alignItems="center" mb={5}>
+            <SearchBar
+              placeholder="Search an item"
+              onChangeText={(newValue) => setSearchInput(newValue)}
+              defaultValue={searchInput}
+            />
+          </HStack>
+          <ScrollView w={'80%'} pr={4}>
+            <Box>
+              {isSuccess && cabinetItems.length === 0 && (
+                <Text>Your cabinet is empty. Add an item.</Text>
+              )}
+              {filteredItems ? (
+                filteredItems
+                  .sort(
+                    (a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate)
+                  )
+                  .map(({ _id: id, name, image, expiryDate }) => (
+                    <HStack
+                      flex={1}
+                      justifyContent={'space-between'}
+                      space={3}
+                      mb={4}
+                      alignItems="center"
+                      key={uuidv4()}
+                    >
+                      <Box flex={1} flexDir={'row'} alignItems={'center'}>
+                        <Image
+                          source={{
+                            uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
                           }}
+                          // borderRadius={'100'}
+                          alt={name}
+                          size="sm"
                         />
-                        <AntDesign
-                          name="delete"
-                          size={23}
-                          color="black"
-                          onPress={() => {
-                            setToBeDeleted({ id, name });
-                            setIsOpenDeleteAlert(!isOpenDeleteAlert);
-                          }}
-                        />
-                      </HStack>
-                    </Box>
-                  </HStack>
-                ))
-            ) : isLoading ? (
-              <Spinner text="Loading..." />
-            ) : null}
-          </Box>
-        </ScrollView>
-      </Center>
-    </View>
+                        <Text ml={6}>
+                          {name.charAt(0).toUpperCase() + name.slice(1)}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <HStack space={4}>
+                          <FontAwesome5
+                            name="edit"
+                            size={20}
+                            color="black"
+                            onPress={() => {
+                              setToBeEdited({
+                                id,
+                                name:
+                                  name.charAt(0).toUpperCase() + name.slice(1),
+                                expiryDate,
+                              });
+                              setIsOpenEditForm(!isOpenEditForm);
+                            }}
+                          />
+                          <AntDesign
+                            name="delete"
+                            size={23}
+                            color="black"
+                            onPress={() => {
+                              setToBeDeleted({ id, name });
+                              setIsOpenDeleteAlert(!isOpenDeleteAlert);
+                            }}
+                          />
+                        </HStack>
+                      </Box>
+                    </HStack>
+                  ))
+              ) : isLoading ? (
+                <Spinner text="Loading..." />
+              ) : null}
+            </Box>
+          </ScrollView>
+        </Center>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
