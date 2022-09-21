@@ -12,6 +12,8 @@ import {
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
+import { v4 as uuidv4 } from 'uuid';
+
 // import RenderHtml from 'react-native-render-html';
 import {
   useAddFavouriteRecipeMutation,
@@ -40,59 +42,11 @@ export const RecipeDetails = ({
   };
 
   const steps = recipeDetails?.analyzedInstructions[0]?.steps;
-
-  // const { title, summary, image, instructions, steps } = recipeDetails;
-  // const summary = recipeDetails?.summary.split('. ');
-  // summary?.splice(-2, 2);
-  // summary?.unshift('<ul>');
-  // summary?.push('</ul>');
-  // const newSummary = summary
-  //   ?.map((item, index) => {
-  //     if (index !== summary?.length - 1 && index !== 0)
-  //       return `<li> ${item}. </li><hr>`;
-  //     return item;
-  //   })
-  //   .filter((_, index) => {
-  //     return index !== 3 && index !== 5 && index !== 2;
-  //   });
-
-  // const source = {
-  //   html: recipeDetails?.summary && newSummary?.join(' ') + '.',
-  // };
-  // const handlePress = () => {
-  //   console.log('pressed');
-  // };
   if (isLoading) return <Spinner text="Loading..." />;
   return (
     recipeDetails && (
       // <Center pt={20}>
       <View w={width}>
-        {/* <Button
-          onPress={handlePress}
-          opacity={0.7}
-          style={{
-            zIndex: 999,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowOpacity: 0.27,
-            shadowRadius: 4.65,
-            right: 5,
-            elevation: 6,
-          }}
-          position={'absolute'}
-          // right={5}
-          top={0}
-          mt={4}
-          p={3}
-          borderRadius={60 / 2}
-          w={'60'}
-          h={'60'}
-        >
-          GO
-        </Button> */}
         <ScrollView mb={35}>
           <Box flex={1}>
             <Box>
@@ -140,14 +94,6 @@ export const RecipeDetails = ({
                     ingredients={recipeDetails.extendedIngredients}
                   />
                 )}
-                {/* <Box mb={40}>
-                  <RenderHtml
-                    tagsStyles={tagsStyles}
-                    contentWidth={width}
-                    source={source}
-                    enableExperimentalMarginCollapsing={true}
-                  />
-                </Box> */}
                 <Box
                   mb={40}
                   mt={10}
@@ -158,7 +104,7 @@ export const RecipeDetails = ({
                 >
                   {steps ? (
                     steps.map((step) => (
-                      <HStack w={'80%'} space={4} key={step.number * 54}>
+                      <HStack w={'80%'} space={4} key={uuidv4()}>
                         <Text size={'lg'} bold>
                           {step.number}/
                         </Text>
@@ -170,7 +116,7 @@ export const RecipeDetails = ({
                             <VStack mb={3}>
                               {step.ingredients.length ? (
                                 step.ingredients?.map((ingredient) => (
-                                  <Text>{ingredient.name}</Text>
+                                  <Text key={uuidv4()}>{ingredient.name}</Text>
                                 ))
                               ) : (
                                 <Text>all Ingredients</Text>
