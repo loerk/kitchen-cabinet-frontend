@@ -39,7 +39,7 @@ export const apiSlice = createApi({
     getRecipeInstructions: builder.query({
       query: (id) => `/recipes/instructions/${id}`,
     }),
-    getFavorites: builder.query({<<<<<<< authentication-dev2
+    getFavorites: builder.query({
       query: (id) => `/cabinet/favorites/${id}`,
     }),
     getShoppinglist: builder.query({
