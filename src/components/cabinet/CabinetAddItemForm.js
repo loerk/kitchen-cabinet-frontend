@@ -1,5 +1,4 @@
 import {
-  HStack,
   Center,
   View,
   Text,
@@ -7,6 +6,7 @@ import {
   ScrollView,
   useColorMode,
   AlertDialog,
+  Box,
 } from 'native-base';
 
 import { EvilIcons } from '@expo/vector-icons';
@@ -17,7 +17,6 @@ import { useAddItemMutation } from '../../features/api/apiSlice';
 /* import DateTimePicker from '../utils/DateTimePicker';*/
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
-
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
@@ -57,20 +56,19 @@ export const CabinetAddItemForm = () => {
   };
 
   return (
-    <>
+    <View>
       <ScrollView>
-        <Center>
-          <Text size="md" py={4} bold>
+        <Center mt={'20%'}>
+          <Text size="md" pt={4} bold>
             Please select an Item
           </Text>
-        </Center>
-        <CabinetSelectItemAutocomplete
-          setSelectedIngredient={setSelectedIngredient}
-          selectedIngredient={selectedIngredient}
-        />
-        <View>
-          <HStack justifyContent="center" alignItems="flex-end">
-            <Text bold size="md" pb={2}>
+          <Text pb={4}>(Type 3+ letters)</Text>
+          <CabinetSelectItemAutocomplete
+            setSelectedIngredient={setSelectedIngredient}
+            selectedIngredient={selectedIngredient}
+          />
+          <Box flex={1} alignItems={'center'}>
+            <Text bold size="md" pb={5}>
               Pick an expiry Date
             </Text>
             <EvilIcons
@@ -79,67 +77,68 @@ export const CabinetAddItemForm = () => {
               color="black"
               onPress={() => setIsOpenCalendar(!isOpenCalendar)}
             />
-          </HStack>
-          {selectedIngredient.expiryDate ? (
-            <Center>
-              <Text>{selectedIngredient.expiryDate}</Text>
-            </Center>
-          ) : null}
-          <AlertDialog
-            leastDestructiveRef={cancelRef}
-            isOpen={isOpenCalendar}
-            onClose={closeCalendar}
-          >
-            <AlertDialog.Content>
-              <AlertDialog.CloseButton />
-              <AlertDialog.Header></AlertDialog.Header>
-              <AlertDialog.Body>
-                <DatePicker
-                  INITIAL_DATE={INITIAL_DATE}
-                  onDayPress={onDayPress}
-                  selected={selected}
-                />
-              </AlertDialog.Body>
-              <AlertDialog.Footer>
-                <Button
-                  onPress={() => {
-                    setSelectedIngredient((prevObj) => ({
-                      ...prevObj,
-                      expiryDate: selected,
-                    }));
-                    closeCalendar();
-                  }}
-                >
-                  Set Date
-                </Button>
-              </AlertDialog.Footer>
-            </AlertDialog.Content>
-          </AlertDialog>
 
-          {isLoading ? (
-            <Button
-              isLoading
-              cursor="pointer"
-              mb="33"
-              mt="60"
-              onPress={saveItem}
-              disabled={!selectedIngredient.name}
+            {selectedIngredient.expiryDate ? (
+              <Center>
+                <Text>{selectedIngredient.expiryDate}</Text>
+              </Center>
+            ) : null}
+            <AlertDialog
+              leastDestructiveRef={cancelRef}
+              isOpen={isOpenCalendar}
+              onClose={closeCalendar}
             >
-              Add Item
-            </Button>
-          ) : (
-            <Button
-              cursor="pointer"
-              mb="33"
-              mt="60"
-              onPress={saveItem}
-              disabled={!selectedIngredient.name}
-              bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
-            >
-              Add Item
-            </Button>
-          )}
-        </View>
+              <AlertDialog.Content>
+                <AlertDialog.CloseButton />
+                <AlertDialog.Header></AlertDialog.Header>
+                <AlertDialog.Body>
+                  <DatePicker
+                    INITIAL_DATE={INITIAL_DATE}
+                    onDayPress={onDayPress}
+                    selected={selected}
+                  />
+                </AlertDialog.Body>
+                <AlertDialog.Footer>
+                  <Button
+                    onPress={() => {
+                      setSelectedIngredient((prevObj) => ({
+                        ...prevObj,
+                        expiryDate: selected,
+                      }));
+                      closeCalendar();
+                    }}
+                  >
+                    Set Date
+                  </Button>
+                </AlertDialog.Footer>
+              </AlertDialog.Content>
+            </AlertDialog>
+
+            {isLoading ? (
+              <Button
+                isLoading
+                mb="33"
+                mt="60"
+                onPress={saveItem}
+                disabled={!selectedIngredient.name}
+                bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+              >
+                Add Item
+              </Button>
+            ) : (
+              <Button
+                cursor="pointer"
+                mb="33"
+                mt="60"
+                onPress={saveItem}
+                disabled={!selectedIngredient.name}
+                bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+              >
+                Add Item
+              </Button>
+            )}
+          </Box>
+        </Center>
       </ScrollView>
       {isSuccess ? (
         <Text>
@@ -151,6 +150,6 @@ export const CabinetAddItemForm = () => {
           Oops please check you cabinet, we are not sure if this worked
         </Text>
       ) : null}
-    </>
+    </View>
   );
 };

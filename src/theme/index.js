@@ -34,6 +34,9 @@ export default customTheme = extendTheme({
     amber: {
       400: '#d97706',
     },
+    gray: {
+      100: 'gray',
+    },
   },
   components: {
     /* Button: {
@@ -45,6 +48,16 @@ export default customTheme = extendTheme({
           colorScheme: 'red',
         },
       }, */
+    View: {
+      defaultProps: {
+        paddingTop: '10%',
+        backgroundColor: '#FCF5EA',
+        minHeight: '100%',
+
+        /* fontFamily: 'Arial', */
+      },
+      // marginTop: '10',
+    },
     Divider: {
       baseStyle: ({ colorMode }) => {
         return {
@@ -80,10 +93,10 @@ export default customTheme = extendTheme({
           fontSize: '64px',
         },
         lg: {
-          fontSize: '32px',
+          fontSize: '24px',
         },
         md: {
-          fontSize: '16px',
+          fontSize: '18px',
         },
         sm: {
           fontSize: '12px',

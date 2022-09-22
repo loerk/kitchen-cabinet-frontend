@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
-import { FlatList, Text, View } from 'native-base';
+import { Box, FlatList, Text, View } from 'native-base';
 import { VictoryPie } from 'victory-native';
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
@@ -74,81 +74,83 @@ export default function Diagrams() {
   }
 
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Text mt={5} mb={5} bold>
-        Types of ingredients in the cabinet:
-      </Text>
-      <VictoryPie
-        data={finalChartData}
-        radius={({ datum }) =>
-          selectedCategory && selectedCategory == datum.x
-            ? width * 0.4
-            : width * 0.4 - 10
-        }
-        innerRadius={70}
-        /*         labels={(datum) => `${datum.x}`} */
-        labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
-        colorScale={colorScale}
-        width={width * 0.8}
-        height={width * 0.8}
-        events={[
-          {
-            target: 'data',
-            eventHandlers: {
-              onPress: () => {
-                return [
-                  {
-                    target: 'labels',
-                    mutation: (props) => {
-                      let categoryType = finalChartData[props.index].x;
-                      setSelectCategoryByType(categoryType);
+    <View>
+      <Box style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Text mt={5} mb={5} bold>
+          Types of ingredients in the cabinet:
+        </Text>
+        <VictoryPie
+          data={finalChartData}
+          radius={({ datum }) =>
+            selectedCategory && selectedCategory == datum.x
+              ? width * 0.4
+              : width * 0.4 - 10
+          }
+          innerRadius={70}
+          /*         labels={(datum) => `${datum.x}`} */
+          labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
+          colorScale={colorScale}
+          width={width * 0.8}
+          height={width * 0.8}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPress: () => {
+                  return [
+                    {
+                      target: 'labels',
+                      mutation: (props) => {
+                        let categoryType = finalChartData[props.index].x;
+                        setSelectCategoryByType(categoryType);
+                      },
                     },
-                  },
-                ];
+                  ];
+                },
               },
             },
-          },
-        ]}
-        style={{
-          labels: { fill: 'white', fontSize: 18 },
-          parent: {
-            shadowColor: '#000',
-            shadowOffset: { width: 2, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 3,
-          },
-        }}
-      />
+          ]}
+          style={{
+            labels: { fill: 'white', fontSize: 18 },
+            parent: {
+              shadowColor: '#000',
+              shadowOffset: { width: 2, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 3,
+            },
+          }}
+        />
 
-      <View mt={8}></View>
-      <FlatList
-        data={finalChartData}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity /* style={{ flexDirection: 'row', height: 40, paddingHorizontal: 150, borderRadius: 10, backgroundColor: 'gray'}} */
-          >
-            <View
-              style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+        <Box mt={8}></Box>
+        <FlatList
+          data={finalChartData}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity /* style={{ flexDirection: 'row', height: 40, paddingHorizontal: 150, borderRadius: 10, backgroundColor: 'gray'}} */
             >
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  backgroundColor: colorScale[index],
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text bold>
-                {' '}
-                {item.x.charAt(0).toUpperCase() + item.x.slice(1)}
-              </Text>
-            </View>
-            <View style={{ justifyContent: 'center' }}>
-              <Text>{item.items.join(' ')}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+              <Box
+                style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+              >
+                <Box
+                  style={{
+                    width: 20,
+                    height: 20,
+                    backgroundColor: colorScale[index],
+                    borderRadius: 5,
+                  }}
+                ></Box>
+                <Text bold>
+                  {' '}
+                  {item.x.charAt(0).toUpperCase() + item.x.slice(1)}
+                </Text>
+              </Box>
+              <Box style={{ justifyContent: 'center' }}>
+                <Text>{item.items.join(' ')}</Text>
+              </Box>
+            </TouchableOpacity>
+          )}
+        />
+      </Box>
     </View>
   );
 }

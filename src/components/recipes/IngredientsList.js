@@ -8,6 +8,7 @@ import {
   VStack,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { v4 as uuidv4 } from 'uuid';
 
 import React, { useEffect, useState, useContext } from 'react';
 
@@ -21,7 +22,13 @@ export const IngredientsList = ({
   ingredients,
 }) => {
   const { cabinetId } = useContext(AuthContext);
-  const [shoppinglist, setShoppinglist] = useState();
+  const [shoppinglist, setShoppinglist] = useState({
+    name: '',
+    id: '',
+    amount: 0,
+    metrics: '',
+  });
+  console.log(shoppinglist);
   const [addShoppinglist, { isSuccess, isLoading }] =
     useAddShoppinglistMutation();
   useEffect(() => {
@@ -32,9 +39,8 @@ export const IngredientsList = ({
             return {
               name: ingredient.name,
               id: ingredient.id,
-              amount:
-                Math.round(ingredient.measures.metric.amount) +
-                ingredient.measures.metric.unitShort,
+              amount: Math.round(ingredient.measures.metric.amount),
+              metrics: ingredient.measures.metric.unitShort,
             };
           } else {
             return null;
@@ -53,7 +59,7 @@ export const IngredientsList = ({
       {ingredients &&
         ingredients.map((ingredient) => {
           return (
-            <VStack flex={1} mb={3} key={ingredient.id} w={'100%'}>
+            <VStack flex={1} mb={3} key={uuidv4()} w={'100%'}>
               <HStack
                 ml={20}
                 w={'80%'}
