@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
   useDisclose,
+  useColorMode,
 } from 'native-base';
 import React from 'react';
 import { Pressable } from 'react-native';
@@ -16,6 +17,7 @@ import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 //divider={<Divider />}
 export const RecipeCard = ({ item }) => {
+  const { colorMode } = useColorMode();
   const missingIngredientsNames = item.missedIngredients?.map(
     (ingredient) => ingredient.name
   );
@@ -99,7 +101,7 @@ export const RecipeCard = ({ item }) => {
                 <MaterialCommunityIcons
                   name="checkbox-marked-circle-outline"
                   size={24}
-                  color="black"
+                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
                 />
                 <Text pl={2}>{item.usedIngredientCount}</Text>
               </HStack>
@@ -107,7 +109,7 @@ export const RecipeCard = ({ item }) => {
                 <MaterialCommunityIcons
                   name="checkbox-blank-circle-outline"
                   size={24}
-                  color="black"
+                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
                 />
                 <Text pl={2}>{item.missedIngredientCount}</Text>
               </HStack>
