@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }) => {
         name: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
       }).unwrap();
+      signOut(auth);
     } catch (error) {
       alert(error.message);
       console.log(error.message);
