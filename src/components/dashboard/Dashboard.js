@@ -1,8 +1,6 @@
 import { Keyboard, StyleSheet } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
-import { CABINET_ID } from '@env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Divider,
@@ -35,7 +33,11 @@ import { RecipeCard } from '../utils/RecipeCard';
 import { HamburgerMenu } from '../utils/HamburgerMenu';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
+
 const Dashboard = () => {
+  const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
@@ -51,7 +53,7 @@ const Dashboard = () => {
     type: '',
     extras: '',
   });
-  const { data: items } = useGetCabinetItemsQuery(CABINET_ID);
+  const { data: items } = useGetCabinetItemsQuery(cabinetId);
   const itemNames = items?.map((item) => item.name).join(',');
 
   const { data: suggestedRecipes, isLoadingRecipes } =

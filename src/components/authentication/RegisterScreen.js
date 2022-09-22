@@ -40,6 +40,7 @@ const RegisterScreen = () => {
         console.log(errorCode, errorMessage);
       });
   }; */
+
   return (
     <>
       <SafeAreaView style={styles.loginContainer}>

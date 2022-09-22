@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useContext,
+} from 'react';
 import {
   HStack,
   Image,
@@ -25,12 +31,12 @@ import { Keyboard } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-// environment variable
-import { CABINET_ID } from '@env';
-
 // custom components
 import SearchBar from '../utils/SearchBar';
 import DatePicker from '../utils/DatePicker';
+
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 import {
   useGetCabinetItemsQuery,
@@ -45,6 +51,7 @@ const CURRENT_DATE = `${date.getFullYear()}-${String(
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 const Cabinet = () => {
+  const { cabinetId } = useContext(AuthContext);
   const [searchInput, setSearchInput] = useState('');
   const [filteredItems, setFilteredItems] = useState(''); // based on search input
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
@@ -72,9 +79,9 @@ const Cabinet = () => {
     data: cabinetItems,
     isLoading,
     isSuccess,
-    /*     isError,
-        error, */
-  } = useGetCabinetItemsQuery(CABINET_ID); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
+    isError,
+    error,
+  } = useGetCabinetItemsQuery(cabinetId); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
 
   const [
     editCabinetItem,
@@ -113,7 +120,7 @@ const Cabinet = () => {
         console.log(payload);
         closeEditForm();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error));dev/loerk/kitchen-cabinet-frontend
   };
 
   const deleteItem = () => {

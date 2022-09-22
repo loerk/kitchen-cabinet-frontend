@@ -8,15 +8,17 @@ import {
   AlertDialog,
   Box,
 } from 'native-base';
-import { CABINET_ID } from '@env';
+
 import { EvilIcons } from '@expo/vector-icons';
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useContext } from 'react';
 import { useAddItemMutation } from '../../features/api/apiSlice';
 
 // custom components
 /* import DateTimePicker from '../utils/DateTimePicker';*/
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const date = new Date();
 const INITIAL_DATE = `${date.getFullYear()}-${String(
@@ -24,6 +26,7 @@ const INITIAL_DATE = `${date.getFullYear()}-${String(
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 export const CabinetAddItemForm = () => {
+  const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const closeCalendar = () => setIsOpenCalendar(false);
@@ -45,7 +48,7 @@ export const CabinetAddItemForm = () => {
   const saveItem = () => {
     if (selectedIngredient.name) {
       addItem({
-        CABINET_ID,
+        cabinetId,
         id: selectedIngredient.id,
         expiryDate: selectedIngredient.expiryDate,
       }).unwrap();
