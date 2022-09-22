@@ -76,7 +76,7 @@ export const RecipeDetails = ({
                   <Text color={'black'} bold>
                     ready in
                   </Text>
-                  <Text pt={5} bold color={'black'} style={{ fontSize: '35%' }}>
+                  <Text pt={5} bold color={'black'} style={{ fontSize: 35 }}>
                     {recipeDetails.readyInMinutes}
                   </Text>
                 </Box>

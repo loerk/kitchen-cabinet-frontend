@@ -1,8 +1,19 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { HStack, Switch, useColorMode, Text, View } from 'native-base';
+import {
+  HStack,
+  Switch,
+  useColorMode,
+  Text,
+  Button,
+  VStack,
+} from 'native-base';
+import { useContext } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+//Authentication
+import { AuthContext } from '../authNavigation/AuthProvider';
 
 const Profile = () => {
+  const { handleLogout } = useContext(AuthContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDarkMode = colorMode === 'dark';
   const toggleSwitch = () => {
@@ -21,7 +32,7 @@ const Profile = () => {
   });
 
   return (
-    <View>
+    <>
       <HStack style={styles.headerContainer}>
         <Text>Profile</Text>
         <Switch
@@ -33,13 +44,11 @@ const Profile = () => {
           value={isDarkMode}
           onValueChange={toggleSwitch}
         />
-        <TouchableOpacity onPress={() => handleLogOut()}>
-          <View style={styles.button}>
-            <Text style={styles.buttonLabel}>{'Logout'}</Text>
-          </View>
-        </TouchableOpacity>
       </HStack>
-    </View>
+      <VStack alignItems="center">
+        <Button onPress={() => handleLogout()}>Logout</Button>
+      </VStack>
+    </>
   );
 };
 

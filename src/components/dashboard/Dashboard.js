@@ -1,4 +1,3 @@
-
 import 'react-native-get-random-values';
 import React, { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,9 +35,8 @@ import { HamburgerMenu } from '../utils/HamburgerMenu';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const Dashboard = () => {
-  const { cabinetId } = useContext(AuthContext);
+  const { cabinetId, user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
-  const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
@@ -115,7 +113,7 @@ const Dashboard = () => {
           <HStack>
             <VStack>
               <Text style={{ paddingLeft: 18 }}>Welcome</Text>
-              <Heading>{user.username && `${user.username}`}</Heading>
+              <Heading>{user.displayName && `${user.displayName}`}</Heading>
             </VStack>
             <Box w={'100%'} justifyContent={'center'} alignItems={'flex-end'}>
               <HamburgerMenu options={['Profile', 'Favorites']} />
