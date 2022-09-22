@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 
-import { CABINET_ID } from '@env';
+import 'react-native-get-random-values';
+import React, { useState, useEffect, useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Divider,
@@ -33,7 +32,11 @@ import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 import { HamburgerMenu } from '../utils/HamburgerMenu';
 
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
+
 const Dashboard = () => {
+  const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
@@ -48,7 +51,7 @@ const Dashboard = () => {
     type: '',
     extras: '',
   });
-  const { data: items } = useGetCabinetItemsQuery(CABINET_ID);
+  const { data: items } = useGetCabinetItemsQuery(cabinetId);
   const itemNames = items?.map((item) => item.name).join(',');
 
   const { data: suggestedRecipes, isLoadingRecipes } =

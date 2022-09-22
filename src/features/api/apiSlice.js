@@ -7,8 +7,13 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   tagTypes: ['Items'],
   endpoints: (builder) => ({
+    // id: cabinet ID
     getCabinetById: builder.query({
       query: (id) => `/cabinet/${id}`,
+    }),
+    getCabinetByUid: builder.query({
+      // uid: user ID
+      query: (uid) => `/cabinet/uid/${uid}`,
     }),
     getCabinetItems: builder.query({
       query: (id) => `/cabinet/items/all/${id}`,
@@ -48,24 +53,24 @@ export const apiSlice = createApi({
       }),
     }),
     addItem: builder.mutation({
-      query: ({ CABINET_ID, id, expiryDate }) => ({
+      query: ({ cabinetId, id, expiryDate }) => ({
         url: 'cabinet/items/',
         method: 'POST',
-        body: { CABINET_ID, id, expiryDate },
+        body: { cabinetId, id, expiryDate },
       }),
       invalidatesTags: ['Items'],
     }),
     addFavouriteRecipe: builder.mutation({
-      query: ({ CABINET_ID, recipeId }) => ({
-        url: `/cabinet/favourite/${CABINET_ID}`,
-        method: 'POST',
+      query: ({ cabinetId, recipeId }) => ({
+        url: `/cabinet/favourite/${cabinetId}`,
+        method: 'PUT',
         body: { recipeId },
       }),
     }),
     addShoppinglist: builder.mutation({
-      query: ({ CABINET_ID, shoppinglist }) => ({
-        url: `/cabinet/shoppinglist/${CABINET_ID}`,
-        method: 'POST',
+      query: ({ cabinetId, shoppinglist }) => ({
+        url: `/cabinet/shoppinglist/${cabinetId}`,
+        method: 'PUT',
         body: { shoppinglist },
       }),
     }),
@@ -102,6 +107,7 @@ export const apiSlice = createApi({
 
 export const {
   useGetCabinetByIdQuery,
+  useGetCabinetByUidQuery,
   useGetCabinetItemsQuery,
   useGetCabinetItemQuery,
   useGetFilteredRecipesQuery,

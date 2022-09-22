@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
   const { colorMode } = useColorMode();

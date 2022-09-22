@@ -10,7 +10,7 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useWindowDimensions } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,7 +23,8 @@ import {
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { IngredientsList } from './IngredientsList';
 import { OpenURLButton } from '../utils/ExternalLinking';
-import { CABINET_ID } from '@env';
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 export const RecipeDetails = ({
   missingIngredientsNames,
@@ -31,6 +32,8 @@ export const RecipeDetails = ({
   id,
   isOpen,
 }) => {
+  const { cabinetId } = useContext(AuthContext);
+  console.log(cabinetId);
   const { width } = useWindowDimensions();
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
@@ -39,7 +42,7 @@ export const RecipeDetails = ({
     useAddFavouriteRecipeMutation();
 
   const saveFavourite = (id) => {
-    addFavouriteRecipe({ CABINET_ID, recipeId: id }).unwrap();
+    addFavouriteRecipe({ cabinetId, recipeId: id }).unwrap();
   };
 
   const steps = recipeDetails?.analyzedInstructions[0]?.steps;
@@ -70,7 +73,7 @@ export const RecipeDetails = ({
                   }}
                 >
                   <Text bold>ready in</Text>
-                  <Text pt={5} bold style={{ fontSize: '35%' }}>
+                  <Text pt={5} bold /* style={{ fontSize: '35%' }} */>
                     {recipeDetails.readyInMinutes}
                   </Text>
                 </Box>
@@ -127,7 +130,7 @@ export const RecipeDetails = ({
                           <Text
                             maxW={'90%'}
                             mb={10}
-                            style={{ fontSize: '19rem' }}
+                            /* style={{ fontSize: '19rem' }} */
                           >
                             {step.step}
                           </Text>
