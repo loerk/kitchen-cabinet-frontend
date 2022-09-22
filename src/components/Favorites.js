@@ -7,6 +7,7 @@ import {
   Spinner,
   StatusBar,
   useColorMode,
+  View,
 } from 'native-base';
 import { CABINET_ID } from '@env';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,7 +37,10 @@ const Favorites = () => {
   }, [searchInput]);
   if (isLoading) return <Spinner />;
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" bg={'#FCF5EA'}>
+    <ScrollView
+      backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
+      keyboardShouldPersistTaps="handled"
+    >
       <SafeAreaView>
         <StatusBar
           barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}

@@ -1,21 +1,22 @@
-import { Box, HamburgerIcon, Menu, Text } from 'native-base';
+import { Box, HamburgerIcon, Menu, Text, useColorMode } from 'native-base';
 import React from 'react';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { useNavigation } from '@react-navigation/native';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 export const HamburgerMenu = ({ options }) => {
   const navigation = useNavigation();
+  const colorMode = useColorMode();
   return (
     <Box>
       <Menu
-        bg={'#FCF5EA'}
         w="190"
         mr={4}
         trigger={(triggerProps) => {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-              <HamburgerIcon size={28} mr={40} color={'black'} />
+              <HamburgerIcon size={28} mr={40} />
             </Pressable>
           );
         }}

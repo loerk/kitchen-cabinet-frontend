@@ -71,7 +71,7 @@ export const CabinetAddItemForm = () => {
             <EvilIcons
               name="calendar"
               size={44}
-              color="black"
+              color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
               onPress={() => setIsOpenCalendar(!isOpenCalendar)}
             />
 
@@ -118,7 +118,8 @@ export const CabinetAddItemForm = () => {
                 mt="60"
                 onPress={saveItem}
                 disabled={!selectedIngredient.name}
-                bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+                bg="secondary.100"
+                // bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
               >
                 Add Item
               </Button>
@@ -129,7 +130,8 @@ export const CabinetAddItemForm = () => {
                 mt="60"
                 onPress={saveItem}
                 disabled={!selectedIngredient.name}
-                bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+                bg="secondary.100"
+                //bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
               >
                 Add Item
               </Button>

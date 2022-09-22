@@ -16,7 +16,6 @@ import {
   HStack,
   VStack,
   Box,
-  useTheme,
   View,
 } from 'native-base';
 
@@ -37,7 +36,6 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
-  const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
@@ -138,7 +136,7 @@ const Dashboard = () => {
             <AntDesign
               name="filter"
               size={28}
-              color="black"
+              color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
               onPress={() => setShowFilters(!showFilters)}
             />
           </HStack>

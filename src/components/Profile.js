@@ -21,23 +21,25 @@ const Profile = () => {
   });
 
   return (
-    <HStack style={styles.headerContainer}>
-      <Text>Profile</Text>
-      {/* <Switch
-        defaultIsChecked={isDarkMode}
-        offTrackColor="black.800"
-        onTrackColor="primary.200"
-        onThumbColor="black.800"
-        offThumbColor="primary.200"
-        value={isDarkMode}
-        onValueChange={toggleSwitch}
-      /> */}
-      <TouchableOpacity onPress={() => handleLogOut()}>
-        <View style={styles.button}>
-          <Text style={styles.buttonLabel}>{'Logout'}</Text>
-        </View>
-      </TouchableOpacity>
-    </HStack>
+    <View>
+      <HStack style={styles.headerContainer}>
+        <Text>Profile</Text>
+        <Switch
+          defaultIsChecked={isDarkMode}
+          offTrackColor="black.800"
+          onTrackColor="primary.200"
+          onThumbColor="black.800"
+          offThumbColor="primary.200"
+          value={isDarkMode}
+          onValueChange={toggleSwitch}
+        />
+        <TouchableOpacity onPress={() => handleLogOut()}>
+          <View style={styles.button}>
+            <Text style={styles.buttonLabel}>{'Logout'}</Text>
+          </View>
+        </TouchableOpacity>
+      </HStack>
+    </View>
   );
 };
 
