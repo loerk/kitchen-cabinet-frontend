@@ -1,31 +1,10 @@
 import { extendTheme } from 'native-base';
-/* import { useFonts } from 'expo-font'; */
 
 // eslint-disable-next-line no-undef
 export default customTheme = extendTheme({
-  /*fontConfig: {
-        OmedBrush: {
-            100: {
-                normal: "OmedBrush-Regular"
-            }
-        }
-    },
-    fonts: {
-        heading: "OmedBrush",
-        body: "OmedBrush",
-        mono: "OmedBrush"
-    }, */
   colors: {
     primary: {
       100: '#FCF5EA',
-      /*       200: '#A2D4EC',
-      300: '#7AC1E4',
-      400: '#47A9DA',
-      500: '#0088CC',
-      600: '#007AB8',
-      700: '#006BA1',
-      800: '#005885',
-      900: '#003F5E', */
     },
     secondary: {
       100: '#891D47',
@@ -39,24 +18,36 @@ export default customTheme = extendTheme({
     },
   },
   components: {
-    /* Button: {
-        // Can simply pass default props to change default behaviour of components.
-        baseStyle: {
-          rounded: 'md',
-        },
-        defaultProps: {
-          colorScheme: 'red',
-        },
-      }, */
+    Button: {
+      baseStyle: ({ colorMode }) => {
+        return {
+          bg: colorMode === 'dark' ? '#FCF5EA' : '#515050',
+        };
+      },
+    },
+
+    // helle farbe '#FCF5EA'
+    // dunkle farbe '#515050'
     View: {
+      baseStyle: ({ colorMode }) => {
+        return {
+          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+        };
+      },
       defaultProps: {
         paddingTop: '10%',
-        backgroundColor: '#FCF5EA',
         minHeight: '100%',
-
-        /* fontFamily: 'Arial', */
       },
-      // marginTop: '10',
+    },
+    Input: {
+      baseStyle: ({ colorMode }) => {
+        return {
+          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D4710',
+        };
+      },
+      defaultProps: {
+        color: 'black',
+      },
     },
     Divider: {
       baseStyle: ({ colorMode }) => {
@@ -74,13 +65,12 @@ export default customTheme = extendTheme({
       defaultProps: {
         size: 'xl',
         paddingLeft: 5,
-        /* fontFamily: 'Arial', */
       },
     },
     Text: {
       baseStyle: ({ colorMode }) => {
         return {
-          color: colorMode === 'dark' ? 'black.100' : 'black.300',
+          color: colorMode === 'dark' ? '#FCF5EA' : '#515050',
         };
       },
       defaultProps: {

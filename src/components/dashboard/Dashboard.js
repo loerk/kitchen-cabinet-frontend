@@ -1,5 +1,5 @@
-import { Keyboard, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CABINET_ID } from '@env';
@@ -32,7 +32,6 @@ import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 import { HamburgerMenu } from '../utils/HamburgerMenu';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();

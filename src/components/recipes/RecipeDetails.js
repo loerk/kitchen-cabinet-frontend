@@ -10,8 +10,9 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useWindowDimensions } from 'react-native';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 // import RenderHtml from 'react-native-render-html';
