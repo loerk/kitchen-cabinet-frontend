@@ -120,7 +120,7 @@ const Cabinet = () => {
         console.log(payload);
         closeEditForm();
       })
-      .catch((error) => console.log(error));dev/loerk/kitchen-cabinet-frontend
+      .catch((error) => console.log(error));
   };
 
   const deleteItem = () => {
