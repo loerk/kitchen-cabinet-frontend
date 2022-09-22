@@ -37,16 +37,28 @@ export const CabinetSelectItemAutocomplete = ({
     }
   }, []);
   return (
-    <View flex={1} alignItems={'center'}>
+    <View
+      flex={1}
+      alignItems={'center'}
+      style={[
+        {
+          width: '60%',
+          marginBottom: 40,
+          flexDirection: 'row',
+          alignItems: 'center',
+        },
+        Platform.select({ ios: { zIndex: 10 } }),
+      ]}
+    >
       <Box
         style={[
           {
-            width: '60%',
+            width: '100%',
             marginBottom: 40,
             flexDirection: 'row',
             alignItems: 'center',
           },
-          Platform.select({ ios: { zIndex: 1 } }),
+          Platform.select({ ios: { zIndex: 10 } }),
         ]}
       >
         <AutocompleteDropdown
