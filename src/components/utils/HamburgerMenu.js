@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const HamburgerMenu = ({ options }) => {
   const navigation = useNavigation();
-  const colorMode = useColorMode();
+  const { colorMode } = useColorMode();
   return (
     <Box>
       <Menu
@@ -16,7 +16,11 @@ export const HamburgerMenu = ({ options }) => {
         trigger={(triggerProps) => {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-              <HamburgerIcon size={28} mr={40} />
+              <HamburgerIcon
+                size={28}
+                mr={40}
+                color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+              />
             </Pressable>
           );
         }}
