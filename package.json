@@ -42,7 +42,8 @@
     "react-redux": "^8.0.2",
     "rn-content-loader": "^0.0.6",
     "uuid": "^9.0.0",
-    "victory-native": "^36.6.7"
+    "victory-native": "^36.6.7",
+    "@react-native-async-storage/async-storage": "~1.17.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
