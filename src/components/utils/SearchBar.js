@@ -8,7 +8,6 @@ const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
     <Input
       w="70%"
       maxW="300px"
-      backgroundColor={'#891D4710'}
       placeholderTextColor={'grey'}
       size="lg"
       placeholder={placeholder}

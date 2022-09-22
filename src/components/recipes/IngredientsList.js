@@ -8,6 +8,7 @@ import {
   VStack,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 import React, { useEffect, useState, useContext } from 'react';

@@ -18,8 +18,8 @@ import { AuthContext } from './src/authNavigation/AuthProvider';
 
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
 import Favorites from './src/components/Favorites';
-import { useTheme } from 'native-base';
-
+import { useColorMode, useTheme } from 'native-base';
+//const colorMode = useColorMode();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const AppNavigator = () => {
@@ -27,7 +27,7 @@ const AppNavigator = () => {
 
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
-  const { colors } = useTheme();
+  const { colorMode } = useColorMode();
   // Handle user state changes
   function AuthStateChanged(user) {
     setUser(user);
@@ -38,10 +38,10 @@ const AppNavigator = () => {
     const subscriber = onAuthStateChanged(auth, AuthStateChanged);
     return subscriber;
   }, []);
-
   if (loading) {
     return <Loading />;
   }
+
   return (
     <>
       {user ? (
@@ -65,23 +65,25 @@ const AppNavigator = () => {
                 <MaterialIcons
                   name={iconName}
                   size={24}
-                  color={focused ? '#891D47' : 'gray'}
+                  color={
+                    focused && colorMode === 'dark'
+                      ? '#FCF5EA'
+                      : focused
+                      ? '#515050'
+                      : 'grey'
+                  }
                 />
               );
             },
             headerShown: false,
-            tabBarActiveTintColor: colors.primary,
-            tabBarInactiveTintColor: colors.gray,
-            tabBarStyle: { height: '10%', backgroundColor: '#FCF5EA' },
+            tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'grey',
+            // tabBarInactiveTintColor:
+            //   colorMode === 'dark' ? '#FCF5EA' : '#515050',
+            tabBarStyle: {
+              height: '10%',
+              backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+            },
             tabBarItemStyle: { padding: 5 },
-
-            headerStyle: {
-              backgroundColor: colors.secondary,
-            },
-            headerTintColor: colors.primary,
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
           })}
         >
           <Tab.Screen name="Home" component={DashboardScreenNavigator} />
@@ -100,6 +102,7 @@ const AppNavigator = () => {
 export default AppNavigator;
 
 export const DashboardScreenNavigator = () => {
+  const { colorMode } = useColorMode();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -112,9 +115,9 @@ export const DashboardScreenNavigator = () => {
       <Stack.Screen
         options={{
           headerBackTitleVisible: false,
-          headerTintColor: 'black',
+          headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
           headerStyle: {
-            backgroundColor: '#FCF5EA',
+            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
           },
         }}
         name="Profile"
@@ -123,9 +126,9 @@ export const DashboardScreenNavigator = () => {
       <Stack.Screen
         options={{
           headerBackTitleVisible: false,
-          headerTintColor: 'black',
+          headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
           headerStyle: {
-            backgroundColor: '#FCF5EA',
+            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
           },
         }}
         name="Favorites"

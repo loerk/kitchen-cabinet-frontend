@@ -42,7 +42,7 @@ const Filter = ({
   }
 
   return (
-    <VStack alignItems="center" space={4} bgColor={'#FCF5EA'}>
+    <VStack alignItems="center" space={4}>
       <Select
         selectedValue={diet}
         minWidth={200}
@@ -147,7 +147,7 @@ const Filter = ({
       </Select>
       <HStack space={6}>
         <Button
-          bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+          bg="secondary.100"
           onPress={() => {
             setFilterOptions(() => ({
               diet: '',
@@ -160,7 +160,7 @@ const Filter = ({
           Reset
         </Button>
         <Button
-          bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
+          bg="secondary.100"
           onPress={() => {
             setIsPressed(true);
           }}

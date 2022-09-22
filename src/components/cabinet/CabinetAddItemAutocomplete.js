@@ -6,7 +6,7 @@ import { Text, View, Platform } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
 import Feather from 'react-native-vector-icons/Feather';
-import { Box } from 'native-base';
+import { Box, useColorMode } from 'native-base';
 Feather.loadFont();
 
 export const CabinetSelectItemAutocomplete = ({
@@ -15,6 +15,7 @@ export const CabinetSelectItemAutocomplete = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [suggestionsList, setSuggestionsList] = useState(null);
+  const { colorMode } = useColorMode();
   const getSuggestions = useCallback(async (q) => {
     if (typeof q !== 'string' || q.length < 3) {
       setSuggestionsList(null);
@@ -76,8 +77,8 @@ export const CabinetSelectItemAutocomplete = ({
           inputContainerStyle={{
             //borderWidth: '1',
             //borderColor: '#891D4740',
-
-            backgroundColor: '#891D4710',
+            //color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+            backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D4710',
             // width: 200,
           }}
           containerStyle={{ flexGrow: 1, flexShrink: 1 }}

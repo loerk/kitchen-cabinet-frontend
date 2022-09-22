@@ -1,4 +1,5 @@
-import { Keyboard, StyleSheet } from 'react-native';
+
+import 'react-native-get-random-values';
 import React, { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,7 +15,6 @@ import {
   HStack,
   VStack,
   Box,
-  useTheme,
   View,
 } from 'native-base';
 
@@ -31,7 +31,6 @@ import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
 import { HamburgerMenu } from '../utils/HamburgerMenu';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
@@ -39,7 +38,6 @@ import { AuthContext } from '../../authNavigation/AuthProvider';
 const Dashboard = () => {
   const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
-  const bgColor = colorMode === 'dark' ? 'black' : 'white';
   const user = { username: 'Manfred' }; // to hold the user's data
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
@@ -140,7 +138,7 @@ const Dashboard = () => {
             <AntDesign
               name="filter"
               size={28}
-              color="black"
+              color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
               onPress={() => setShowFilters(!showFilters)}
             />
           </HStack>
