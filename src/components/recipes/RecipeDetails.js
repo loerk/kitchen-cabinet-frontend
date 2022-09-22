@@ -7,6 +7,7 @@ import {
   ScrollView,
   Spinner,
   Text,
+  useColorMode,
   View,
   VStack,
 } from 'native-base';
@@ -33,7 +34,7 @@ export const RecipeDetails = ({
   isOpen,
 }) => {
   const { cabinetId } = useContext(AuthContext);
-  console.log(cabinetId);
+  const { colorMode } = useColorMode();
   const { width } = useWindowDimensions();
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
@@ -49,12 +50,11 @@ export const RecipeDetails = ({
   if (isLoading) return <Spinner text="Loading..." />;
   return (
     recipeDetails && (
-      // <Center pt={20}>
-      <View w={width}>
-        <ScrollView mb={35}>
+      <Box w={width} bg={colorMode === 'dark' ? '#515050' : '#FCF5EA'}>
+        <ScrollView>
           <Box flex={1}>
             <Box>
-              <Text bold fontSize="xl" textAlign={'center'} m={5}>
+              <Text bold fontSize="xl" textAlign={'center'} mt={7}>
                 {recipeDetails.title}
               </Text>
             </Box>
@@ -73,7 +73,10 @@ export const RecipeDetails = ({
                   }}
                 >
                   <Text bold>ready in</Text>
-                  <Text pt={5} bold /* style={{ fontSize: '35%' }} */>
+                  <Text color={'black'} bold>
+                    ready in
+                  </Text>
+                  <Text pt={5} bold color={'black'} style={{ fontSize: '35%' }}>
                     {recipeDetails.readyInMinutes}
                   </Text>
                 </Box>
@@ -90,7 +93,7 @@ export const RecipeDetails = ({
                   mb={5}
                 />
               </Box>
-              <View h={'70%'} w={'100%'}>
+              <View h={'70%'} pb={20} w={'100%'}>
                 {recipeDetails && (
                   <IngredientsList
                     missingIngredientsNames={missingIngredientsNames}
@@ -98,17 +101,10 @@ export const RecipeDetails = ({
                     ingredients={recipeDetails.extendedIngredients}
                   />
                 )}
-                <Box
-                  mb={40}
-                  mt={10}
-                  w={'100%'}
-                  flex={1}
-                  alignItems={'center'}
-                  justifyContent={'space-around'}
-                >
+                <Box mt={10} w={'100%'} flex={1} alignItems={'center'}>
                   {steps ? (
                     steps.map((step) => (
-                      <HStack w={'80%'} space={4} key={uuidv4()}>
+                      <HStack w={'70%'} space={4} key={uuidv4()}>
                         <Text size={'lg'} bold>
                           {step.number}/
                         </Text>
@@ -148,10 +144,7 @@ export const RecipeDetails = ({
                       </OpenURLButton>
                     </View>
                   )}
-                  <Button
-                    mb={4}
-                    onPress={() => saveFavourite(recipeDetails.id)}
-                  >
+                  <Button onPress={() => saveFavourite(recipeDetails.id)}>
                     Add to favourites
                   </Button>
                   {isSaving && <Spinner text="Loading..." />}
@@ -165,17 +158,7 @@ export const RecipeDetails = ({
             </VStack>
           </Box>
         </ScrollView>
-      </View>
+      </Box>
     )
   );
-};
-
-const tagsStyles = {
-  body: {
-    fontSize: '1.2em',
-    lineHeight: '2rem',
-    width: '100%',
-    padding: '8%',
-    listStyleType: 'none',
-  },
 };
