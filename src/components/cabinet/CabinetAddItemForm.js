@@ -7,6 +7,7 @@ import {
   useColorMode,
   AlertDialog,
   Box,
+  useToast,
 } from 'native-base';
 
 import { EvilIcons } from '@expo/vector-icons';
@@ -27,6 +28,7 @@ const INITIAL_DATE = `${date.getFullYear()}-${String(
 
 export const CabinetAddItemForm = () => {
   const { cabinetId } = useContext(AuthContext);
+  //const toast = useToast();
   const { colorMode } = useColorMode();
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const closeCalendar = () => setIsOpenCalendar(false);
@@ -143,10 +145,16 @@ export const CabinetAddItemForm = () => {
         </Center>
       </ScrollView>
       {isSuccess ? (
-        <Text>
-          You successfully added {selectedIngredient.name} to your cabinet!
-        </Text>
-      ) : null}
+        // ? toast.show({
+        //     render: () => {
+        //       return (
+        <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+          <Text>
+            You successfully added {selectedIngredient.name} to your cabinet!
+          </Text>
+        </Box>
+      ) : // })
+      null}
       {isError ? (
         <Text>
           Oops please check you cabinet, we are not sure if this worked
