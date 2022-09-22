@@ -6,6 +6,7 @@ import {
   Spinner,
   Text,
   VStack,
+  useColorMode,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import 'react-native-get-random-values';
@@ -29,7 +30,7 @@ export const IngredientsList = ({
     amount: 0,
     metrics: '',
   });
-  console.log(shoppinglist);
+  const { colorMode } = useColorMode();
   const [addShoppinglist, { isSuccess, isLoading }] =
     useAddShoppinglistMutation();
   useEffect(() => {
@@ -72,13 +73,13 @@ export const IngredientsList = ({
                   <MaterialCommunityIcons
                     name="checkbox-marked-circle-outline"
                     size={24}
-                    color="black"
+                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
                   />
                 ) : (
                   <MaterialCommunityIcons
                     name="checkbox-blank-circle-outline"
                     size={24}
-                    color="black"
+                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
                   />
                 )}
                 <Text w={'40%'} bold>
