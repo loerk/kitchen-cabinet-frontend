@@ -10,6 +10,7 @@ import {
   View,
 } from 'native-base';
 import { CABINET_ID } from '@env';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useState } from 'react';
@@ -25,7 +26,7 @@ const Favorites = () => {
 
   const { data: favouriteRecipes, isLoading } =
     useGetFavoritesQuery(CABINET_ID);
-
+  console.log(favouriteRecipes);
   // useEffect for filtering By title
   useEffect(() => {
     const filteredFavorites = favouriteRecipes?.filter((recipe) => {

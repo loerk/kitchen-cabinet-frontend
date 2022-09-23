@@ -72,7 +72,6 @@ export const RecipeDetails = ({
                     zIndex: 999,
                   }}
                 >
-                  <Text bold>ready in</Text>
                   <Text color={'black'} bold>
                     ready in
                   </Text>
