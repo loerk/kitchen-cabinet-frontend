@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialIcons } from '@expo/vector-icons';
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
-import ShoppingList from './src/components/ShoppingList';
+
 import Cabinet from './src/components/cabinet/Cabinet';
 import Diagrams from './src/components/diagrams/Diagrams';
 import Loading from './src/components/Loading';
@@ -18,7 +18,8 @@ import { AuthContext } from './src/authNavigation/AuthProvider';
 
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
 import Favorites from './src/components/Favorites';
-import { useColorMode, useTheme } from 'native-base';
+import { useColorMode } from 'native-base';
+import ShoppingList from './src/shoppinglist/ShoppingList';
 //const colorMode = useColorMode();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -76,9 +77,7 @@ const AppNavigator = () => {
               );
             },
             headerShown: false,
-            tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'grey',
-            // tabBarInactiveTintColor:
-            //   colorMode === 'dark' ? '#FCF5EA' : '#515050',
+            tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
             tabBarStyle: {
               height: '10%',
               backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
