@@ -19,6 +19,7 @@ import {
   AlertDialog,
   Button,
   Box,
+  VStack,
 } from 'native-base';
 
 import {
@@ -223,7 +224,7 @@ const Cabinet = () => {
               defaultValue={searchInput}
             />
           </HStack>
-          <ScrollView w={'80%'} pr={4}>
+          <ScrollView w={'80%'} h={'90%'} pr={4}>
             <Box>
               {isSuccess && cabinetItems.length === 0 && (
                 <Text>Your cabinet is empty. Add an item.</Text>
@@ -268,33 +269,35 @@ const Cabinet = () => {
                               alt={name}
                               size="sm"
                             />
-
-                            <Text bold ml={6}>
-                              {name
-                                .split(' ')
-                                .map(
-                                  (name) =>
-                                    name.charAt(0).toUpperCase() + name.slice(1)
-                                )
-                                .join(' ')}
-                            </Text>
-                            <Text fontSize="sm">
-                              {'Expiry Date: \n'}
-                              {isTwoWeeksLeft ? (
-                                remainingDaysLeft >= 0 ? (
-                                  `${remainingDaysLeft} day${
-                                    remainingDaysLeft !== 1 ? 's' : ''
-                                  } left`
+                            <VStack>
+                              <Text bold ml={6}>
+                                {name
+                                  .split(' ')
+                                  .map(
+                                    (name) =>
+                                      name.charAt(0).toUpperCase() +
+                                      name.slice(1)
+                                  )
+                                  .join(' ')}
+                              </Text>
+                              <Text fontSize="sm" pl={6}>
+                                {'Expiry Date: \n'}
+                                {isTwoWeeksLeft ? (
+                                  remainingDaysLeft >= 0 ? (
+                                    `${remainingDaysLeft} day${
+                                      remainingDaysLeft !== 1 ? 's' : ''
+                                    } left`
+                                  ) : (
+                                    <Text style={{ color: 'red' }}>
+                                      {Math.abs(remainingDaysLeft)} day
+                                      {remainingDaysLeft !== -1 ? 's' : ''} ago
+                                    </Text>
+                                  )
                                 ) : (
-                                  <Text style={{ color: 'red' }}>
-                                    {Math.abs(remainingDaysLeft)} day
-                                    {remainingDaysLeft !== -1 ? 's' : ''} ago
-                                  </Text>
-                                )
-                              ) : (
-                                expiryDate.split('-').reverse().join('/')
-                              )}
-                            </Text>
+                                  expiryDate.split('-').reverse().join('/')
+                                )}
+                              </Text>
+                            </VStack>
                           </Box>
                           <Box alignItems="center">
                             <HStack space={4} alignItems="center" mt={5}>
@@ -336,10 +339,10 @@ const Cabinet = () => {
                                 </Text>
                               </HStack>
                             ) : aboutToExpire ? (
-                              <HStack mt={1}>
+                              <HStack mt={1} alignItems="center">
                                 <AntDesign
                                   name="warning"
-                                  size={20}
+                                  size={16}
                                   color="darkorange"
                                 />
                                 <Text color="orange.400" fontSize="sm">
