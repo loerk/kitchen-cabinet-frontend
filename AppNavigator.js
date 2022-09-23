@@ -17,9 +17,10 @@ import AuthStack from './src/authNavigation/AuthNavigator';
 import { AuthContext } from './src/authNavigation/AuthProvider';
 
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
-import Favorites from './src/components/Favorites';
+
 import { useColorMode } from 'native-base';
 import ShoppingList from './src/shoppinglist/ShoppingList';
+import Favorites from './src/favorites/Favorites';
 //const colorMode = useColorMode();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

@@ -5,7 +5,7 @@ import { BASE_URL } from '@env';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-  tagTypes: ['Items', 'Shoppinglist'],
+  tagTypes: ['Items', 'Shoppinglist', 'Favorites'],
   endpoints: (builder) => ({
     // id: cabinet ID
     getCabinetById: builder.query({
@@ -40,7 +40,8 @@ export const apiSlice = createApi({
       query: (id) => `/recipes/instructions/${id}`,
     }),
     getFavorites: builder.query({
-      query: (id) => `/cabinet/favorites/${id}`,
+      query: (cabinetId) => `/cabinet/favorites/${cabinetId}`,
+      providesTags: ['Favorites'],
     }),
     getShoppinglist: builder.query({
       query: (id) => `/cabinet/shoppinglist/${id}`,
@@ -61,12 +62,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Items'],
     }),
-    addFavouriteRecipe: builder.mutation({
+    addFavoriteRecipe: builder.mutation({
       query: ({ cabinetId, recipeId }) => ({
-        url: `/cabinet/favourite/${cabinetId}`,
-        method: 'PUT',
+        url: `/cabinet/favorites/${cabinetId}`,
+        method: 'POST',
         body: { recipeId },
       }),
+      providesTags: ['Favorites'],
     }),
     addShoppinglist: builder.mutation({
       query: ({ cabinetId, shoppinglist }) => ({
@@ -129,7 +131,7 @@ export const {
   useAddShoppinglistMutation,
   useAddCabinetMutation,
   useAddItemMutation,
-  useAddFavouriteRecipeMutation,
+  useAddFavoriteRecipeMutation,
   useEditCabinetMutation,
   useEditItemMutation,
   useDeleteShoppinglistItemsMutation,
