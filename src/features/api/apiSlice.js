@@ -5,7 +5,7 @@ import { BASE_URL } from '@env';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-  tagTypes: ['Items'],
+  tagTypes: ['Items', 'Shoppinglist'],
   endpoints: (builder) => ({
     // id: cabinet ID
     getCabinetById: builder.query({
@@ -44,6 +44,7 @@ export const apiSlice = createApi({
     }),
     getShoppinglist: builder.query({
       query: (id) => `/cabinet/shoppinglist/${id}`,
+      providesTags: ['Shoppinglist'],
     }),
     addCabinet: builder.mutation({
       query: ({ name, uid }) => ({
@@ -70,9 +71,10 @@ export const apiSlice = createApi({
     addShoppinglist: builder.mutation({
       query: ({ cabinetId, shoppinglist }) => ({
         url: `/cabinet/shoppinglist/${cabinetId}`,
-        method: 'PUT',
+        method: 'POST',
         body: { shoppinglist },
       }),
+      invalidatesTags: ['Shoppinglist'],
     }),
     editCabinet: builder.mutation({
       query: ({ id, ...rest }) => ({
@@ -95,6 +97,13 @@ export const apiSlice = createApi({
         method: 'DELETE',
       }),
       invalidatesTags: ['Items'],
+    }),
+    deleteShoppinglistItems: builder.mutation({
+      query: ({ cabinetId, toDelete }) => ({
+        url: `/cabinet/shoppinglist?cabinetId=${cabinetId}&toDelete=${toDelete}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Shoppinglist'],
     }),
     deleteCabinet: builder.mutation({
       query: (id) => ({
@@ -123,6 +132,7 @@ export const {
   useAddFavouriteRecipeMutation,
   useEditCabinetMutation,
   useEditItemMutation,
+  useDeleteShoppinglistItemsMutation,
   useDeleteItemMutation,
   useDeleteCabinetMutation,
 } = apiSlice;
