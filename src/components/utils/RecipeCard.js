@@ -17,6 +17,7 @@ import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 //divider={<Divider />}
 export const RecipeCard = ({ item }) => {
+  console.log({ item });
   const { colorMode } = useColorMode();
   const missingIngredientsNames = item.missedIngredients?.map(
     (ingredient) => ingredient.name
@@ -76,7 +77,7 @@ export const RecipeCard = ({ item }) => {
             >
               <Entypo name="heart" size={22} color="white" />
               <Text pl={1} bold size={'md'} color={'white'}>
-                {item.likes}
+                {item.likes || 'by you'}
               </Text>
             </HStack>
           </Box>
@@ -96,32 +97,34 @@ export const RecipeCard = ({ item }) => {
                 mt="-1"
               ></Text>
             </Stack>
-            <HStack justifyContent="space-around">
-              <HStack>
-                <MaterialCommunityIcons
-                  name="checkbox-marked-circle-outline"
-                  size={24}
-                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                />
-                <Text pl={2}>{item.usedIngredientCount}</Text>
+            {item.usedIngredientsCount || item.missedIngredientCount ? (
+              <HStack justifyContent="space-around">
+                <HStack>
+                  <MaterialCommunityIcons
+                    name="checkbox-marked-circle-outline"
+                    size={24}
+                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                  />
+                  <Text pl={2}>{item.usedIngredientCount}</Text>
+                </HStack>
+                <HStack>
+                  <MaterialCommunityIcons
+                    name="checkbox-blank-circle-outline"
+                    size={24}
+                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                  />
+                  <Text pl={2}>{item.missedIngredientCount}</Text>
+                </HStack>
               </HStack>
-              <HStack>
-                <MaterialCommunityIcons
-                  name="checkbox-blank-circle-outline"
-                  size={24}
-                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                />
-                <Text pl={2}>{item.missedIngredientCount}</Text>
-              </HStack>
-            </HStack>
+            ) : null}
           </Stack>
         </Box>
       </Pressable>
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
           <RecipeDetails
-            missingIngredientsNames={missingIngredientsNames}
-            usedIngredientsNames={usedIngredientsNames}
+            missingIngredientsNames={missingIngredientsNames ?? null}
+            usedIngredientsNames={usedIngredientsNames ?? null}
             id={item.id}
             isOpen={isOpen}
           />

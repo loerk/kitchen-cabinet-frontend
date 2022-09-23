@@ -37,7 +37,7 @@ export const IngredientsList = ({
     setShoppinglist(
       ingredients
         .map((ingredient) => {
-          if (missingIngredientsNames.includes(ingredient.name)) {
+          if (missingIngredientsNames?.includes(ingredient.name)) {
             return {
               name: ingredient.name,
               id: ingredient.id,
@@ -69,7 +69,7 @@ export const IngredientsList = ({
                 justifyContent={'space-between'}
                 alignItems={'center'}
               >
-                {usedIngredientsNames.includes(ingredient.name) ? (
+                {usedIngredientsNames?.includes(ingredient.name) ? (
                   <MaterialCommunityIcons
                     name="checkbox-marked-circle-outline"
                     size={24}
@@ -97,9 +97,12 @@ export const IngredientsList = ({
             </VStack>
           );
         })}
-      <Button onPress={addToShoppinglist} mt={7} maxW={'50%'}>
-        Add to shopping list
-      </Button>
+      {missingIngredientsNames || usedIngredientsNames ? (
+        <Button onPress={addToShoppinglist} mt={7} maxW={'50%'}>
+          Add to shopping list
+        </Button>
+      ) : null}
+
       {isLoading && <Spinner />}
       {isSuccess && (
         <Text textAlign={'center'}>

@@ -11,14 +11,14 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useWindowDimensions } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 // import RenderHtml from 'react-native-render-html';
 import {
-  useAddFavouriteRecipeMutation,
+  useAddFavoriteRecipeMutation,
   useGetRecipeByIdQuery,
 } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
@@ -39,11 +39,11 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
-  const [addFavouriteRecipe, { isSuccess, isLoading: isSaving }] =
-    useAddFavouriteRecipeMutation();
+  const [addFavoriteRecipe, { isSuccess, isLoading: isSaving }] =
+    useAddFavoriteRecipeMutation();
 
-  const saveFavourite = (id) => {
-    addFavouriteRecipe({ cabinetId, recipeId: id }).unwrap();
+  const saveFavorite = (id) => {
+    addFavoriteRecipe({ cabinetId, recipeId: id }).unwrap();
   };
 
   const steps = recipeDetails?.analyzedInstructions[0]?.steps;
@@ -143,9 +143,11 @@ export const RecipeDetails = ({
                       </OpenURLButton>
                     </View>
                   )}
-                  <Button onPress={() => saveFavourite(recipeDetails.id)}>
-                    Add to favourites
-                  </Button>
+                  {missingIngredientsNames || usedIngredientsNames ? (
+                    <Button onPress={() => saveFavorite(recipeDetails.id)}>
+                      Add to favourites
+                    </Button>
+                  ) : null}
                   {isSaving && <Spinner text="Loading..." />}
                   {isSuccess && (
                     <Text textAlign={'center'}>
