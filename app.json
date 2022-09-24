@@ -1,29 +1,28 @@
 {
   "expo": {
-    "name": "kitchen-cabinet-frontend",
-    "slug": "kitchen-cabinet-frontend",
+    "name": "Kitchen-Cabinet",
+    "slug": "kitchen-cabinet",
+    "description": " We want to enable home chefs to more easily and efficiently find recipes and cook based on what they have in their kitchen cabinets, reducing waste and making cooking easier, healthier and quicker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FCF5EA"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#FCF5EA"
       }
     },
     "web": {
