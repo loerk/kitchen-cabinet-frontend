@@ -10,6 +10,7 @@ import {
   Image,
   Center,
   /*   useToast, */
+  useColorMode,
   Pressable,
   Divider,
   View,
@@ -53,6 +54,7 @@ const CURRENT_DATE = `${date.getFullYear()}-${String(
 
 const Cabinet = () => {
   const { cabinetId } = useContext(AuthContext);
+  const { colorMode } = useColorMode();
   const [searchInput, setSearchInput] = useState('');
   const [filteredItems, setFilteredItems] = useState(''); // based on search input
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
@@ -247,10 +249,14 @@ const Cabinet = () => {
                       <>
                         <HStack
                           bg={
-                            isExpired
+                            isExpired && colorMode === 'light'
                               ? 'red.100'
-                              : aboutToExpire
+                              : isExpired && colorMode === 'dark'
+                              ? 'red.200'
+                              : aboutToExpire && colorMode === 'light'
                               ? 'orange.100'
+                              : aboutToExpire && colorMode === 'dark'
+                              ? 'orange.200'
                               : null
                           }
                           flex={1}
@@ -270,7 +276,17 @@ const Cabinet = () => {
                               size="sm"
                             />
                             <VStack>
-                              <Text bold ml={6}>
+                              <Text
+                                bold
+                                ml={6}
+                                color={
+                                  isExpired
+                                    ? 'red.500'
+                                    : aboutToExpire
+                                    ? 'orange.400'
+                                    : null
+                                }
+                              >
                                 {name
                                   .split(' ')
                                   .map(
@@ -280,7 +296,17 @@ const Cabinet = () => {
                                   )
                                   .join(' ')}
                               </Text>
-                              <Text fontSize="sm" pl={6}>
+                              <Text
+                                fontSize="sm"
+                                pl={6}
+                                color={
+                                  isExpired
+                                    ? 'red.500'
+                                    : aboutToExpire
+                                    ? 'orange.400'
+                                    : null
+                                }
+                              >
                                 {'Expiry Date: \n'}
                                 {isTwoWeeksLeft ? (
                                   remainingDaysLeft >= 0 ? (
@@ -304,7 +330,7 @@ const Cabinet = () => {
                               <FontAwesome5
                                 name="edit"
                                 size={20}
-                                color="black"
+                                color={colorMode === 'dark' ? 'white' : 'black'}
                                 onPress={() => {
                                   setToBeEdited({
                                     id,
@@ -319,7 +345,7 @@ const Cabinet = () => {
                               <AntDesign
                                 name="delete"
                                 size={23}
-                                color="black"
+                                color={colorMode === 'dark' ? 'white' : 'black'}
                                 onPress={() => {
                                   setToBeDeleted({ id, name });
                                   setIsOpenDeleteAlert(!isOpenDeleteAlert);
