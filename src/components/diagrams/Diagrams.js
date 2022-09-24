@@ -64,7 +64,6 @@ export default function Diagrams() {
     };
   });
 
-  console.log(finalChartData);
   finalChartData = finalChartData
     .filter((item) => item.label !== 'NaN%')
     .map((item) => (item.x === 'undefined' ? { ...item, x: 'other' } : item));

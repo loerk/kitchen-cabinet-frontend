@@ -118,7 +118,6 @@ const Cabinet = () => {
     editCabinetItem(toBeEdited)
       .unwrap()
       .then((payload) => {
-        console.log(payload);
         closeEditForm();
       })
       .catch((error) => console.log(error));

@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
         password
       );
       await updateProfile(auth.currentUser, { displayName: username });
-      console.log(newUser);
       addCabinet({
         name: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
