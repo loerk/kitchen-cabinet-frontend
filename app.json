@@ -4,6 +4,7 @@
     "slug": "kitchen-cabinet",
     "description": " We want to enable home chefs to more easily and efficiently find recipes and cook based on what they have in their kitchen cabinets, reducing waste and making cooking easier, healthier and quicker",
     "version": "1.0.0",
+    "owner": "kitchen-cabinet",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
