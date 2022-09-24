@@ -17,7 +17,6 @@ import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 //divider={<Divider />}
 export const RecipeCard = ({ item }) => {
-  console.log({ item });
   const { colorMode } = useColorMode();
   const missingIngredientsNames = item.missedIngredients?.map(
     (ingredient) => ingredient.name
