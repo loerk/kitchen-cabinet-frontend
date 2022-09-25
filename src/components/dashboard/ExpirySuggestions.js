@@ -63,7 +63,7 @@ function ExpirySuggestions({ items }) {
       <SafeAreaView>
         <ScrollView mx={3} horizontal={true}>
           {reduced?.superUrgent && (
-            <Box>
+            <Box px={5} pb={10}>
               <Heading fontSize="xl" p="4" pb="3">
                 Already over expiry Date
               </Heading>
@@ -119,11 +119,13 @@ function ExpirySuggestions({ items }) {
                 )}
                 keyExtractor={(item) => item.id}
               />
-              <Button onPress={getSuperUrgentRecipes}>Get Recipes</Button>
+              <Button bg="secondary.100" onPress={getSuperUrgentRecipes}>
+                Get Recipes
+              </Button>
             </Box>
           )}
           {reduced?.urgent && (
-            <Box px={7}>
+            <Box px={5} py={10}>
               <Heading fontSize="xl" p="4" pb="3">
                 Close to expiration
               </Heading>
@@ -179,11 +181,13 @@ function ExpirySuggestions({ items }) {
                 )}
                 keyExtractor={(item) => item.id}
               />
-              <Button onPress={getUrgentRecipes}>Get Recipes</Button>
+              <Button bg="secondary.100" onPress={getUrgentRecipes}>
+                Get Recipes
+              </Button>
             </Box>
           )}
           {reduced?.middle && (
-            <Box px={5}>
+            <Box px={5} py={10}>
               <Heading fontSize="xl" p="4" pb="3">
                 Might be next
               </Heading>
@@ -239,7 +243,9 @@ function ExpirySuggestions({ items }) {
                 )}
                 keyExtractor={(item) => item.id}
               />
-              <Button onPress={getSoonRecipes}>Get Recipes</Button>
+              <Button bg="secondary.100" onPress={getSoonRecipes}>
+                Get Recipes
+              </Button>
             </Box>
           )}
         </ScrollView>

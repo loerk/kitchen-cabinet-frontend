@@ -21,13 +21,14 @@ export default customTheme = extendTheme({
     Button: {
       baseStyle: ({ colorMode }) => {
         return {
-          bg: colorMode === 'dark' ? '#FCF5EA' : '#515050',
+          colorScheme: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
         };
       },
     },
 
     // light color '#FCF5EA'
     // dark color '#515050'
+    // red color: '#891D47'
     View: {
       baseStyle: ({ colorMode }) => {
         return {
