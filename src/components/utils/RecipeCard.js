@@ -1,3 +1,4 @@
+import { uuidv4 } from '@firebase/util';
 import {
   Actionsheet,
   AspectRatio,
@@ -15,7 +16,6 @@ import { Pressable } from 'react-native';
 import { RecipeDetails } from '../recipes/RecipeDetails';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
-//divider={<Divider />}
 export const RecipeCard = ({ item }) => {
   const { colorMode } = useColorMode();
   const missingIngredientsNames = item.missedIngredients?.map(
@@ -27,7 +27,7 @@ export const RecipeCard = ({ item }) => {
   const { isOpen, onOpen, onClose } = useDisclose();
 
   return (
-    <Box alignItems="center" m={3}>
+    <Box key={uuidv4()} alignItems="center" m={3}>
       <Pressable onPress={onOpen}>
         <Box
           maxW="80"
