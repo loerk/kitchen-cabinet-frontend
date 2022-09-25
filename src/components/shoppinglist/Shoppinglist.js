@@ -17,8 +17,8 @@ import { AntDesign } from '@expo/vector-icons';
 import {
   useDeleteShoppinglistItemsMutation,
   useGetShoppinglistQuery,
-} from '../features/api/apiSlice';
-import { AuthContext } from '../authNavigation/AuthProvider';
+} from '../../features/api/apiSlice';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const ShoppingList = () => {
   const { cabinetId } = useContext(AuthContext);

@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   VStack,
+  View,
 } from 'native-base';
 import { useContext } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -32,7 +33,7 @@ const Profile = () => {
   });
 
   return (
-    <>
+    <View>
       <HStack style={styles.headerContainer}>
         <Text>Profile</Text>
         <Switch
@@ -48,7 +49,7 @@ const Profile = () => {
       <VStack alignItems="center">
         <Button onPress={() => handleLogout()}>Logout</Button>
       </VStack>
-    </>
+    </View>
   );
 };
 

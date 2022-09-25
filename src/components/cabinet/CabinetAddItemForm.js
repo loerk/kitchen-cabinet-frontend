@@ -46,7 +46,6 @@ export const CabinetAddItemForm = () => {
     setSelected(day.dateString);
   }, []);
 
-  selectedIngredient && console.log(selectedIngredient);
   const saveItem = () => {
     if (selectedIngredient.name) {
       addItem({

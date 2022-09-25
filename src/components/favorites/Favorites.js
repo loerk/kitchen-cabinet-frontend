@@ -13,21 +13,18 @@ import {
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useState } from 'react';
-import SearchBar from '../components/utils/SearchBar';
-import { useGetFavoritesQuery } from '../features/api/apiSlice';
-import { RecipeCard } from '../components/utils/RecipeCard';
-import { useEffect } from 'react';
-import { AuthContext } from '../authNavigation/AuthProvider';
+import { useState, useEffect } from 'react';
+import { AuthContext } from '../../authNavigation/AuthProvider';
+import { useGetFavoritesQuery } from '../../features/api/apiSlice';
+import SearchBar from '../utils/SearchBar';
+import { RecipeCard } from '../utils/RecipeCard';
 
 const Favorites = () => {
   const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const [searchInput, setSearchInput] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
-
   const { data: favoriteRecipes, isLoading } = useGetFavoritesQuery(cabinetId);
-  console.log({ favoriteRecipes });
   // useEffect for filtering By title
   useEffect(() => {
     const filteredFavorites = favoriteRecipes?.filter((recipe) => {

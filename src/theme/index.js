@@ -26,8 +26,8 @@ export default customTheme = extendTheme({
       },
     },
 
-    // helle farbe '#FCF5EA'
-    // dunkle farbe '#515050'
+    // light color '#FCF5EA'
+    // dark color '#515050'
     View: {
       baseStyle: ({ colorMode }) => {
         return {
@@ -59,7 +59,7 @@ export default customTheme = extendTheme({
     Heading: {
       baseStyle: ({ colorMode }) => {
         return {
-          color: colorMode === 'dark' ? 'black.100' : 'primary.500',
+          color: colorMode === 'dark' ? 'black.100' : '#515050',
         };
       },
       defaultProps: {
@@ -75,8 +75,6 @@ export default customTheme = extendTheme({
       },
       defaultProps: {
         size: 'md',
-        /* paddingLeft: 5, */
-        /* fontFamily: 'Times New Roman', */
       },
       sizes: {
         xl: {
