@@ -68,10 +68,11 @@ function ExpirySuggestions({ items }) {
                 Already over expiry Date
               </Heading>
               <FlatList
+                keyExtractor={() => uuidv4()}
                 data={reduced.superUrgent || null}
                 renderItem={({ item }) => (
                   <Box
-                    key={uuidv4()}
+                    id={uuidv4()}
                     borderBottomWidth="1"
                     _dark={{
                       borderColor: 'muted.50',
@@ -117,7 +118,6 @@ function ExpirySuggestions({ items }) {
                     </HStack>
                   </Box>
                 )}
-                keyExtractor={(item) => item.id}
               />
               <Button bg="secondary.100" onPress={getSuperUrgentRecipes}>
                 Get Recipes
@@ -131,9 +131,10 @@ function ExpirySuggestions({ items }) {
               </Heading>
               <FlatList
                 data={reduced.urgent || null}
+                keyExtractor={() => uuidv4()}
                 renderItem={({ item }) => (
                   <Box
-                    key={uuidv4()}
+                    id={uuidv4()}
                     borderBottomWidth="1"
                     _dark={{
                       borderColor: 'muted.50',
@@ -179,7 +180,6 @@ function ExpirySuggestions({ items }) {
                     </HStack>
                   </Box>
                 )}
-                keyExtractor={(item) => item.id}
               />
               <Button bg="secondary.100" onPress={getUrgentRecipes}>
                 Get Recipes
@@ -192,10 +192,11 @@ function ExpirySuggestions({ items }) {
                 Might be next
               </Heading>
               <FlatList
+                keyExtractor={() => uuidv4()}
                 data={reduced.middle || null}
                 renderItem={({ item }) => (
                   <Box
-                    key={uuidv4()}
+                    id={uuidv4()}
                     borderBottomWidth="1"
                     _dark={{
                       borderColor: 'muted.50',
@@ -241,7 +242,6 @@ function ExpirySuggestions({ items }) {
                     </HStack>
                   </Box>
                 )}
-                keyExtractor={(item) => item.id}
               />
               <Button bg="secondary.100" onPress={getSoonRecipes}>
                 Get Recipes
@@ -256,7 +256,7 @@ function ExpirySuggestions({ items }) {
             </Heading>
             <ScrollView horizontal={true}>
               {suggestedRecipes?.map((recipe) => {
-                return <RecipeCard item={recipe} />;
+                return <RecipeCard key={uuidv4()} item={recipe} />;
               })}
             </ScrollView>
           </Box>
