@@ -10,7 +10,7 @@ import {
   Image,
   Icon,
   Center,
-  /*   useToast, */
+  useToast,
   useColorMode,
   Pressable,
   Divider,
@@ -73,7 +73,7 @@ const Cabinet = () => {
   const closeEditForm = () => setIsOpenEditForm(false);
   const [selected, setSelected] = useState(CURRENT_DATE);
 
-  /*   const toast = useToast(); */
+  const toast = useToast();
 
   const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
@@ -528,6 +528,26 @@ const Cabinet = () => {
               <Text italic fontSize="sm" mt={3}>
                 (Swipe left to edit / delete)
               </Text>
+              {isSuccessEdit && (
+                <Text color="green.500">
+                  {toBeEdited.name} was successfully updated.
+                </Text>
+              )}
+              {isSuccessDelete && (
+                <Text color="green.500">
+                  {toBeDeleted.name} was successfully deleted.
+                </Text>
+              )}
+              {isErrorEdit && (
+                <Text color="red.500">
+                  Something went wrong. {toBeEdited.name} could not be updated.
+                </Text>
+              )}
+              {isErrorDelete && (
+                <Text color="red.500">
+                  Something went wrong. {toBeDeleted.name} could not be deleted.
+                </Text>
+              )}
             </Center>
           </VStack>
           <ScrollView w={'90%'} h={'90%'}>
@@ -553,24 +573,6 @@ const Cabinet = () => {
                 <Spinner text="Loading..." />
               ) : null}
             </Box>
-            {/*  {isSuccessEdit && onOpenSuccessMsg()}
-        <Alert w='100%' variant='solid' colorScheme='success' status='success' isOpen={isSuccessMsgOpen} onClose={onSuccessMsgClose}>
-          <VStack space={2} flexShrink={1} w='100%'>
-            <HStack flexShrink={1} space={2} alignItems='center' justifyContent='space-between'>
-              <HStack space={2} flexShrink={1} alignItems='center'>
-                <Alert.Icon />
-                <Text color='warmGray.50'>
-                  {toBeEdited.name} was successfully updated!
-                </Text>
-              </HStack>
-              <IconButton onPress={onSuccessMsgClose} variant='unstyled' _focus={{
-                borderWidth: 0
-              }} icon={<CloseIcon size='3' />} _icon={{
-                color: 'warmGray.50'
-              }} />
-            </HStack>
-          </VStack>
-        </Alert> */}
           </ScrollView>
         </Center>
       </View>
