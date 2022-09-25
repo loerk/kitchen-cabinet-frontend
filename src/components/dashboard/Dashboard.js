@@ -33,6 +33,7 @@ import { HamburgerMenu } from '../utils/HamburgerMenu';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import ExpirySuggestions from './ExpirySuggestions';
 
 const Dashboard = () => {
   const { cabinetId, user } = useContext(AuthContext);
@@ -51,7 +52,6 @@ const Dashboard = () => {
   });
   const { data: items } = useGetCabinetItemsQuery(cabinetId);
   const itemNames = items?.map((item) => item.name).join(',');
-
   const { data: suggestedRecipes, isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
 
@@ -102,7 +102,6 @@ const Dashboard = () => {
       setMoreFilteredRecipes([]);
     }
   }, [filterOptions]);
-
   return (
     <View>
       <ScrollView keyboardShouldPersistTaps="handled">
@@ -160,6 +159,7 @@ const Dashboard = () => {
             </Text>
           </Center>
           <ScrollView horizontal={true} mt={4}>
+            {isLoadingRecipes && <Spinner />}
             {moreFilteredRecipes?.length && !searchInput ? (
               filteredRecipes?.map((filteredRecipe) => {
                 return <RecipeCard key={uuidv4()} item={filteredRecipe} />;
@@ -178,6 +178,7 @@ const Dashboard = () => {
 
             {isLoadingRecipes && <Spinner text="Loading..." />}
           </ScrollView>
+          <ExpirySuggestions items={items} />
         </SafeAreaView>
       </ScrollView>
     </View>
