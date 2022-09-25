@@ -8,6 +8,7 @@ import React, {
 import {
   HStack,
   Image,
+  Icon,
   Center,
   /*   useToast, */
   useColorMode,
@@ -21,17 +22,18 @@ import {
   Button,
   Box,
   VStack,
+  Item,
 } from 'native-base';
 
 import {
   MaterialCommunityIcons,
   MaterialIcons,
-  FontAwesome5,
   AntDesign,
 } from '@expo/vector-icons';
 import { Keyboard } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 // custom components
 import SearchBar from '../utils/SearchBar';
@@ -65,6 +67,7 @@ const Cabinet = () => {
     name: '',
     expiryDate: '',
   });
+  const [listData, setListData] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
@@ -84,24 +87,24 @@ const Cabinet = () => {
     isSuccess,
     isError,
     error,
-  } = useGetCabinetItemsQuery(cabinetId); // empty cabinet id: 6317109d801fa7692c1bb75a, filled cabinet id: 6315f1e0801fa7692c1bb736
+  } = useGetCabinetItemsQuery(cabinetId);
 
   const [
     editCabinetItem,
-    /*     {
-          isLoading: isLoadingEdit,
-          isSuccess: isSuccessEdit,
-          isError: isErrorEdit,
-          error: editError,
-        }, */
+    {
+      isLoading: isLoadingEdit,
+      isSuccess: isSuccessEdit,
+      isError: isErrorEdit,
+      error: editError,
+    },
   ] = useEditItemMutation();
   const [
     deleteCabinetItem,
-    /*     {
-          isLoading: isLoadingDelete,
-          isSuccess: isSuccessDelete,
-          isError: isErrorDelete,
-        }, */
+    {
+      isLoading: isLoadingDelete,
+      isSuccess: isSuccessDelete,
+      isError: isErrorDelete,
+    },
   ] = useDeleteItemMutation();
 
   useEffect(() => {
@@ -113,18 +116,130 @@ const Cabinet = () => {
       );
   }, [searchInput]);
 
+  useEffect(() => {}, [isSuccessEdit, isSuccessDelete]);
+
+  useEffect(() => {
+    if (cabinetItems) {
+      const keyCabinetItems = cabinetItems.map((item, index) => ({
+        ...item,
+        key: index,
+      }));
+      setListData(keyCabinetItems);
+    }
+  }, [cabinetItems]);
+
+  filteredItems &&
+    filteredItems
+      .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
+      .map(({ _id: id, name, image, expiryDate }) => {
+        const isExpired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
+        const remainingDaysLeft = Math.round(
+          (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
+            (1000 * 60 * 60 * 24)
+        );
+        const isTwoWeeksLeft = remainingDaysLeft <= 14;
+        const aboutToExpire = remainingDaysLeft < 5;
+        return (
+          <>
+            <HStack
+              bg={
+                isExpired && colorMode === 'light'
+                  ? 'red.100'
+                  : isExpired && colorMode === 'dark'
+                  ? 'red.200'
+                  : aboutToExpire && colorMode === 'light'
+                  ? 'orange.100'
+                  : aboutToExpire && colorMode === 'dark'
+                  ? 'orange.200'
+                  : null
+              }
+              flex={1}
+              justifyContent={'space-between'}
+              space={3}
+              p={2}
+              alignItems="center"
+              key={uuidv4()}
+            >
+              <Box flex={1} flexDir={'row'} alignItems={'center'}>
+                <Image
+                  source={{
+                    uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
+                  }}
+                  alt={name}
+                  size="sm"
+                />
+                <VStack>
+                  <Text
+                    bold
+                    ml={6}
+                    color={
+                      isExpired
+                        ? 'red.500'
+                        : aboutToExpire
+                        ? 'orange.400'
+                        : null
+                    }
+                  >
+                    {name
+                      .split(' ')
+                      .map(
+                        (name) => name.charAt(0).toUpperCase() + name.slice(1)
+                      )
+                      .join(' ')}
+                  </Text>
+                  <Text
+                    fontSize="sm"
+                    pl={6}
+                    color={
+                      isExpired
+                        ? 'red.500'
+                        : aboutToExpire
+                        ? 'orange.400'
+                        : null
+                    }
+                  >
+                    {'Expiry Date: \n'}
+                    {isTwoWeeksLeft ? (
+                      remainingDaysLeft >= 0 ? (
+                        `${remainingDaysLeft} day${
+                          remainingDaysLeft !== 1 ? 's' : ''
+                        } left`
+                      ) : (
+                        <Text style={{ color: 'red' }}>
+                          {Math.abs(remainingDaysLeft)} day
+                          {remainingDaysLeft !== -1 ? 's' : ''} ago
+                        </Text>
+                      )
+                    ) : (
+                      expiryDate.split('-').reverse().join('/')
+                    )}
+                  </Text>
+                </VStack>
+              </Box>
+              <Box alignItems="center">
+                {isExpired ? (
+                  <HStack>
+                    <MaterialIcons name="dangerous" size={20} color="red" />
+                    <Text color="red.500" fontSize="sm">
+                      Expired!
+                    </Text>
+                  </HStack>
+                ) : aboutToExpire ? (
+                  <HStack>
+                    <AntDesign name="warning" size={16} color="darkorange" />
+                    <Text color="orange.400" fontSize="sm">
+                      Expiring!
+                    </Text>
+                  </HStack>
+                ) : null}
+              </Box>
+            </HStack>
+          </>
+        );
+      });
+
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
-
-  const editItem = () => {
-    editCabinetItem(toBeEdited)
-      .unwrap()
-      .then((payload) => {
-        console.log(payload);
-        closeEditForm();
-      })
-      .catch((error) => console.log(error));
-  };
 
   const deleteItem = () => {
     deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
@@ -174,7 +289,14 @@ const Cabinet = () => {
             >
               Cancel
             </Button>
-            <Button onPress={() => editItem}>Save</Button>
+            <Button
+              onPress={() => {
+                editCabinetItem(toBeEdited).unwrap();
+                closeEditForm();
+              }}
+            >
+              Save
+            </Button>
           </Button.Group>
         </AlertDialog.Footer>
       </AlertDialog.Content>
@@ -212,6 +334,183 @@ const Cabinet = () => {
     </AlertDialog>
   );
 
+  const renderItem = ({ item }) => {
+    const isExpired = +new Date(CURRENT_DATE) > +new Date(item.expiryDate);
+    const remainingDaysLeft = Math.round(
+      (+new Date(item.expiryDate) - +new Date(CURRENT_DATE)) /
+        (1000 * 60 * 60 * 24)
+    );
+    const isTwoWeeksLeft = remainingDaysLeft <= 14;
+    const aboutToExpire = remainingDaysLeft < 5;
+    return (
+      <Box>
+        <Pressable
+          bg={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
+          alignItems="center"
+          borderBottomColor={colorMode === 'dark' ? 'muted.50' : 'muted.800'}
+          borderBottomWidth={1}
+          justifyContent="center"
+          height={50}
+          underlayColor={'#AAA'}
+          py={10}
+        >
+          <HStack width="100%" h={90}>
+            <HStack
+              bg={
+                isExpired && colorMode === 'light'
+                  ? 'red.100'
+                  : isExpired && colorMode === 'dark'
+                  ? 'red.200'
+                  : aboutToExpire && colorMode === 'light'
+                  ? 'orange.100'
+                  : aboutToExpire && colorMode === 'dark'
+                  ? 'orange.200'
+                  : null
+              }
+              flex={1}
+              justifyContent={'space-between'}
+              alignItems="center"
+              key={uuidv4()}
+            >
+              <Box flex={1} flexDir={'row'} alignItems={'center'}>
+                <Image
+                  source={{
+                    uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`,
+                  }}
+                  alt={item.name}
+                  size="sm"
+                />
+                <VStack>
+                  <Text
+                    bold
+                    ml={6}
+                    color={
+                      isExpired
+                        ? 'red.500'
+                        : aboutToExpire
+                        ? 'orange.400'
+                        : null
+                    }
+                  >
+                    {item.name
+                      .split(' ')
+                      .map(
+                        (name) => name.charAt(0).toUpperCase() + name.slice(1)
+                      )
+                      .join(' ')}
+                  </Text>
+                  <Text
+                    fontSize="sm"
+                    pl={6}
+                    color={
+                      isExpired
+                        ? 'red.500'
+                        : aboutToExpire
+                        ? 'orange.400'
+                        : null
+                    }
+                  >
+                    {'Expiry Date: \n'}
+                    {isTwoWeeksLeft ? (
+                      remainingDaysLeft >= 0 ? (
+                        `${remainingDaysLeft} day${
+                          remainingDaysLeft !== 1 ? 's' : ''
+                        } left`
+                      ) : (
+                        <Text style={{ color: 'red' }}>
+                          {Math.abs(remainingDaysLeft)} day
+                          {remainingDaysLeft !== -1 ? 's' : ''} ago
+                        </Text>
+                      )
+                    ) : (
+                      item.expiryDate.split('-').reverse().join('/')
+                    )}
+                  </Text>
+                </VStack>
+              </Box>
+              <Box alignItems="center">
+                {isExpired ? (
+                  <HStack alignItems="center">
+                    <MaterialIcons name="dangerous" size={20} color="red" />
+                    <Text color="red.500" fontSize="sm">
+                      Expired!
+                    </Text>
+                  </HStack>
+                ) : aboutToExpire ? (
+                  <HStack alignItems="center">
+                    <AntDesign name="warning" size={16} color="darkorange" />
+                    <Text color="orange.400" fontSize="sm">
+                      {' '}
+                      Expiring!
+                    </Text>
+                  </HStack>
+                ) : null}
+              </Box>
+            </HStack>
+          </HStack>
+        </Pressable>
+      </Box>
+    );
+  };
+
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  };
+
+  const deleteRow = (rowMap, rowKey) => {
+    closeRow(rowMap, rowKey);
+    const newData = [...listData];
+    const prevIndex = listData.findIndex((item) => item.key === rowKey);
+    const deletedItem = newData.splice(prevIndex, 1);
+    setListData(newData.filter((item) => item !== deletedItem));
+
+    console.log(toBeDeleted);
+    setIsOpenDeleteAlert(!isOpenDeleteAlert);
+  };
+
+  const renderHiddenItem = (data, rowMap) => (
+    <HStack flex={1} pl={2}>
+      <Pressable
+        px={5}
+        ml="auto"
+        bg="green.400"
+        justifyContent="center"
+        onPress={() => {
+          setToBeEdited({
+            id: data.item._id,
+            name:
+              data.item.name.charAt(0).toUpperCase() + data.item.name.slice(1),
+            expiryDate: data.item.expiryDate,
+          });
+          setIsOpenEditForm(!isOpenEditForm);
+        }}
+      >
+        <Icon
+          as={<AntDesign name="edit" size={'lg'} />}
+          color={colorMode === 'dark' ? 'white' : 'black'}
+        />
+      </Pressable>
+      <Pressable
+        px={4}
+        cursor="pointer"
+        bg="red.400"
+        justifyContent="center"
+        onPress={() => {
+          setToBeDeleted({ id: data.item._id, name: data.item.name });
+          deleteRow(rowMap, data.item.key);
+        }}
+      >
+        <Icon
+          as={<AntDesign name="delete" size={'lg'} />}
+          color={colorMode === 'dark' ? 'white' : 'black'}
+          mr="auto"
+        />
+      </Pressable>
+    </HStack>
+  );
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View keyboardShouldPersistTaps="handled">
@@ -219,177 +518,37 @@ const Cabinet = () => {
         <ConfirmDelete />
 
         <Center>
-          <HStack alignItems="center" mb={5}>
+          <VStack alignItems="center" mb={5}>
             <SearchBar
               placeholder="Search an item"
               onChangeText={(newValue) => setSearchInput(newValue)}
               defaultValue={searchInput}
             />
-          </HStack>
-          <ScrollView w={'80%'} h={'90%'} pr={4}>
+            <Center>
+              <Text italic fontSize="sm" mt={3}>
+                (Swipe left to edit / delete)
+              </Text>
+            </Center>
+          </VStack>
+          <ScrollView w={'90%'} h={'90%'}>
             <Box>
               {isSuccess && cabinetItems.length === 0 && (
                 <Text>Your cabinet is empty. Add an item.</Text>
               )}
               {filteredItems ? (
-                filteredItems
-                  .sort(
-                    (a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate)
-                  )
-                  .map(({ _id: id, name, image, expiryDate }) => {
-                    const isExpired =
-                      +new Date(CURRENT_DATE) > +new Date(expiryDate);
-                    const remainingDaysLeft = Math.round(
-                      (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
-                        (1000 * 60 * 60 * 24)
-                    );
-                    const isTwoWeeksLeft = remainingDaysLeft <= 14;
-                    const aboutToExpire = remainingDaysLeft < 5;
-                    return (
-                      <>
-                        <HStack
-                          bg={
-                            isExpired && colorMode === 'light'
-                              ? 'red.100'
-                              : isExpired && colorMode === 'dark'
-                              ? 'red.200'
-                              : aboutToExpire && colorMode === 'light'
-                              ? 'orange.100'
-                              : aboutToExpire && colorMode === 'dark'
-                              ? 'orange.200'
-                              : null
-                          }
-                          flex={1}
-                          justifyContent={'space-between'}
-                          space={3}
-                          p={2}
-                          alignItems="center"
-                          key={uuidv4()}
-                        >
-                          <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                            <Image
-                              source={{
-                                uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
-                              }}
-                              // borderRadius={'100'}
-                              alt={name}
-                              size="sm"
-                            />
-                            <VStack>
-                              <Text
-                                bold
-                                ml={6}
-                                color={
-                                  isExpired
-                                    ? 'red.500'
-                                    : aboutToExpire
-                                    ? 'orange.400'
-                                    : null
-                                }
-                              >
-                                {name
-                                  .split(' ')
-                                  .map(
-                                    (name) =>
-                                      name.charAt(0).toUpperCase() +
-                                      name.slice(1)
-                                  )
-                                  .join(' ')}
-                              </Text>
-                              <Text
-                                fontSize="sm"
-                                pl={6}
-                                color={
-                                  isExpired
-                                    ? 'red.500'
-                                    : aboutToExpire
-                                    ? 'orange.400'
-                                    : null
-                                }
-                              >
-                                {'Expiry Date: \n'}
-                                {isTwoWeeksLeft ? (
-                                  remainingDaysLeft >= 0 ? (
-                                    `${remainingDaysLeft} day${
-                                      remainingDaysLeft !== 1 ? 's' : ''
-                                    } left`
-                                  ) : (
-                                    <Text style={{ color: 'red' }}>
-                                      {Math.abs(remainingDaysLeft)} day
-                                      {remainingDaysLeft !== -1 ? 's' : ''} ago
-                                    </Text>
-                                  )
-                                ) : (
-                                  expiryDate.split('-').reverse().join('/')
-                                )}
-                              </Text>
-                            </VStack>
-                          </Box>
-                          <Box alignItems="center">
-                            <HStack space={4} alignItems="center" mt={5}>
-                              <FontAwesome5
-                                name="edit"
-                                size={20}
-                                color={colorMode === 'dark' ? 'white' : 'black'}
-                                onPress={() => {
-                                  setToBeEdited({
-                                    id,
-                                    name:
-                                      name.charAt(0).toUpperCase() +
-                                      name.slice(1),
-                                    expiryDate,
-                                  });
-                                  setIsOpenEditForm(!isOpenEditForm);
-                                }}
-                              />
-                              <AntDesign
-                                name="delete"
-                                size={23}
-                                color={colorMode === 'dark' ? 'white' : 'black'}
-                                onPress={() => {
-                                  setToBeDeleted({ id, name });
-                                  setIsOpenDeleteAlert(!isOpenDeleteAlert);
-                                }}
-                              />
-                            </HStack>
-
-                            {isExpired ? (
-                              <HStack mt={1}>
-                                <MaterialIcons
-                                  name="dangerous"
-                                  size={20}
-                                  color="red"
-                                />
-                                <Text color="red.500" fontSize="sm">
-                                  Expired!
-                                </Text>
-                              </HStack>
-                            ) : aboutToExpire ? (
-                              <HStack mt={1} alignItems="center">
-                                <AntDesign
-                                  name="warning"
-                                  size={16}
-                                  color="darkorange"
-                                />
-                                <Text color="orange.400" fontSize="sm">
-                                  {' '}
-                                  Expiring!
-                                </Text>
-                              </HStack>
-                            ) : null}
-                          </Box>
-                        </HStack>
-                        <Divider
-                          _light={{
-                            bg: 'muted.800',
-                          }}
-                          _dark={{
-                            bg: 'muted.50',
-                          }}
-                        />
-                      </>
-                    );
-                  })
+                <Box textAlign="center" flex={1} mb={20}>
+                  <SwipeListView
+                    disableRightSwipe
+                    data={filteredItems}
+                    renderItem={renderItem}
+                    renderHiddenItem={renderHiddenItem}
+                    leftOpenValue={55}
+                    rightOpenValue={-100}
+                    previewRowKey={'0'}
+                    previewOpenValue={-40}
+                    previewOpenDelay={3000}
+                  />
+                </Box>
               ) : isLoading ? (
                 <Spinner text="Loading..." />
               ) : null}
