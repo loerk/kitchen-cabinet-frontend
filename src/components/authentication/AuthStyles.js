@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 30,
     paddingBottom: 50,
-    backgroundColor: '#208AEC',
+    backgroundColor: '#891D47',
   },
   loginHeaderLogo: {
     width: 150,
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   loginHeaderText: {
     marginTop: 15,
-    color: '#f0f0f0',
+    color: '#FCF5EA',
     fontWeight: 'bold',
     fontSize: 20,
   },
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
     borderRadius: 12,
     marginTop: -10,
-    backgroundColor: '#fff',
+    backgroundColor: '#FCF5EA',
     alignItems: 'center',
   },
   form: {
@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 44,
-    backgroundColor: '#0065A4',
+    backgroundColor: '#891D47',
     borderRadius: 50,
   },
   buttonLabel: {
-    color: '#fff',
+    color: '#FCF5EA',
     fontSize: 15,
   },
   loginFooterText: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   loginFooterLink: {
-    color: '#208AEC',
+    color: '#891D47',
     fontSize: 15,
     fontWeight: 'bold',
   },
