@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
-import { Box, FlatList, Text, View } from 'native-base';
+import { Box, FlatList, Heading, Text, View } from 'native-base';
 import { VictoryPie } from 'victory-native';
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
@@ -74,6 +74,7 @@ export default function Diagrams() {
 
   return (
     <View>
+      <Heading>Diagrams</Heading>
       <Box style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text mt={5} mb={5} bold>
           Types of ingredients in the cabinet:

@@ -7,7 +7,7 @@ import {
   useColorMode,
   AlertDialog,
   Box,
-  useToast,
+  Heading,
 } from 'native-base';
 
 import { EvilIcons } from '@expo/vector-icons';
@@ -58,6 +58,7 @@ export const CabinetAddItemForm = () => {
 
   return (
     <View>
+      <Heading>Add Item</Heading>
       <ScrollView>
         <Center mt={'20%'}>
           <Text size="md" pt={4} bold>

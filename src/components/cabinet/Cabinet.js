@@ -23,6 +23,7 @@ import {
   Box,
   VStack,
   Item,
+  Heading,
 } from 'native-base';
 
 import {
@@ -516,7 +517,10 @@ const Cabinet = () => {
       <View keyboardShouldPersistTaps="handled">
         <EditForm />
         <ConfirmDelete />
-
+        <Heading>Cabinet</Heading>
+        <Text italic fontSize="sm" ml={5} mt={3}>
+          (swipe left to delete)
+        </Text>
         <Center>
           <VStack alignItems="center" mb={5}>
             <SearchBar
@@ -525,9 +529,6 @@ const Cabinet = () => {
               defaultValue={searchInput}
             />
             <Center>
-              <Text italic fontSize="sm" mt={3}>
-                (Swipe left to edit / delete)
-              </Text>
               {isSuccessEdit && (
                 <Text color="green.500">
                   {toBeEdited.name} was successfully updated.
@@ -553,7 +554,9 @@ const Cabinet = () => {
           <ScrollView w={'90%'} h={'90%'}>
             <Box>
               {isSuccess && cabinetItems.length === 0 && (
-                <Text>Your cabinet is empty. Add an item.</Text>
+                <Text textAlign={'center'}>
+                  Your cabinet is empty. Add an item.
+                </Text>
               )}
               {filteredItems ? (
                 <Box textAlign="center" flex={1} mb={20}>

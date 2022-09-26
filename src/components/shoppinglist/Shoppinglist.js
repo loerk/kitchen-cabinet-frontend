@@ -123,8 +123,10 @@ const ShoppingList = () => {
 
   return (
     <View>
-      <Heading>you need...</Heading>
-      <Text ml={5}>(swipe left to delete)</Text>
+      <Heading>Shoppinglist</Heading>
+      <Text italic fontSize="sm" ml={5} mt={3}>
+        (swipe left to delete)
+      </Text>
       {listData.length ? (
         <Box textAlign="center" flex={1} safeAreaTop>
           <SwipeListView
