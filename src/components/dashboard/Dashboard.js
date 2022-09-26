@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -38,6 +38,8 @@ import ExpirySuggestions from './ExpirySuggestions';
 const Dashboard = () => {
   const { cabinetId, user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
+  const scrollViewRef = useRef();
+  const [scrollToBottom, setScrollToBottom] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [searchedRecipes, setSearchedRecipes] = useState([]);
@@ -91,7 +93,7 @@ const Dashboard = () => {
     }
   }, [moreFilteredRecipes]);
 
-  //useEffect to reset filtered recipes if no filter is selected
+  // useEffect to reset filtered recipes if no filter is selected
   useEffect(() => {
     if (
       !filterOptions.diet &&
@@ -102,9 +104,17 @@ const Dashboard = () => {
       setMoreFilteredRecipes([]);
     }
   }, [filterOptions]);
+
   return (
     <View>
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        ref={scrollViewRef}
+        onContentSizeChange={() =>
+          scrollToBottom &&
+          scrollViewRef.current.scrollToEnd({ animated: true })
+        }
+      >
         <SafeAreaView>
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
@@ -178,7 +188,10 @@ const Dashboard = () => {
 
             {isLoadingRecipes && <Spinner text="Loading..." />}
           </ScrollView>
-          <ExpirySuggestions items={items} />
+          <ExpirySuggestions
+            items={items}
+            setScrollToBottom={setScrollToBottom}
+          />
         </SafeAreaView>
       </ScrollView>
     </View>
