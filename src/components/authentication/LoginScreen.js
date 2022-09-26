@@ -1,21 +1,23 @@
 import {
   Text,
-  TextInput,
   View,
   TouchableOpacity,
   SafeAreaView,
   Image,
 } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import theme from '../../theme';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { handleLogin } = useContext(AuthContext);
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -32,6 +34,7 @@ const LoginScreen = () => {
             <TextInput
               style={styles.formInput}
               value={email}
+              activeUnderlineColor="#891D47"
               placeholder={'Email Address'}
               onChangeText={(text) => setEmail(text)}
               autoCapitalize={'none'}
@@ -41,7 +44,15 @@ const LoginScreen = () => {
               style={styles.formInput}
               value={password}
               placeholder={'Password'}
-              secureTextEntry
+              secureTextEntry={!visible}
+              activeUnderlineColor="#891D47"
+              right={
+                <TextInput.Icon
+                  color="#891D47"
+                  name={visible ? 'eye' : 'eye-off'}
+                  onPress={() => setVisible(!visible)}
+                />
+              }
               onChangeText={(text) => setPassword(text)}
             />
             <TouchableOpacity onPress={() => handleLogin(email, password)}>

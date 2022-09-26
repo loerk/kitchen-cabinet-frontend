@@ -1,12 +1,11 @@
 import {
-  Alert,
   Text,
-  TextInput,
   View,
   TouchableOpacity,
   SafeAreaView,
   Image,
 } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
@@ -17,29 +16,9 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [visible, setVisible] = useState(false);
 
   const { handleRegister } = useContext(AuthContext);
-
-  // Old Version
-  /* const handleRegister = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        const uid = user.uid;
-        console.log(uid);
-        Alert.alert(
-          'Your account has been created!',
-
-          'You can now log in'
-        );
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  }; */
 
   return (
     <>
@@ -57,6 +36,7 @@ const RegisterScreen = () => {
               style={styles.formInput}
               value={username}
               placeholder={'Username'}
+              activeUnderlineColor="#891D47"
               onChangeText={(text) => setUsername(text)}
               autoCapitalize={'none'}
             />
@@ -64,6 +44,7 @@ const RegisterScreen = () => {
               style={styles.formInput}
               value={email}
               placeholder={'Email'}
+              activeUnderlineColor="#891D47"
               onChangeText={(text) => setEmail(text)}
               autoCapitalize={'none'}
             />
@@ -71,7 +52,16 @@ const RegisterScreen = () => {
               style={styles.formInput}
               value={password}
               placeholder={'Password'}
-              secureTextEntry
+              activeUnderlineColor="#891D47"
+              secureTextEntry={!visible}
+              right={
+                <TextInput.Icon
+                  selectionColor="#891D47"
+                  color="#891D47"
+                  name={visible ? 'eye' : 'eye-off'}
+                  onPress={() => setVisible(!visible)}
+                />
+              }
               onChangeText={(text) => setPassword(text)}
             />
             <TouchableOpacity
