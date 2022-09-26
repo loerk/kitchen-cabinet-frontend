@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../../firebase';
@@ -18,6 +19,7 @@ export const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [uid, setUid] = useState(null);
+  let exception = false;
   const [addCabinet] = useAddCabinetMutation();
   // eslint-disable-next-line no-unused-vars
   const { data: cabinetId } = useGetCabinetByUidQuery(uid ? uid : skipToken);
@@ -67,6 +69,18 @@ export const AuthProvider = ({ children }) => {
       console.log(error.message);
     }
   };
+  const handleReset = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      alert(error.message);
+      console.log(error.message);
+      exception = true;
+    }
+    if (!exception) {
+      alert('Check your email for a password reset link');
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -76,6 +90,7 @@ export const AuthProvider = ({ children }) => {
         handleLogin,
         handleRegister,
         handleLogout,
+        handleReset,
         cabinetId,
       }}
     >
