@@ -53,10 +53,9 @@ const RegisterScreen = () => {
               value={password}
               placeholder={'Password'}
               activeUnderlineColor="#891D47"
-              secureTextEntry={!visible}
+              secureTextEntry={visible}
               right={
                 <TextInput.Icon
-                  selectionColor="#891D47"
                   color="#891D47"
                   name={visible ? 'eye' : 'eye-off'}
                   onPress={() => setVisible(!visible)}

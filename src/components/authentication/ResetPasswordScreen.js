@@ -12,12 +12,10 @@ import styles from './AuthStyles';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 import theme from '../../theme';
 
-const LoginScreen = () => {
+const ResetPasswordScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { handleLogin } = useContext(AuthContext);
-  const [visible, setVisible] = useState(false);
+  const { handleReset } = useContext(AuthContext);
 
   return (
     <>
@@ -40,32 +38,15 @@ const LoginScreen = () => {
               autoCapitalize={'none'}
               keyboardType={'email-address'}
             />
-            <TextInput
-              style={styles.formInput}
-              value={password}
-              placeholder={'Password'}
-              secureTextEntry={!visible}
-              activeUnderlineColor="#891D47"
-              right={
-                <TextInput.Icon
-                  color="#891D47"
-                  name={visible ? 'eye' : 'eye-off'}
-                  onPress={() => setVisible(!visible)}
-                />
-              }
-              onChangeText={(text) => setPassword(text)}
-            />
-            <TouchableOpacity onPress={() => handleLogin(email, password)}>
+            <TouchableOpacity onPress={() => handleReset(email)}>
               <View style={styles.button}>
-                <Text style={styles.buttonLabel}>{'Sign in'}</Text>
+                <Text style={styles.buttonLabel}>{'Reset Password'}</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ResetPassword')}
-            >
-              <Text style={styles.loginResetText}>
-                {'Forgot your Password? '}
-                <Text style={styles.loginResetLink}>{'Reset Password '}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.returnLogin}>
+                {''}
+                <Text style={styles.returnLoginLink}>{'  Back to Login '}</Text>
               </Text>
             </TouchableOpacity>
           </View>
@@ -83,4 +64,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default ResetPasswordScreen;

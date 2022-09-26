@@ -1,3 +1,4 @@
+import { Center } from 'native-base';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -41,6 +42,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 20,
     backgroundColor: '#EDF0F7',
+  },
+  loginResetText: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: '#808080',
+    fontSize: 15,
+    paddingTop: 20,
+  },
+  loginResetLink: {
+    color: '#891D47',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  returnLogin: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    color: '#808080',
+    fontSize: 15,
+    paddingTop: 20,
+  },
+  returnLoginLink: {
+    color: '#891D47',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   button: {
     alignItems: 'center',
