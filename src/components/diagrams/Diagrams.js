@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
-import { Box, FlatList, Text, View } from 'native-base';
+import { Box, FlatList, Text, View, Button } from 'native-base';
 import { VictoryPie } from 'victory-native';
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 import { useGetCabinetItemsQuery } from '../../features/api/apiSlice';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-export default function Diagrams() {
+export default function Diagrams({ navigation }) {
   const { cabinetId } = useContext(AuthContext);
   const { width } = Dimensions.get('window');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -52,15 +52,25 @@ export default function Diagrams() {
     });
   }
 
-  let finalChartData = toDisplay.map((item) => {
+  let finalChartData = toDisplay.map((item, index) => {
     let percentage = ((item.y / toDisplay.length) * 100).toFixed(0);
     return {
       label: `${percentage}%`,
+      color: colorScale[index],
       x: item.x,
       y: item.y,
       items: categorizedCabinetItems
         .filter((i) => i.category === item.x)
-        .map((a) => a.items.map((b) => b.name)),
+        .map((a) =>
+          a.items
+            .map((b) =>
+              b.name
+                .split(' ')
+                .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                .join(' ')
+            )
+            .join('\n')
+        ),
     };
   });
 
@@ -75,9 +85,18 @@ export default function Diagrams() {
   return (
     <View>
       <Box style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text mt={5} mb={5} bold>
-          Types of ingredients in the cabinet:
-        </Text>
+        {cabinetItems ? (
+          <Text mt={5} mb={5} bold>
+            Types of ingredients in the cabinet:
+          </Text>
+        ) : (
+          <>
+            <Text>Your cabinet is empty.</Text>
+            <Button onPress={() => navigation.navigate('Add')}>
+              Add an item
+            </Button>
+          </>
+        )}
         <VictoryPie
           data={finalChartData}
           radius={({ datum }) =>
@@ -125,7 +144,17 @@ export default function Diagrams() {
         <FlatList
           data={finalChartData}
           renderItem={({ item, index }) => (
-            <TouchableOpacity /* style={{ flexDirection: 'row', height: 40, paddingHorizontal: 150, borderRadius: 10, backgroundColor: 'gray'}} */
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                height: 40,
+                paddingHorizontal: 150,
+                borderRadius: 10,
+                backgroundColor:
+                  selectedCategory && selectedCategory.name == item.name
+                    ? item.color
+                    : 'white',
+              }}
             >
               <Box
                 style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
@@ -140,11 +169,12 @@ export default function Diagrams() {
                 ></Box>
                 <Text bold>
                   {' '}
-                  {item.x.charAt(0).toUpperCase() + item.x.slice(1)}
+                  {item.x.charAt(0).toUpperCase() + item.x.slice(1)} -{' '}
+                  {item.label}
                 </Text>
               </Box>
               <Box style={{ justifyContent: 'center' }}>
-                <Text>{item.items.join(' ')}</Text>
+                <Text>{item.items.join('\n')}</Text>
               </Box>
             </TouchableOpacity>
           )}
