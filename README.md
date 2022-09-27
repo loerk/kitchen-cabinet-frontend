@@ -2,7 +2,7 @@
 
 <h1 align="center">Kitchen Cabinet</h1>
 <p align="center">
-check our <a href="https://github.com/BrianLadwig/BAIM-backend/tree/main" target="_blank">Backend</a> or our <a href="https://loka.vercel.app/" target="_blank">live app</a>
+check our <a href="https://github.com/YannWe/Kitchen-Cabinet-Backend" target="_blank">Backend</a>
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -20,10 +20,6 @@ check our <a href="https://github.com/BrianLadwig/BAIM-backend/tree/main" target
 ## Overview
 
 This Project is our Final Project of the one year fullstack web developer course at [DCI Digital Career Institute gGmbH](https://digitalcareerinstitute.org/de/).
-
-The Project take place from the 30th of May to the 19th of July, 2022.
-
-https://user-images.githubusercontent.com/84905549/183072833-d5508b11-17da-4361-968a-09fb3715894d.mp4
 
 ## About
 
@@ -44,33 +40,28 @@ https://user-images.githubusercontent.com/84905549/183072833-d5508b11-17da-4361-
 
 ## Features
 
-The users are able to register an account, login, and create posts for different categories all related to the idea of sustainability.
-The Post categories are:
+What do users want to do in the app?
 
-The users can edit their posts, pin them to their profile, read, write and delete comments and attend events.
+- Save their ingredients: User wants to have a list of everything they have at home
+   - Find specific Recipes: App can make it easier for users to find recipes OR be suggested recipes according to specific ingredients that they saved in the app.
+   - User specific requirements: user are provided recipe suggestions according to their likes/dislikes/nutritional requirements etc.
 
 <h2 align="center">Future Features</h2>
-
-Making LOKA community more engaging by:
-
-- Users can see other online users
-- Live chat with other users
-- See users and events happening near you
 
 <!-- TECHNOLOGIES -->
 
 ## Technologies
 
-- [React-Native](https://github.com/aseelalmutareb):
-- [nativeBase](https://github.com/YannWe):
-- [redux](https://github.com/loerk):
-- [firebase](https://github.com/loerk):
-- [react-navigation](https://github.com/loerk):
+- [React-Native](https://github.com/aseelalmutareb)
+- [nativeBase](https://github.com/YannWe)
+- [redux](https://github.com/loerk)
+- [firebase](https://github.com/loerk)
+- [react-navigation](https://github.com/loerk)
 
-- [nodeJs](https://github.com/aseelalmutareb):
-- [expressJs](https://github.com/YannWe):
-- [mongoDB](https://github.com/loerk):
-- [mongoose](https://github.com/loerk):
+- [nodeJs](https://github.com/aseelalmutareb)
+- [expressJs](https://github.com/YannWe)
+- [mongoDB](https://github.com/loerk)
+- [mongoose](https://github.com/loerk)
 
 <!-- TEAM -->
 
@@ -78,21 +69,19 @@ Making LOKA community more engaging by:
 
 At BAIM, we come from different professional backgrounds and nationalities and together we created Loka as our final project of the program. Our major roles in the projects are:
 
-- [Aseel](https://github.com/aseelalmutareb):
-- [Yannick](https://github.com/YannWe):
-- [Franziska](https://github.com/loerk):
+- [Aseel](https://github.com/aseelalmutareb)
+- [Yannick](https://github.com/YannWe)
+- [Franziska](https://github.com/loerk)
 
 <!-- LINKS -->
 
 ## Links
 
-- [Backend](https://github.com/BrianLadwig/BAIM-backend/tree/main)
+- [Backend](https://github.com/YannWe/Kitchen-Cabinet-Backend)
 - [Design?](<https://www.figma.com/file/ATMhtCX7NRp9otxh0y1EMy/Untitled-(Copy)?node-id=0%3A1>)
-- [Github Project Page](https://github.com/users/YannWe/projects/1)
+- [Github Project Page](https://github.com/users/YannWe/projects/1/views/1)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 
@@ -109,7 +98,6 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   npm install npm@latest -g
   ```
-
 
 ### Installation
 
@@ -140,4 +128,3 @@ Use this space to show useful examples of how a project can be used. Additional 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
