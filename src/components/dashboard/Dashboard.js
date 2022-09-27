@@ -125,7 +125,7 @@ const Dashboard = () => {
               <Heading>{user.displayName && `${user.displayName}`}</Heading>
             </VStack>
             <Box w={'100%'} justifyContent={'center'} alignItems={'flex-end'}>
-              <HamburgerMenu options={['Profile', 'Favorites']} />
+              <HamburgerMenu options={['Profile']} />
             </Box>
             <Divider />
           </HStack>

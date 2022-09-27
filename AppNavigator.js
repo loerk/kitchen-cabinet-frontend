@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
@@ -9,7 +9,7 @@ import Dashboard from './src/components/dashboard/Dashboard';
 import Cabinet from './src/components/cabinet/Cabinet';
 import Diagrams from './src/components/diagrams/Diagrams';
 import Loading from './src/components/Loading';
-import Profile from './src/components/Profile';
+import Profile from './src/components/profile/Profile';
 // auth components
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -20,12 +20,16 @@ import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm'
 
 import { useColorMode } from 'native-base';
 
-import Favorites from './src/components/favorites/Favorites';
+/* import Favorites from './src/components/favorites/Favorites'; */
 import ShoppingList from './src/components/shoppinglist/Shoppinglist';
+import FavoritesScreen from './src/components/profile/FavoritesScreen';
+import SettingsScreen from './src/components/profile/AppSettingsScreen';
+import DietPreferencesScreen from './src/components/profile/UserPreferencesScreen';
 
 //const colorMode = useColorMode();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const TopTab = createMaterialTopTabNavigator();
 const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
 
@@ -123,9 +127,29 @@ export const DashboardScreenNavigator = () => {
           },
         }}
         name="Profile"
-        component={Profile}
+        component={ProfileStack}
       />
-      <Stack.Screen
+    </Stack.Navigator>
+  );
+};
+
+export const ProfileStack = () => {
+  const { colorMode } = useColorMode();
+  console.log(colorMode);
+  return (
+    <TopTab.Navigator
+      initialRouteName="Favorites"
+      options={{
+        headerBackTitleVisible: false,
+        headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
+        headerStyle: {
+          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+        },
+      }}
+    >
+      <TopTab.Screen
+        name="Favorites"
+        component={FavoritesScreen}
         options={{
           headerBackTitleVisible: false,
           headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
@@ -133,9 +157,29 @@ export const DashboardScreenNavigator = () => {
             backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
           },
         }}
-        name="Favorites"
-        component={Favorites}
       />
-    </Stack.Navigator>
+      <TopTab.Screen
+        name="Diet Preferences"
+        component={DietPreferencesScreen}
+        options={{
+          headerBackTitleVisible: false,
+          headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
+          headerStyle: {
+            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+          },
+        }}
+      />
+      <TopTab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          headerBackTitleVisible: false,
+          headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
+          headerStyle: {
+            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+          },
+        }}
+      />
+    </TopTab.Navigator>
   );
 };
