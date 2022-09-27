@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   loginContainer: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#FCF5EA',
   },
   loginHeader: {
     alignItems: 'center',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     height: 44,
     paddingHorizontal: 20,
     marginBottom: 20,
-    backgroundColor: '#EDF0F7',
+    backgroundColor: '#891D4710',
   },
   loginResetText: {
     flexDirection: 'row',

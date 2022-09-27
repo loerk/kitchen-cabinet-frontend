@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
+import { ScrollView } from 'native-base';
 import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +23,11 @@ const RegisterScreen = () => {
 
   return (
     <>
-      <SafeAreaView style={styles.loginContainer}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        style={styles.loginContainer}
+      >
         <View style={styles.loginHeader}>
           <Image
             style={styles.loginHeaderLogo}
@@ -53,7 +58,7 @@ const RegisterScreen = () => {
               value={password}
               placeholder={'Password'}
               activeUnderlineColor="#891D47"
-              secureTextEntry={visible}
+              secureTextEntry={!visible}
               right={
                 <TextInput.Icon
                   color="#891D47"
@@ -80,7 +85,7 @@ const RegisterScreen = () => {
             </TouchableOpacity>
           </>
         </View>
-      </SafeAreaView>
+      </ScrollView>
     </>
   );
 };

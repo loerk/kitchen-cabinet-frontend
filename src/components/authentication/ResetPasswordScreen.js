@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
+import { ScrollView } from 'native-base';
 import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +20,11 @@ const ResetPasswordScreen = () => {
 
   return (
     <>
-      <SafeAreaView style={styles.loginContainer}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        style={styles.loginContainer}
+      >
         <View style={styles.loginHeader}>
           <Image
             style={styles.loginHeaderLogo}
@@ -59,7 +64,7 @@ const ResetPasswordScreen = () => {
             </TouchableOpacity>
           </>
         </View>
-      </SafeAreaView>
+      </ScrollView>
     </>
   );
 };
