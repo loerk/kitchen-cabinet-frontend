@@ -34,7 +34,6 @@ export default function Diagrams() {
 
     categorizedCabinetItems = categories.reduce((acc, category) => {
       const items = cabinetItems.filter((item) => item.type === category);
-      console.log(items);
       return [...acc, { category: category, items }];
     }, []);
 
