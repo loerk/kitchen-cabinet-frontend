@@ -52,7 +52,15 @@ What do users want to do in the app?
 
 ## Technologies
 
-- [React-Native](https://github.com/aseelalmutareb)
+### Front-end
+
+![](https://img.shields.io/badge/-react-4FC08D?logo=react&logoColor=white)![](https://img.shields.io/badge/-nativeBase-4FC08D?logo=nativeBase&logoColor=white)![](https://img.shields.io/badge/-redux-4FC08D?logo=redux&logoColor=white)
+
+### Back-end
+
+![](https://img.shields.io/badge/-Node.js-339933?logo=Node.js&logoColor=white)&nbsp;![](https://img.shields.io/badge/-Express-000000?logo=Express&logoColor=white)&nbsp;![](https://img.shields.io/badge/-mongoDB-4169E1?logo=mongoDB&logoColor=white)&nbsp;![](https://img.shields.io/badge/-mongoose%20S3-569A31?logo=mongoose&logoColor=white)
+
+<!-- - [React-Native](https://github.com/aseelalmutareb)
 - [nativeBase](https://github.com/YannWe)
 - [redux](https://github.com/loerk)
 - [firebase](https://github.com/loerk)
@@ -61,7 +69,7 @@ What do users want to do in the app?
 - [nodeJs](https://github.com/aseelalmutareb)
 - [expressJs](https://github.com/YannWe)
 - [mongoDB](https://github.com/loerk)
-- [mongoose](https://github.com/loerk)
+- [mongoose](https://github.com/loerk) -->
 
 <!-- TEAM -->
 
