@@ -1,7 +1,9 @@
 ## About The Project
 
+
 <h1 align="center">Kitchen Cabinet</h1>
 <p align="center">
+![logo](https://github.com/loerk/kitchen-cabinet-frontend/blob/main/assets/images/adaptive-icon.png?raw=true)
 check our <a href="https://github.com/YannWe/Kitchen-Cabinet-Backend" target="_blank">Backend</a>
 </p>
 
