@@ -1,56 +1,55 @@
 import { extendTheme } from 'native-base';
-/* import { useFonts } from 'expo-font'; */
 
+// eslint-disable-next-line no-undef
 export default customTheme = extendTheme({
-  /*fontConfig: {
-        OmedBrush: {
-            100: {
-                normal: "OmedBrush-Regular"
-            }
-        }
-    },
-    fonts: {
-        heading: "OmedBrush",
-        body: "OmedBrush",
-        mono: "OmedBrush"
-    }, */
   colors: {
-    black: {
-      100: '#C4C4C4',
-      200: '#7C7C7C',
-      300: '#292929',
-      800: '#181725',
-    },
-    green: {
-      300: '#53B175',
-    },
     primary: {
-      50: '#E3F2F9',
-      100: '#C5E4F3',
-      200: '#A2D4EC',
-      300: '#7AC1E4',
-      400: '#47A9DA',
-      500: '#0088CC',
-      600: '#007AB8',
-      700: '#006BA1',
-      800: '#005885',
-      900: '#003F5E',
+      100: '#FCF5EA',
+    },
+    secondary: {
+      100: '#891D47',
     },
     // Redefining only one shade, rest of the color will remain same.
     amber: {
       400: '#d97706',
     },
+    gray: {
+      100: 'gray',
+    },
   },
   components: {
-    /* Button: {
-        // Can simply pass default props to change default behaviour of components.
-        baseStyle: {
-          rounded: 'md',
-        },
-        defaultProps: {
-          colorScheme: 'red',
-        },
-      }, */
+    Button: {
+      baseStyle: ({ colorMode }) => {
+        return {
+          colorScheme: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
+        };
+      },
+    },
+
+    // light color '#FCF5EA'
+    // dark color '#515050'
+    // red color: '#891D47'
+    View: {
+      baseStyle: ({ colorMode }) => {
+        return {
+          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+        };
+      },
+      defaultProps: {
+        paddingTop: '10%',
+        minHeight: '100%',
+      },
+    },
+    Input: {
+      baseStyle: ({ colorMode }) => {
+        return {
+          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D4710',
+        };
+      },
+      defaultProps: {
+        color: 'black',
+      },
+    },
     Divider: {
       baseStyle: ({ colorMode }) => {
         return {
@@ -61,33 +60,32 @@ export default customTheme = extendTheme({
     Heading: {
       baseStyle: ({ colorMode }) => {
         return {
-          color: colorMode === 'dark' ? 'black.100' : 'primary.500',
+          color: colorMode === 'dark' ? 'black.100' : '#515050',
         };
       },
       defaultProps: {
         size: 'xl',
-        fontFamily: 'Arial',
+        paddingLeft: 5,
       },
     },
     Text: {
       baseStyle: ({ colorMode }) => {
         return {
-          color: colorMode === 'dark' ? 'black.100' : 'black.300',
+          color: colorMode === 'dark' ? '#FCF5EA' : '#515050',
         };
       },
       defaultProps: {
         size: 'md',
-        fontFamily: 'Times New Roman',
       },
       sizes: {
         xl: {
           fontSize: '64px',
         },
         lg: {
-          fontSize: '32px',
+          fontSize: '24px',
         },
         md: {
-          fontSize: '16px',
+          fontSize: '18px',
         },
         sm: {
           fontSize: '12px',

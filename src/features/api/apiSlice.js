@@ -1,24 +1,30 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-const BASE_URL = 'http://192.168.178.26:8002';
+import { BASE_URL } from '@env';
 
 // Defines the single API slice object
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  tagTypes: ['Items', 'Shoppinglist', 'Favorites'],
   endpoints: (builder) => ({
+    // id: cabinet ID
     getCabinetById: builder.query({
       query: (id) => `/cabinet/${id}`,
     }),
+    getCabinetByUid: builder.query({
+      // uid: user ID
+      query: (uid) => `/cabinet/uid/${uid}`,
+    }),
     getCabinetItems: builder.query({
       query: (id) => `/cabinet/items/all/${id}`,
+      providesTags: ['Items'],
     }),
     getCabinetItem: builder.query({
       query: (id) => `/cabinet/items/${id}`,
     }),
     getFilteredRecipes: builder.query({
-      query: ({ query, type, diet, cuisine, intolerances }) =>
-        `/recipes/filter?query=${query}&type=${type}&cuisine=${cuisine}&intolerances=d${intolerances}&diet=${diet}`,
+      query: ({ type, diet, intolerance, extras, recipeIds }) =>
+        `/recipes/filter?type=${type}&intolerance=${intolerance}&extras=${extras}&diet=${diet}&ids=${recipeIds}`,
     }),
     getRecipeById: builder.query({
       query: (id) => `/recipes/id/${id}`,
@@ -33,19 +39,44 @@ export const apiSlice = createApi({
     getRecipeInstructions: builder.query({
       query: (id) => `/recipes/instructions/${id}`,
     }),
+    getFavorites: builder.query({
+      query: (cabinetId) => `/cabinet/favorites/${cabinetId}`,
+      providesTags: ['Favorites'],
+    }),
+    getShoppinglist: builder.query({
+      query: (id) => `/cabinet/shoppinglist/${id}`,
+      providesTags: ['Shoppinglist'],
+    }),
     addCabinet: builder.mutation({
-      query: (name) => ({
+      query: ({ name, uid }) => ({
         url: '/cabinet',
         method: 'POST',
-        body: { name },
+        body: { name, uid },
       }),
     }),
     addItem: builder.mutation({
-      query: ({ cabinetId, id, expiryDate, amount }) => ({
+      query: ({ cabinetId, id, expiryDate }) => ({
         url: 'cabinet/items/',
         method: 'POST',
-        body: { cabinetId, id, expiryDate, amount },
+        body: { cabinetId, id, expiryDate },
       }),
+      invalidatesTags: ['Items'],
+    }),
+    addFavoriteRecipe: builder.mutation({
+      query: ({ cabinetId, recipeId }) => ({
+        url: `/cabinet/favorites/${cabinetId}`,
+        method: 'POST',
+        body: { recipeId },
+      }),
+      providesTags: ['Favorites'],
+    }),
+    addShoppinglist: builder.mutation({
+      query: ({ cabinetId, shoppinglist }) => ({
+        url: `/cabinet/shoppinglist/${cabinetId}`,
+        method: 'POST',
+        body: { shoppinglist },
+      }),
+      invalidatesTags: ['Shoppinglist'],
     }),
     editCabinet: builder.mutation({
       query: ({ id, ...rest }) => ({
@@ -60,12 +91,21 @@ export const apiSlice = createApi({
         method: 'PUT',
         body: rest,
       }),
+      invalidatesTags: ['Items'],
     }),
     deleteItem: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/cabinet/items/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Items'],
+    }),
+    deleteShoppinglistItems: builder.mutation({
+      query: ({ cabinetId, toDelete }) => ({
+        url: `/cabinet/shoppinglist?cabinetId=${cabinetId}&toDelete=${toDelete}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Shoppinglist'],
     }),
     deleteCabinet: builder.mutation({
       query: (id) => ({
@@ -78,17 +118,23 @@ export const apiSlice = createApi({
 
 export const {
   useGetCabinetByIdQuery,
+  useGetCabinetByUidQuery,
   useGetCabinetItemsQuery,
   useGetCabinetItemQuery,
   useGetFilteredRecipesQuery,
   useGetRecipeByIdQuery,
   useGetRecipeByIngredientsQuery,
+  useGetFavoritesQuery,
+  useGetShoppinglistQuery,
   useIngredientsListQuery,
   useRecipeInstructionsQuery,
+  useAddShoppinglistMutation,
   useAddCabinetMutation,
   useAddItemMutation,
+  useAddFavoriteRecipeMutation,
   useEditCabinetMutation,
   useEditItemMutation,
+  useDeleteShoppinglistItemsMutation,
   useDeleteItemMutation,
   useDeleteCabinetMutation,
 } = apiSlice;

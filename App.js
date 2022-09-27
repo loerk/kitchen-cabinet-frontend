@@ -1,5 +1,6 @@
+import 'react-native-gesture-handler';
+import React from 'react';
 import { NativeBaseProvider } from 'native-base';
-import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -8,12 +9,7 @@ import customTheme from './src/theme';
 
 // stack navigator
 import AppNavigator from './AppNavigator';
-
-// custom components
-
-import Dashboard from './src/components/Dashboard';
-import Cabinet from './src/components/Cabinet';
-import Footer from './src/components/Footer';
+import { AuthProvider } from './src/authNavigation/AuthProvider';
 
 // redux
 import { Provider } from 'react-redux';
@@ -21,16 +17,16 @@ import store from './src/app/store';
 
 export default function App() {
   return (
-    <NativeBaseProvider theme={customTheme}>
-      <Provider store={store}>
-        <SafeAreaProvider>
-          {/* <Dashboard /> */}
-          <NavigationContainer>
-            <AppNavigator />
-            <Footer />
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </Provider>
-    </NativeBaseProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <NativeBaseProvider theme={customTheme}>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <AppNavigator />
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </NativeBaseProvider>
+      </AuthProvider>
+    </Provider>
   );
 }
