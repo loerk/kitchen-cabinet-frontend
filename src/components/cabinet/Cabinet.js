@@ -466,8 +466,6 @@ const Cabinet = () => {
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     const deletedItem = newData.splice(prevIndex, 1);
     setListData(newData.filter((item) => item !== deletedItem));
-
-    console.log(toBeDeleted);
     setIsOpenDeleteAlert(!isOpenDeleteAlert);
   };
 

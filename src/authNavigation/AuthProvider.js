@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }) => {
       signOut(auth);
     } catch (error) {
       alert(error.message);
-      console.log(error.message);
     }
   };
 
@@ -58,7 +57,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       alert(error.message);
-      console.log(error.message);
     }
   };
   const handleLogout = async () => {
@@ -66,7 +64,6 @@ export const AuthProvider = ({ children }) => {
       await signOut(auth);
     } catch (error) {
       alert(error.message);
-      console.log(error.message);
     }
   };
   const handleReset = async (email) => {
@@ -74,7 +71,6 @@ export const AuthProvider = ({ children }) => {
       await sendPasswordResetEmail(auth, email);
     } catch (error) {
       alert(error.message);
-      console.log(error.message);
       exception = true;
     }
     if (!exception) {
