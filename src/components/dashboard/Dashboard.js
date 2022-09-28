@@ -183,7 +183,9 @@ const Dashboard = () => {
                 return <RecipeCard key={uuidv4()} item={suggestedRecipe} />;
               })
             ) : (
-              <Text>Your cabinet is empty. Add an item.</Text>
+              <Text textAlign={'center'}>
+                Your cabinet is empty. Add an item.
+              </Text>
             )}
 
             {isLoadingRecipes && <Spinner text="Loading..." />}
