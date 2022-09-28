@@ -47,6 +47,10 @@ export const apiSlice = createApi({
       query: (id) => `/cabinet/shoppinglist/${id}`,
       providesTags: ['Shoppinglist'],
     }),
+    getPreferences: builder.query({
+      query: (id) => `/cabinet/preferences/${id}`,
+      providesTags: ['Preferences'],
+    }),
     addCabinet: builder.mutation({
       query: ({ name, uid }) => ({
         url: '/cabinet',
@@ -77,6 +81,14 @@ export const apiSlice = createApi({
         body: { shoppinglist },
       }),
       invalidatesTags: ['Shoppinglist'],
+    }),
+    addPreferences: builder.mutation({
+      query: ({ cabinetId, preferences }) => ({
+        url: `/cabinet/preferences/${cabinetId}`,
+        method: 'POST',
+        body: { preferences },
+      }),
+      invalidatesTags: ['Preferences'],
     }),
     editCabinet: builder.mutation({
       query: ({ id, ...rest }) => ({
