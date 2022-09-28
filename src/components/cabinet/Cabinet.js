@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import {
   HStack,
-  Image,
+  Avatar,
   Icon,
   Center,
   useToast,
@@ -166,12 +166,13 @@ const Cabinet = () => {
               key={uuidv4()}
             >
               <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                <Image
+                <Avatar
                   source={{
                     uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
                   }}
                   alt={name}
-                  size="sm"
+                  size="lg"
+                  ml={2}
                 />
                 <VStack>
                   <Text
@@ -225,14 +226,14 @@ const Cabinet = () => {
                 {isExpired ? (
                   <HStack>
                     <MaterialIcons name="dangerous" size={20} color="red" />
-                    <Text color="red.500" fontSize="sm">
+                    <Text color="red.500" fontSize="sm" mr={2}>
                       Expired!
                     </Text>
                   </HStack>
                 ) : aboutToExpire ? (
                   <HStack>
                     <AntDesign name="warning" size={16} color="darkorange" />
-                    <Text color="orange.400" fontSize="sm">
+                    <Text color="orange.400" fontSize="sm" mr={2}>
                       Expiring!
                     </Text>
                   </HStack>
@@ -355,7 +356,7 @@ const Cabinet = () => {
           borderBottomColor={colorMode === 'dark' ? 'muted.50' : 'muted.800'}
           borderBottomWidth={1}
           justifyContent="center"
-          height={50}
+          height={93}
           underlayColor={'#AAA'}
           py={10}
         >
@@ -378,12 +379,13 @@ const Cabinet = () => {
               key={uuidv4()}
             >
               <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                <Image
+                <Avatar
                   source={{
                     uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`,
                   }}
                   alt={item.name}
-                  size="sm"
+                  size="lg"
+                  ml={2}
                 />
                 <VStack>
                   <Text
@@ -437,14 +439,14 @@ const Cabinet = () => {
                 {isExpired ? (
                   <HStack alignItems="center">
                     <MaterialIcons name="dangerous" size={20} color="red" />
-                    <Text color="red.500" fontSize="sm">
+                    <Text color="red.500" fontSize="sm" mr={2}>
                       Expired!
                     </Text>
                   </HStack>
                 ) : aboutToExpire ? (
                   <HStack alignItems="center">
                     <AntDesign name="warning" size={16} color="darkorange" />
-                    <Text color="orange.400" fontSize="sm">
+                    <Text color="orange.400" fontSize="sm" mr={2}>
                       {' '}
                       Expiring!
                     </Text>
