@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import RenderHtml from 'react-native-render-html';
 import {
   useAddFavoriteRecipeMutation,
+  useDeleteFavoriteRecipeMutation,
   useGetRecipeByIdQuery,
 } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
@@ -39,9 +40,18 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
-  const [addFavoriteRecipe, { isSuccess, isLoading: isSaving }] =
-    useAddFavoriteRecipeMutation();
 
+  const [
+    addFavoriteRecipe,
+    { isSuccess: isSuccessSaving, isLoading: isSaving },
+  ] = useAddFavoriteRecipeMutation();
+  const [deleteFavoriteRecipe, { isSuccess: isSuccessDeleting }] =
+    useDeleteFavoriteRecipeMutation();
+  const deleteFavorite = (id) => {
+    console.log(cabinetId);
+    console.log(id);
+    //deleteFavoriteRecipe({cabinetId, recipeId:id})
+  };
   const saveFavorite = (id) => {
     addFavoriteRecipe({ cabinetId, recipeId: id }).unwrap();
   };
@@ -147,9 +157,25 @@ export const RecipeDetails = ({
                     <Button onPress={() => saveFavorite(recipeDetails.id)}>
                       Add to favourites
                     </Button>
-                  ) : null}
+                  ) : (
+                    <Button
+                      onPress={() =>
+                        deleteFavoriteRecipe({
+                          cabinetId,
+                          recipeId: recipeDetails.id,
+                        })
+                      }
+                    >
+                      Remove from Favorites
+                    </Button>
+                  )}
                   {isSaving && <Spinner text="Loading..." />}
-                  {isSuccess && (
+                  {isSuccessSaving && (
+                    <Text textAlign={'center'}>
+                      This recipe is now one of your favourites
+                    </Text>
+                  )}
+                  {isSuccessDeleting && (
                     <Text textAlign={'center'}>
                       This recipe is now one of your favourites
                     </Text>

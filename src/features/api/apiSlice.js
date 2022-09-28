@@ -68,7 +68,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: { recipeId },
       }),
-      providesTags: ['Favorites'],
+      invalidatesTags: ['Favorites'],
     }),
     addShoppinglist: builder.mutation({
       query: ({ cabinetId, shoppinglist }) => ({
@@ -107,6 +107,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Shoppinglist'],
     }),
+    deleteFavoriteRecipe: builder.mutation({
+      query: ({ cabinetId, recipeId }) => ({
+        url: `/cabinet/favorites/${cabinetId}?recipeId=${recipeId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Favorites'],
+    }),
     deleteCabinet: builder.mutation({
       query: (id) => ({
         url: `/cabinet/${id}`,
@@ -137,4 +144,5 @@ export const {
   useDeleteShoppinglistItemsMutation,
   useDeleteItemMutation,
   useDeleteCabinetMutation,
+  useDeleteFavoriteRecipeMutation,
 } = apiSlice;

@@ -26,7 +26,10 @@ const Favorites = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const { data: favoriteRecipes, isLoading } = useGetFavoritesQuery(cabinetId);
+
   // useEffect for filtering By title
+  console.log(favoriteRecipes);
+
   useEffect(() => {
     const filteredFavorites = favoriteRecipes?.filter((recipe) => {
       if (recipe.title.toLowerCase().includes(searchInput)) return true;
@@ -38,7 +41,6 @@ const Favorites = () => {
   if (isLoading) return <Spinner />;
   return (
     <View>
-      <Heading>Favorites</Heading>
       <ScrollView
         backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
         keyboardShouldPersistTaps="handled"
