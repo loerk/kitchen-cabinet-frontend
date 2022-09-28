@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../../firebase';
@@ -18,9 +19,12 @@ export const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [uid, setUid] = useState(null);
+  let exception = false;
   const [addCabinet] = useAddCabinetMutation();
   // eslint-disable-next-line no-unused-vars
-  const { data: cabinetId } = useGetCabinetByUidQuery(uid ? uid : skipToken);
+  const { data: userInformation } = useGetCabinetByUidQuery(
+    uid ? uid : skipToken
+  );
 
   useEffect(() => {
     if (user !== null) {
@@ -43,7 +47,6 @@ export const AuthProvider = ({ children }) => {
       signOut(auth);
     } catch (error) {
       alert(error.message);
-      console.log(error.message);
     }
   };
 
@@ -56,7 +59,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       alert(error.message);
-      console.log(error.message);
     }
   };
   const handleLogout = async () => {
@@ -64,7 +66,17 @@ export const AuthProvider = ({ children }) => {
       await signOut(auth);
     } catch (error) {
       alert(error.message);
-      console.log(error.message);
+    }
+  };
+  const handleReset = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      alert(error.message);
+      exception = true;
+    }
+    if (!exception) {
+      alert('Check your email for a password reset link');
     }
   };
 
@@ -76,7 +88,10 @@ export const AuthProvider = ({ children }) => {
         handleLogin,
         handleRegister,
         handleLogout,
-        cabinetId,
+        handleReset,
+        cabinetId: userInformation?.cabinetId || null,
+        diet: userInformation?.diet || null,
+        intolerance: userInformation?.intolerance || null,
       }}
     >
       {children}

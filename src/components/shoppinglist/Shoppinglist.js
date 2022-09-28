@@ -84,7 +84,9 @@ const ShoppingList = () => {
             </Avatar>
             <Box h={7} w={'80%'}>
               <HStack flex={1} justifyContent={'space-between'}>
-                <Text>{item?.name}</Text>
+                <Text maxW={180} isTruncated>
+                  {item?.name}
+                </Text>
                 <Text>{item?.amount + '  ' + item.metrics}</Text>
               </HStack>
             </Box>
@@ -123,8 +125,10 @@ const ShoppingList = () => {
 
   return (
     <View>
-      <Heading>you need...</Heading>
-      <Text ml={5}>(swipe left to delete)</Text>
+      <Heading>Shoppinglist</Heading>
+      <Text italic fontSize="sm" ml={5} mt={3}>
+        (swipe left to delete)
+      </Text>
       {listData.length ? (
         <Box textAlign="center" flex={1} safeAreaTop>
           <SwipeListView
@@ -139,7 +143,9 @@ const ShoppingList = () => {
           />
         </Box>
       ) : (
-        <Text textAlign={'center'}>Your Shoppinglist is empty</Text>
+        <Text mt={10} textAlign={'center'}>
+          Your Shoppinglist is empty
+        </Text>
       )}
     </View>
   );

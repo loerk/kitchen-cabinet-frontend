@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Select,
   VStack,
@@ -9,6 +9,7 @@ import {
 } from 'native-base';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const Filter = ({
   setMoreFilteredRecipes,
@@ -18,6 +19,8 @@ const Filter = ({
   filterOptions,
 }) => {
   const [isPressed, setIsPressed] = useState(false);
+  const { diet: presetDiet, intolerance: presetIntolerance } =
+    useContext(AuthContext);
 
   const { diet, intolerance, type, extras } = filterOptions;
   const { colorMode } = useColorMode();
@@ -58,10 +61,18 @@ const Filter = ({
         }}
       >
         <Select.Item label="" value="" />
-        <Select.Item label="Vegetarian" value="vegetarian" />
-        <Select.Item label="Vegan" value="vegan" />
-        <Select.Item label="Gluten free" value="glutenFree" />
-        <Select.Item label="Dairy free" value="dairyFree" />
+        {presetDiet !== 'vegetarian' ? (
+          <Select.Item label="Vegetarian" value="vegetarian" />
+        ) : null}
+        {presetDiet !== 'vegan' ? (
+          <Select.Item label="Vegan" value="vegan" />
+        ) : null}
+        {presetDiet !== 'glutenFree' ? (
+          <Select.Item label="Gluten free" value="glutenFree" />
+        ) : null}
+        {presetDiet !== 'dairyFree' ? (
+          <Select.Item label="Dairy free" value="dairyFree" />
+        ) : null}
       </Select>
 
       <Select
@@ -82,14 +93,30 @@ const Filter = ({
         }}
       >
         <Select.Item label="" value="" />
-        <Select.Item label="Egg" value="Egg" />
-        <Select.Item label="Grain" value="grain" />
-        <Select.Item label="Peanut" value="peanut" />
-        <Select.Item label="Sesame" value="sesame" />
-        <Select.Item label="Shellfish" value="shellfish" />
-        <Select.Item label="Soy" value="soy" />
-        <Select.Item label="Tree Nut" value="tree Nut" />
-        <Select.Item label="Wheat" value="wheat" />
+        {presetIntolerance !== 'Egg' ? (
+          <Select.Item label="Egg" value="Egg" />
+        ) : null}
+        {presetIntolerance !== 'grain' ? (
+          <Select.Item label="Grain" value="grain" />
+        ) : null}
+        {presetIntolerance !== 'peanut' ? (
+          <Select.Item label="Peanut" value="peanut" />
+        ) : null}
+        {presetIntolerance !== 'sesame' ? (
+          <Select.Item label="Sesame" value="sesame" />
+        ) : null}
+        {presetIntolerance !== 'shellfish' ? (
+          <Select.Item label="Shellfish" value="shellfish" />
+        ) : null}
+        {presetIntolerance !== 'soy' ? (
+          <Select.Item label="Soy" value="soy" />
+        ) : null}
+        {presetIntolerance !== 'tree Nut' ? (
+          <Select.Item label="Tree Nut" value="tree Nut" />
+        ) : null}
+        {presetIntolerance !== 'wheat' ? (
+          <Select.Item label="Wheat" value="wheat" />
+        ) : null}
       </Select>
 
       <Select

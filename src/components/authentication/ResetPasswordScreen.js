@@ -11,15 +11,12 @@ import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import theme from '../../theme';
 
-const RegisterScreen = () => {
+const ResetPasswordScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [visible, setVisible] = useState(false);
-
-  const { handleRegister } = useContext(AuthContext);
+  const { handleReset } = useContext(AuthContext);
 
   return (
     <>
@@ -39,48 +36,30 @@ const RegisterScreen = () => {
           <View style={styles.form}>
             <TextInput
               style={styles.formInput}
-              value={username}
-              placeholder={'Username'}
-              activeUnderlineColor="#891D47"
-              onChangeText={(text) => setUsername(text)}
-              autoCapitalize={'none'}
-            />
-            <TextInput
-              style={styles.formInput}
               value={email}
-              placeholder={'Email'}
               activeUnderlineColor="#891D47"
+              placeholder={'Email Address'}
               onChangeText={(text) => setEmail(text)}
               autoCapitalize={'none'}
+              keyboardType={'email-address'}
             />
-            <TextInput
-              style={styles.formInput}
-              value={password}
-              placeholder={'Password'}
-              activeUnderlineColor="#891D47"
-              secureTextEntry={!visible}
-              right={
-                <TextInput.Icon
-                  color="#891D47"
-                  name={visible ? 'eye' : 'eye-off'}
-                  onPress={() => setVisible(!visible)}
-                />
-              }
-              onChangeText={(text) => setPassword(text)}
-            />
-            <TouchableOpacity
-              onPress={() => handleRegister(email, password, username)}
-            >
+            <TouchableOpacity onPress={() => handleReset(email)}>
               <View style={styles.button}>
-                <Text style={styles.buttonLabel}>{'Register'}</Text>
+                <Text style={styles.buttonLabel}>{'Reset Password'}</Text>
               </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.returnLogin}>
+                {''}
+                <Text style={styles.returnLoginLink}>{'  Back to Login '}</Text>
+              </Text>
             </TouchableOpacity>
           </View>
           <>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
               <Text style={styles.loginFooterText}>
-                {'Already have an account? '}
-                <Text style={styles.loginFooterLink}>{'Log In'}</Text>
+                {"Don't have an account? "}
+                <Text style={styles.loginFooterLink}>{'Register'}</Text>
               </Text>
             </TouchableOpacity>
           </>
@@ -90,4 +69,4 @@ const RegisterScreen = () => {
   );
 };
 
-export default RegisterScreen;
+export default ResetPasswordScreen;

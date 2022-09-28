@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Center,
   Divider,
+  Heading,
   ScrollView,
   Spinner,
   StatusBar,
@@ -37,6 +38,7 @@ const Favorites = () => {
   if (isLoading) return <Spinner />;
   return (
     <View>
+      <Heading>Favorites</Heading>
       <ScrollView
         backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
         keyboardShouldPersistTaps="handled"

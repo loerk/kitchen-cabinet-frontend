@@ -13,7 +13,6 @@ import {
   useToast,
   useColorMode,
   Pressable,
-  Divider,
   View,
   Text,
   Spinner,
@@ -21,6 +20,7 @@ import {
   Button,
   Box,
   VStack,
+  Heading,
 } from 'native-base';
 
 import {
@@ -469,6 +469,8 @@ const Cabinet = () => {
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     const deletedItem = newData.splice(prevIndex, 1);
+    setListData(newData.filter((item) => item !== deletedItem));
+
     setIsOpenDeleteAlert(!isOpenDeleteAlert);
     setListData(newData);
   };
@@ -519,7 +521,10 @@ const Cabinet = () => {
       <View keyboardShouldPersistTaps="handled">
         <EditForm />
         <ConfirmDelete />
-
+        <Heading>Cabinet</Heading>
+        <Text italic fontSize="sm" ml={5} mt={3}>
+          (swipe left to delete)
+        </Text>
         <Center>
           <VStack alignItems="center" mb={5}>
             <SearchBar
@@ -528,9 +533,6 @@ const Cabinet = () => {
               defaultValue={searchInput}
             />
             <Center>
-              <Text italic fontSize="sm" mt={3}>
-                (Swipe left to edit / delete)
-              </Text>
               {isSuccessEdit && (
                 <Text color="green.500">
                   {toBeEdited.name} was successfully updated.
