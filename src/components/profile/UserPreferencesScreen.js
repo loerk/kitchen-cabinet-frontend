@@ -8,7 +8,7 @@ const DietPreferencesScreen = () => {
   });
   const [postPreferences, setPostPreferences] = useState(false);
   return (
-    <View style={{ flex: 1, alignItems: 'center', marginTop: '10' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <VStack alignItems="center" space={4}>
         <Select
           selectedValue={filterOptions.diet}
