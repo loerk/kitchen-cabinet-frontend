@@ -13,16 +13,13 @@ import {
   useToast,
   useColorMode,
   Pressable,
-  Divider,
   View,
-  ScrollView,
   Text,
   Spinner,
   AlertDialog,
   Button,
   Box,
   VStack,
-  Item,
   Heading,
 } from 'native-base';
 
@@ -73,6 +70,7 @@ const Cabinet = () => {
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
   const [selected, setSelected] = useState(CURRENT_DATE);
+  const [toDelete, setToDelete] = useState(false);
 
   const toast = useToast();
 
@@ -105,6 +103,7 @@ const Cabinet = () => {
       isLoading: isLoadingDelete,
       isSuccess: isSuccessDelete,
       isError: isErrorDelete,
+      error: deleteError,
     },
   ] = useDeleteItemMutation();
 
@@ -117,7 +116,12 @@ const Cabinet = () => {
       );
   }, [searchInput]);
 
-  useEffect(() => {}, [isSuccessEdit, isSuccessDelete]);
+  useEffect(() => {
+    if (toDelete) deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
+    closeDeleteAlert();
+    if (isSuccessDelete) setToDelete(false);
+    if (isErrorDelete) console.log(deleteError);
+  }, [toDelete]);
 
   useEffect(() => {
     if (cabinetItems) {
@@ -242,10 +246,10 @@ const Cabinet = () => {
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
 
-  const deleteItem = () => {
-    deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
-    closeDeleteAlert();
-  };
+  /*   const deleteItem = () => {
+       deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
+      closeDeleteAlert(); 
+    }; */
 
   const EditForm = () => (
     <AlertDialog
@@ -326,7 +330,7 @@ const Cabinet = () => {
             >
               Cancel
             </Button>
-            <Button colorScheme="danger" onPress={deleteItem}>
+            <Button colorScheme="danger" onPress={() => setToDelete(true)}>
               Delete
             </Button>
           </Button.Group>
@@ -466,7 +470,9 @@ const Cabinet = () => {
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     const deletedItem = newData.splice(prevIndex, 1);
     setListData(newData.filter((item) => item !== deletedItem));
+
     setIsOpenDeleteAlert(!isOpenDeleteAlert);
+    setListData(newData);
   };
 
   const renderHiddenItem = (data, rowMap) => (
@@ -549,32 +555,28 @@ const Cabinet = () => {
               )}
             </Center>
           </VStack>
-          <ScrollView w={'90%'} h={'90%'}>
-            <Box>
-              {isSuccess && cabinetItems.length === 0 && (
-                <Text textAlign={'center'}>
-                  Your cabinet is empty. Add an item.
-                </Text>
-              )}
-              {filteredItems ? (
-                <Box textAlign="center" flex={1} mb={20}>
-                  <SwipeListView
-                    disableRightSwipe
-                    data={filteredItems}
-                    renderItem={renderItem}
-                    renderHiddenItem={renderHiddenItem}
-                    leftOpenValue={55}
-                    rightOpenValue={-100}
-                    previewRowKey={'0'}
-                    previewOpenValue={-40}
-                    previewOpenDelay={3000}
-                  />
-                </Box>
-              ) : isLoading ? (
-                <Spinner text="Loading..." />
-              ) : null}
-            </Box>
-          </ScrollView>
+          <Box w={'90%'} h={'90%'}>
+            {isSuccess && cabinetItems.length === 0 && (
+              <Text>Your cabinet is empty. Add an item.</Text>
+            )}
+            {filteredItems ? (
+              <Box textAlign="center" flex={1} mb={20}>
+                <SwipeListView
+                  disableRightSwipe
+                  data={filteredItems}
+                  renderItem={renderItem}
+                  renderHiddenItem={renderHiddenItem}
+                  leftOpenValue={55}
+                  rightOpenValue={-100}
+                  previewRowKey={'0'}
+                  previewOpenValue={-40}
+                  previewOpenDelay={3000}
+                />
+              </Box>
+            ) : isLoading ? (
+              <Spinner text="Loading..." />
+            ) : null}
+          </Box>
         </Center>
       </View>
     </TouchableWithoutFeedback>

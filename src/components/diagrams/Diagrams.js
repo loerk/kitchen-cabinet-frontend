@@ -1,15 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
-
-import { Box, FlatList, 
-, Text, Center, View, Button } from 'native-base';
-
+import { Box, FlatList, Text, Center, View, Button } from 'native-base';
 import { VictoryPie } from 'victory-native';
+
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 import { useGetCabinetItemsQuery } from '../../features/api/apiSlice';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 export default function Diagrams({ navigation }) {
   const { cabinetId } = useContext(AuthContext);
   const { width } = Dimensions.get('window');
@@ -22,7 +21,7 @@ export default function Diagrams({ navigation }) {
     error,
   } = useGetCabinetItemsQuery(cabinetId);
   const colorScale = [
-   '#3b85c0',
+    '#3b85c0',
     '#fb7b8b',
     '#294679',
     '#575bac',
@@ -36,13 +35,30 @@ export default function Diagrams({ navigation }) {
     '#cfaca4',
   ];
   const chartData = {};
-   let modifiedCabinetItems = [];
+  let modifiedCabinetItems = [];
   let toDisplay = [];
-   if (isSuccess) {
 
+  if (isSuccess) {
     /* cabinetItems.map(item => item.name === 'potatoes' || item.name === 'onions' ? { ...item, type: 'vegetable' } : item); */
     modifiedCabinetItems = cabinetItems.map((item) => {
-      return ( item.name.includes('tuna') || item.name === 'Thunfisch' ? {...item, type: 'meat'} : item.name === 'rub' || item.type === 'salt' ? {...item, type: 'spices'} : item.type === 'gluten free cereal' ? {...item, type: 'grains'} : item.name.includes('milk') || item.type === 'cheese' ? { ...item, type: 'dairy'} : item.name === 'potatoes' || item.name === 'onions' || item.type === 'legumes' ? { ...item, type: 'vegetable' } : item.type === 'undefined' || item.type === 'sweetener' || item.type === 'olives' || !item.type ? { ...item, type: 'other' } : item);
+      return item.name.includes('tuna') || item.name === 'Thunfisch'
+        ? { ...item, type: 'meat' }
+        : item.name === 'rub' || item.type === 'salt'
+        ? { ...item, type: 'spices' }
+        : item.type === 'gluten free cereal'
+        ? { ...item, type: 'grains' }
+        : item.name.includes('milk') || item.type === 'cheese'
+        ? { ...item, type: 'dairy' }
+        : item.name === 'potatoes' ||
+          item.name === 'onions' ||
+          item.type === 'legumes'
+        ? { ...item, type: 'vegetable' }
+        : item.type === 'undefined' ||
+          item.type === 'sweetener' ||
+          item.type === 'olives' ||
+          !item.type
+        ? { ...item, type: 'other' }
+        : item;
     });
     for (const element of modifiedCabinetItems) {
       if (chartData[element.type]) {
@@ -51,7 +67,11 @@ export default function Diagrams({ navigation }) {
         chartData[element.type] = 1;
       }
     }
-    console.log(modifiedCabinetItems.filter(item => item.type === 'spices').map(item => item.name)); 
+    console.log(
+      modifiedCabinetItems
+        .filter((item) => item.type === 'spices')
+        .map((item) => item.name)
+    );
 
     const titles = Object.keys(chartData);
     const values = Object.values(chartData);
@@ -60,7 +80,7 @@ export default function Diagrams({ navigation }) {
     });
   }
 
- let finalChartData = toDisplay.map((item) => {
+  let finalChartData = toDisplay.map((item) => {
     let percentage = ((item.y / toDisplay.length) * 100).toFixed(0);
     return {
       label: `${percentage}%`,
@@ -70,29 +90,39 @@ export default function Diagrams({ navigation }) {
   });
 
   finalChartData = finalChartData
-    .filter((item) => item.label !== 'NaN%')/* .map(item => item.name === 'potatoes' || item.name === 'onions' ? { ...item, type: 'vegetable' } : item) */
-  /*     .map((item) => {
+    .filter(
+      (item) => item.label !== 'NaN%'
+    ) /* .map(item => item.name === 'potatoes' || item.name === 'onions' ? { ...item, type: 'vegetable' } : item) */
+    /*     .map((item) => {
 
       return (item.x === 'undefined' || item.x === 'sweetener' ? { ...item, x: 'other' } : item);
-    }) */.sort((a, b) => +b['label'].split('%')[0] - +a['label'].split('%')[0]);
+    }) */ .sort(
+      (a, b) => +b['label'].split('%')[0] - +a['label'].split('%')[0]
+    );
 
-  finalChartData = finalChartData.map((item, index) => ({ ...item, color: colorScale[index] }));
+  finalChartData = finalChartData.map((item, index) => ({
+    ...item,
+    color: colorScale[index],
+  }));
 
   function setSelectCategoryByType(name) {
     setSelectedCategory(name);
   }
-  
+
   return (
     <View keyboardShouldPersistTaps="handled">
-      <Heading>Diagrams</Heading>
       <Box flex={1} mb={20}>
         {modifiedCabinetItems ? (
-          <Center><Text mt={5} mb={5} bold>
-            Types of ingredients in the cabinet:
-          </Text></Center>
+          <Center>
+            <Text mt={5} mb={5} bold>
+              Types of ingredients in the cabinet:
+            </Text>
+          </Center>
         ) : (
           <>
-            <Center><Text>Your cabinet is empty.</Text></Center>
+            <Center>
+              <Text>Your cabinet is empty.</Text>
+            </Center>
             <Button onPress={() => navigation.navigate('Add')}>
               Add an item
             </Button>
@@ -136,7 +166,7 @@ export default function Diagrams({ navigation }) {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 3,
-              alignItems: 'center'
+              alignItems: 'center',
             },
           }}
         />
@@ -152,36 +182,50 @@ export default function Diagrams({ navigation }) {
                     height: 40,
                     paddingHorizontal: 150,
                     borderRadius: 10,
-                    backgroundColor: selectedCategory && selectedCategory == item.x
-                      ? item.color
-                      : null,
+                    backgroundColor:
+                      selectedCategory && selectedCategory == item.x
+                        ? item.color
+                        : null,
                   }}
                 >
                   <Box
-                    style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
                   >
                     <Box
                       style={{
                         width: 20,
                         height: 20,
-                        backgroundColor: selectedCategory && selectedCategory == item.x
-                          ? null
-                          : item.color,
+                        backgroundColor:
+                          selectedCategory && selectedCategory == item.x
+                            ? null
+                            : item.color,
                         borderRadius: 5,
                       }}
                     ></Box>
-                    <Text bold ml={1} w='500%' color={selectedCategory && selectedCategory == item.x ? 'white' : null}>
+                    <Text
+                      bold
+                      ml={1}
+                      w="500%"
+                      color={
+                        selectedCategory && selectedCategory == item.x
+                          ? 'white'
+                          : null
+                      }
+                    >
                       {' '}
                       {item.x.charAt(0).toUpperCase() + item.x.slice(1)} -{' '}
                       {item.label}
                     </Text>
                   </Box>
-
                 </TouchableOpacity>
               );
             }}
-
-          /></Box>
+          />
+        </Box>
       </Box>
     </View>
   );
