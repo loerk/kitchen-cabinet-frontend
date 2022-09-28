@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Center,
   Divider,
-  Heading,
   ScrollView,
   Spinner,
   StatusBar,
@@ -14,7 +13,6 @@ import {
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useState, useEffect } from 'react';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 import { useGetFavoritesQuery } from '../../features/api/apiSlice';
 import SearchBar from '../utils/SearchBar';
@@ -26,6 +24,7 @@ const FavoritesScreen = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const { data: favoriteRecipes, isLoading } = useGetFavoritesQuery(cabinetId);
+
   // useEffect for filtering By title
   useEffect(() => {
     const filteredFavorites = favoriteRecipes?.filter((recipe) => {
@@ -35,10 +34,11 @@ const FavoritesScreen = () => {
     if (searchInput) setSearchedRecipes(filteredFavorites);
     if (!searchInput) setSearchedRecipes([]);
   }, [searchInput]);
+
   if (isLoading) return <Spinner />;
+
   return (
     <View>
-      <Heading>Favorites</Heading>
       <ScrollView
         backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
         keyboardShouldPersistTaps="handled"
@@ -47,9 +47,7 @@ const FavoritesScreen = () => {
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
           />
-
           <Divider />
-
           <Center>
             <SearchBar
               placeholder="Search a recipe"
