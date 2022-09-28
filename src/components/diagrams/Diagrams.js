@@ -1,6 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
-import { Box, FlatList, Text, Center, View, Button } from 'native-base';
+import {
+  Box,
+  FlatList,
+  Text,
+  Center,
+  View,
+  Heading,
+  Button,
+} from 'native-base';
 import { VictoryPie } from 'victory-native';
 
 // Authentication
@@ -21,31 +29,27 @@ export default function Diagrams({ navigation }) {
     error,
   } = useGetCabinetItemsQuery(cabinetId);
   const colorScale = [
-    '#3b85c0',
-    '#fb7b8b',
-    '#294679',
-    '#575bac',
-    '#8871A0',
-    '#003f5c',
-    '#A2C3DB',
-    '#bc5090',
-    '#623337',
-    '#ff6361',
-    '#ffa600',
-    '#cfaca4',
+    '#b30000',
+    '#7c1158',
+    '#4421af',
+    '#1a53ff',
+    '#0d88e6',
+    '#00b7c7',
+    '#5ad45a',
+    '#8be04e',
+    '#ebdc78',
   ];
   const chartData = {};
   let modifiedCabinetItems = [];
   let toDisplay = [];
 
   if (isSuccess) {
-    /* cabinetItems.map(item => item.name === 'potatoes' || item.name === 'onions' ? { ...item, type: 'vegetable' } : item); */
     modifiedCabinetItems = cabinetItems.map((item) => {
       return item.name.includes('tuna') || item.name === 'Thunfisch'
         ? { ...item, type: 'meat' }
         : item.name === 'rub' || item.type === 'salt'
         ? { ...item, type: 'spices' }
-        : item.type === 'gluten free cereal'
+        : item.type === 'gluten free cereal' || item.type === 'pasta'
         ? { ...item, type: 'grains' }
         : item.name.includes('milk') || item.type === 'cheese'
         ? { ...item, type: 'dairy' }
@@ -56,6 +60,8 @@ export default function Diagrams({ navigation }) {
         : item.type === 'undefined' ||
           item.type === 'sweetener' ||
           item.type === 'olives' ||
+          item.name.includes('bean coffee') ||
+          item.type === 'sauce' ||
           !item.type
         ? { ...item, type: 'other' }
         : item;
@@ -69,7 +75,7 @@ export default function Diagrams({ navigation }) {
     }
     console.log(
       modifiedCabinetItems
-        .filter((item) => item.type === 'spices')
+        .filter((item) => item.type === 'sauce')
         .map((item) => item.name)
     );
 
@@ -90,15 +96,8 @@ export default function Diagrams({ navigation }) {
   });
 
   finalChartData = finalChartData
-    .filter(
-      (item) => item.label !== 'NaN%'
-    ) /* .map(item => item.name === 'potatoes' || item.name === 'onions' ? { ...item, type: 'vegetable' } : item) */
-    /*     .map((item) => {
-
-      return (item.x === 'undefined' || item.x === 'sweetener' ? { ...item, x: 'other' } : item);
-    }) */ .sort(
-      (a, b) => +b['label'].split('%')[0] - +a['label'].split('%')[0]
-    );
+    .filter((item) => item.label !== 'NaN%')
+    .sort((a, b) => +b['label'].split('%')[0] - +a['label'].split('%')[0]);
 
   finalChartData = finalChartData.map((item, index) => ({
     ...item,
@@ -111,6 +110,7 @@ export default function Diagrams({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
+      <Heading>Diagrams</Heading>
       <Box flex={1} mb={20}>
         {modifiedCabinetItems ? (
           <Center>
@@ -162,7 +162,7 @@ export default function Diagrams({ navigation }) {
             labels: { fill: 'transparent', fontSize: 18 },
             parent: {
               shadowColor: '#000',
-              shadowOffset: { width: 2, height: 2 },
+              shadowOffset: { width: 5, height: 5 },
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 3,
@@ -171,7 +171,7 @@ export default function Diagrams({ navigation }) {
           }}
         />
 
-        <Box w={'150%'} h={'90%'} ml={-20}>
+        <Box w={'100%'} h={'90%'} mt={5}>
           <FlatList
             data={finalChartData}
             renderItem={({ item }) => {
@@ -180,7 +180,7 @@ export default function Diagrams({ navigation }) {
                   style={{
                     flexDirection: 'row',
                     height: 40,
-                    paddingHorizontal: 150,
+                    paddingHorizontal: 130,
                     borderRadius: 10,
                     backgroundColor:
                       selectedCategory && selectedCategory == item.x
@@ -209,7 +209,6 @@ export default function Diagrams({ navigation }) {
                     <Text
                       bold
                       ml={1}
-                      w="500%"
                       color={
                         selectedCategory && selectedCategory == item.x
                           ? 'white'
