@@ -54,8 +54,9 @@ const Dashboard = () => {
   });
   const { data: items } = useGetCabinetItemsQuery(cabinetId);
   const itemNames = items?.map((item) => item.name).join(',');
+  const payload = { cabinetId, ingredients: itemNames };
   const { data: suggestedRecipes, isLoadingRecipes } =
-    useGetRecipeByIngredientsQuery(itemNames ? itemNames : skipToken);
+    useGetRecipeByIngredientsQuery(itemNames ? payload : skipToken);
 
   // useEffect for filtering By title
   useEffect(() => {

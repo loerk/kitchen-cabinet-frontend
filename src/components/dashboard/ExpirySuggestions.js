@@ -13,22 +13,26 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useGetRecipeByIngredientsQuery } from '../../features/api/apiSlice';
 import { RecipeCard } from '../utils/RecipeCard';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 function ExpirySuggestions({ items, setScrollToBottom }) {
+  const { cabinetId } = useContext(AuthContext);
+
   const [ingredients, setIngredients] = useState('');
 
+  const payload = { cabinetId, ingredients };
   const {
     data: suggestedRecipes,
     isLoading,
     isSuccess,
-  } = useGetRecipeByIngredientsQuery(
-    ingredients.length ? ingredients : skipToken
-  );
-  if (isSuccess) setScrollToBottom(true);
+  } = useGetRecipeByIngredientsQuery(ingredients.length ? payload : skipToken);
+  if (isSuccess) {
+    setScrollToBottom(true);
+  }
   const reduced = items?.reduce((acc, curr) => {
     const date = new Date();
     const timeDifference = Math.round(
