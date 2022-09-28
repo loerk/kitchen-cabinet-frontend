@@ -30,7 +30,7 @@ const LoginScreen = () => {
           <View style={styles.loginHeader}>
             <Image
               style={styles.loginHeaderLogo}
-              source={require('../../../assets/images/placeholder-logo.png')}
+              source={require('../../../assets/images/icon.png')}
             />
             <Text style={styles.loginHeaderText}>{'The Kitchen Cabinet'}</Text>
           </View>

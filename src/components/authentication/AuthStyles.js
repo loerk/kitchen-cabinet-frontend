@@ -8,12 +8,13 @@ const styles = StyleSheet.create({
   },
   loginHeader: {
     alignItems: 'center',
-    paddingTop: 30,
+    paddingTop: 20,
     paddingBottom: 50,
     backgroundColor: '#891D47',
   },
   loginHeaderLogo: {
     width: 150,
+    height: 150,
     resizeMode: 'contain',
     borderRadius: 5,
     maxWidth: 280,
