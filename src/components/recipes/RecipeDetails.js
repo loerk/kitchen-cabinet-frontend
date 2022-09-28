@@ -40,18 +40,13 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
-
   const [
     addFavoriteRecipe,
     { isSuccess: isSuccessSaving, isLoading: isSaving },
   ] = useAddFavoriteRecipeMutation();
   const [deleteFavoriteRecipe, { isSuccess: isSuccessDeleting }] =
     useDeleteFavoriteRecipeMutation();
-  const deleteFavorite = (id) => {
-    console.log(cabinetId);
-    console.log(id);
-    //deleteFavoriteRecipe({cabinetId, recipeId:id})
-  };
+
   const saveFavorite = (id) => {
     addFavoriteRecipe({ cabinetId, recipeId: id }).unwrap();
   };
@@ -132,11 +127,7 @@ export const RecipeDetails = ({
                               )}
                             </VStack>
                           </HStack>
-                          <Text
-                            maxW={'90%'}
-                            mb={10}
-                            /* style={{ fontSize: '19rem' }} */
-                          >
+                          <Text maxW={'90%'} mb={10}>
                             {step.step}
                           </Text>
                         </VStack>
@@ -154,11 +145,15 @@ export const RecipeDetails = ({
                     </View>
                   )}
                   {missingIngredientsNames || usedIngredientsNames ? (
-                    <Button onPress={() => saveFavorite(recipeDetails.id)}>
+                    <Button
+                      bg="secondary.100"
+                      onPress={() => saveFavorite(recipeDetails.id)}
+                    >
                       Add to favourites
                     </Button>
                   ) : (
                     <Button
+                      bg="secondary.100"
                       onPress={() =>
                         deleteFavoriteRecipe({
                           cabinetId,
@@ -177,7 +172,7 @@ export const RecipeDetails = ({
                   )}
                   {isSuccessDeleting && (
                     <Text textAlign={'center'}>
-                      This recipe is now one of your favourites
+                      This recipe is now removed from your favourites
                     </Text>
                   )}
                 </Box>
