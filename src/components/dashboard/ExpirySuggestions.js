@@ -13,19 +13,26 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useGetRecipeByIngredientsQuery } from '../../features/api/apiSlice';
 import { RecipeCard } from '../utils/RecipeCard';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
-function ExpirySuggestions({ items }) {
+function ExpirySuggestions({ items, setScrollToBottom }) {
+  const { cabinetId } = useContext(AuthContext);
+
   const [ingredients, setIngredients] = useState('');
 
-  const { data: suggestedRecipes, isLoadingRecipes } =
-    useGetRecipeByIngredientsQuery(
-      ingredients.length ? ingredients : skipToken
-    );
-
+  const payload = { cabinetId, ingredients };
+  const {
+    data: suggestedRecipes,
+    isLoading,
+    isSuccess,
+  } = useGetRecipeByIngredientsQuery(ingredients.length ? payload : skipToken);
+  if (isSuccess) {
+    setScrollToBottom(true);
+  }
   const reduced = items?.reduce((acc, curr) => {
     const date = new Date();
     const timeDifference = Math.round(
@@ -55,17 +62,18 @@ function ExpirySuggestions({ items }) {
   const getSuperUrgentRecipes = () => {
     setIngredients(reduced.superUrgent.map((item) => item.name).join());
   };
+  if (!items) return;
   return (
     <Box>
       <Heading my={9} textAlign={'center'}>
-        Better be fast
+        Cabinet Overview
       </Heading>
       <SafeAreaView>
         <ScrollView mx={3} horizontal={true}>
           {reduced?.superUrgent && (
-            <Box px={5} pb={10}>
+            <Box px={5} py={7} maxH={500}>
               <Heading fontSize="xl" p="4" pb="3">
-                Already over expiry Date
+                Expired
               </Heading>
               <FlatList
                 keyExtractor={() => uuidv4()}
@@ -119,15 +127,23 @@ function ExpirySuggestions({ items }) {
                   </Box>
                 )}
               />
-              <Button bg="secondary.100" onPress={getSuperUrgentRecipes}>
-                Get Recipes
-              </Button>
+              {isLoading ? (
+                <Button
+                  bg="secondary.100"
+                  isLoading
+                  spinnerPlacement="end"
+                ></Button>
+              ) : (
+                <Button bg="secondary.100" onPress={getSuperUrgentRecipes}>
+                  Get Recipes
+                </Button>
+              )}
             </Box>
           )}
           {reduced?.urgent && (
-            <Box px={5} py={10}>
+            <Box px={5} py={7} maxH={500}>
               <Heading fontSize="xl" p="4" pb="3">
-                Close to expiration
+                Expiring soon
               </Heading>
               <FlatList
                 data={reduced.urgent || null}
@@ -181,15 +197,23 @@ function ExpirySuggestions({ items }) {
                   </Box>
                 )}
               />
-              <Button bg="secondary.100" onPress={getUrgentRecipes}>
-                Get Recipes
-              </Button>
+              {isLoading ? (
+                <Button
+                  bg="secondary.100"
+                  isLoading
+                  spinnerPlacement="end"
+                ></Button>
+              ) : (
+                <Button bg="secondary.100" onPress={getUrgentRecipes}>
+                  Get Recipes
+                </Button>
+              )}
             </Box>
           )}
           {reduced?.middle && (
-            <Box px={5} py={10}>
+            <Box px={5} py={7} maxH={500}>
               <Heading fontSize="xl" p="4" pb="3">
-                Might be next
+                Expiring within 2 weeks
               </Heading>
               <FlatList
                 keyExtractor={() => uuidv4()}
@@ -243,17 +267,22 @@ function ExpirySuggestions({ items }) {
                   </Box>
                 )}
               />
-              <Button bg="secondary.100" onPress={getSoonRecipes}>
-                Get Recipes
-              </Button>
+              {isLoading ? (
+                <Button
+                  bg="secondary.100"
+                  isLoading
+                  spinnerPlacement="end"
+                ></Button>
+              ) : (
+                <Button bg="secondary.100" onPress={getSoonRecipes}>
+                  Get Recipes
+                </Button>
+              )}
             </Box>
           )}
         </ScrollView>
         {ingredients && (
-          <Box>
-            <Heading textAlign={'center'} my={10}>
-              Try these
-            </Heading>
+          <Box my={10}>
             <ScrollView horizontal={true}>
               {suggestedRecipes?.map((recipe) => {
                 return <RecipeCard key={uuidv4()} item={recipe} />;

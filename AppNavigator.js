@@ -53,7 +53,7 @@ const AppNavigator = () => {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
               let iconName;
-              if (route.name === 'Home') {
+              if (route.name === 'Dashboard') {
                 iconName = 'home-filled';
               } else if (route.name === 'Cabinet') {
                 iconName = 'kitchen';
@@ -88,7 +88,7 @@ const AppNavigator = () => {
             tabBarItemStyle: { padding: 5 },
           })}
         >
-          <Tab.Screen name="Home" component={DashboardScreenNavigator} />
+          <Tab.Screen name="Dashboard" component={DashboardScreenNavigator} />
           <Tab.Screen name="Cabinet" component={Cabinet} />
           <Tab.Screen name="Add" component={CabinetAddItemForm} />
           <Tab.Screen name="Shopping List" component={ShoppingList} />
@@ -108,7 +108,7 @@ export const DashboardScreenNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Dashboard"
+        name="DashboardScreen"
         component={Dashboard}
         options={{
           headerShown: false,
