@@ -5,7 +5,7 @@ import { BASE_URL } from '@env';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
-  tagTypes: ['Items', 'Shoppinglist', 'Favorites'],
+  tagTypes: ['Items', 'Shoppinglist', 'Favorites', 'Preferences'],
   endpoints: (builder) => ({
     // id: cabinet ID
     getCabinetById: builder.query({
@@ -86,7 +86,7 @@ export const apiSlice = createApi({
       query: ({ cabinetId, preferences }) => ({
         url: `/cabinet/preferences/${cabinetId}`,
         method: 'POST',
-        body: { preferences },
+        body: preferences,
       }),
       invalidatesTags: ['Preferences'],
     }),
@@ -145,6 +145,8 @@ export const {
   useGetRecipeByIngredientsQuery,
   useGetFavoritesQuery,
   useGetShoppinglistQuery,
+  useGetPreferencesQuery,
+  useAddPreferencesMutation,
   useIngredientsListQuery,
   useRecipeInstructionsQuery,
   useAddShoppinglistMutation,
