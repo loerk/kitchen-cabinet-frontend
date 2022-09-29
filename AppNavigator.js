@@ -1,47 +1,51 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useColorMode } from 'native-base';
+
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
-
 import Cabinet from './src/components/cabinet/Cabinet';
 import Diagrams from './src/components/diagrams/Diagrams';
 import Loading from './src/components/Loading';
-import Profile from './src/components/Profile';
+import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
+
 // auth components
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import AuthStack from './src/authNavigation/AuthNavigator';
 import { AuthContext } from './src/authNavigation/AuthProvider';
 
-import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
-
-import { useColorMode } from 'native-base';
-
-import Favorites from './src/components/favorites/Favorites';
+/* import Favorites from './src/components/favorites/Favorites'; */
 import ShoppingList from './src/components/shoppinglist/Shoppinglist';
+import FavoritesScreen from './src/components/profile/FavoritesScreen';
+import SettingsScreen from './src/components/profile/AppSettingsScreen';
+import DietPreferencesScreen from './src/components/profile/UserPreferencesScreen';
 
-//const colorMode = useColorMode();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const TopTab = createMaterialTopTabNavigator();
+
 const AppNavigator = () => {
   const { user, setUser } = useContext(AuthContext);
-
   const [loading, setLoading] = useState(true);
   const [initializing, setInitializing] = useState(true);
   const { colorMode } = useColorMode();
+
   // Handle user state changes
   function AuthStateChanged(user) {
     setUser(user);
     if (initializing) setInitializing(false);
     setLoading(false);
   }
+
   useEffect(() => {
     const subscriber = onAuthStateChanged(auth, AuthStateChanged);
     return subscriber;
   }, []);
+
   if (loading) {
     return <Loading />;
   }
@@ -123,19 +127,31 @@ export const DashboardScreenNavigator = () => {
           },
         }}
         name="Profile"
-        component={Profile}
-      />
-      <Stack.Screen
-        options={{
-          headerBackTitleVisible: false,
-          headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
-          headerStyle: {
-            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
-          },
-        }}
-        name="Favorites"
-        component={Favorites}
+        component={ProfileStack}
       />
     </Stack.Navigator>
+  );
+};
+
+export const ProfileStack = () => {
+  const { colorMode } = useColorMode();
+  return (
+    <TopTab.Navigator
+      initialRouteName="Favorites"
+      screenOptions={{
+        tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
+        tabBarStyle: {
+          height: '10%',
+          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+        },
+      }}
+    >
+      <TopTab.Screen name="Favorites" component={FavoritesScreen} />
+      <TopTab.Screen
+        name="Diet Preferences"
+        component={DietPreferencesScreen}
+      />
+      <TopTab.Screen name="Settings" component={SettingsScreen} />
+    </TopTab.Navigator>
   );
 };

@@ -126,7 +126,7 @@ const Dashboard = () => {
               <Heading>{user.displayName && `${user.displayName}`}</Heading>
             </VStack>
             <Box w={'100%'} justifyContent={'center'} alignItems={'flex-end'}>
-              <HamburgerMenu options={['Profile', 'Favorites']} />
+              <HamburgerMenu options={['Profile']} />
             </Box>
             <Divider />
           </HStack>
@@ -184,7 +184,9 @@ const Dashboard = () => {
                 return <RecipeCard key={uuidv4()} item={suggestedRecipe} />;
               })
             ) : (
-              <Text>Your cabinet is empty. Add an item.</Text>
+              <Text textAlign={'center'}>
+                Your cabinet is empty. Add an item.
+              </Text>
             )}
 
             {isLoadingRecipes && <Spinner text="Loading..." />}

@@ -11,9 +11,9 @@ import {
 import { useContext } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 //Authentication
-import { AuthContext } from '../authNavigation/AuthProvider';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
-const Profile = () => {
+const SettingsScreen = () => {
   const { handleLogout } = useContext(AuthContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDarkMode = colorMode === 'dark';
@@ -35,7 +35,7 @@ const Profile = () => {
   return (
     <View>
       <HStack style={styles.headerContainer}>
-        <Text>Profile</Text>
+        <Text>Dark Mode</Text>
         <Switch
           defaultIsChecked={isDarkMode}
           offTrackColor="black.800"
@@ -53,4 +53,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default SettingsScreen;
