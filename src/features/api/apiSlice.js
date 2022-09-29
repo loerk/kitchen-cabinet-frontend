@@ -47,6 +47,10 @@ export const apiSlice = createApi({
       query: (id) => `/cabinet/shoppinglist/${id}`,
       providesTags: ['Shoppinglist'],
     }),
+    getPreferences: builder.query({
+      query: (id) => `/cabinet/preferences/${id}`,
+      providesTags: ['Preferences'],
+    }),
     addCabinet: builder.mutation({
       query: ({ name, uid }) => ({
         url: '/cabinet',
@@ -68,7 +72,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: { recipeId },
       }),
-      providesTags: ['Favorites'],
+      invalidatesTags: ['Favorites'],
     }),
     addShoppinglist: builder.mutation({
       query: ({ cabinetId, shoppinglist }) => ({
@@ -77,6 +81,14 @@ export const apiSlice = createApi({
         body: { shoppinglist },
       }),
       invalidatesTags: ['Shoppinglist'],
+    }),
+    addPreferences: builder.mutation({
+      query: ({ cabinetId, preferences }) => ({
+        url: `/cabinet/preferences/${cabinetId}`,
+        method: 'POST',
+        body: { preferences },
+      }),
+      invalidatesTags: ['Preferences'],
     }),
     editCabinet: builder.mutation({
       query: ({ id, ...rest }) => ({
@@ -106,6 +118,13 @@ export const apiSlice = createApi({
         method: 'DELETE',
       }),
       invalidatesTags: ['Shoppinglist'],
+    }),
+    deleteFavoriteRecipe: builder.mutation({
+      query: ({ cabinetId, recipeId }) => ({
+        url: `/cabinet/favorites/${cabinetId}?recipeId=${recipeId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Favorites'],
     }),
     deleteCabinet: builder.mutation({
       query: (id) => ({
@@ -137,4 +156,5 @@ export const {
   useDeleteShoppinglistItemsMutation,
   useDeleteItemMutation,
   useDeleteCabinetMutation,
+  useDeleteFavoriteRecipeMutation,
 } = apiSlice;

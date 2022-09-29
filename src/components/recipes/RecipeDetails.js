@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import RenderHtml from 'react-native-render-html';
 import {
   useAddFavoriteRecipeMutation,
+  useDeleteFavoriteRecipeMutation,
   useGetRecipeByIdQuery,
 } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
@@ -39,8 +40,12 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
-  const [addFavoriteRecipe, { isSuccess, isLoading: isSaving }] =
-    useAddFavoriteRecipeMutation();
+  const [
+    addFavoriteRecipe,
+    { isSuccess: isSuccessSaving, isLoading: isSaving },
+  ] = useAddFavoriteRecipeMutation();
+  const [deleteFavoriteRecipe, { isSuccess: isSuccessDeleting }] =
+    useDeleteFavoriteRecipeMutation();
 
   const saveFavorite = (id) => {
     addFavoriteRecipe({ cabinetId, recipeId: id }).unwrap();
@@ -122,11 +127,7 @@ export const RecipeDetails = ({
                               )}
                             </VStack>
                           </HStack>
-                          <Text
-                            maxW={'90%'}
-                            mb={10}
-                            /* style={{ fontSize: '19rem' }} */
-                          >
+                          <Text maxW={'90%'} mb={10}>
                             {step.step}
                           </Text>
                         </VStack>
@@ -144,14 +145,34 @@ export const RecipeDetails = ({
                     </View>
                   )}
                   {missingIngredientsNames || usedIngredientsNames ? (
-                    <Button onPress={() => saveFavorite(recipeDetails.id)}>
+                    <Button
+                      bg="secondary.100"
+                      onPress={() => saveFavorite(recipeDetails.id)}
+                    >
                       Add to favourites
                     </Button>
-                  ) : null}
+                  ) : (
+                    <Button
+                      bg="secondary.100"
+                      onPress={() =>
+                        deleteFavoriteRecipe({
+                          cabinetId,
+                          recipeId: recipeDetails.id,
+                        })
+                      }
+                    >
+                      Remove from Favorites
+                    </Button>
+                  )}
                   {isSaving && <Spinner text="Loading..." />}
-                  {isSuccess && (
+                  {isSuccessSaving && (
                     <Text textAlign={'center'}>
                       This recipe is now one of your favourites
+                    </Text>
+                  )}
+                  {isSuccessDeleting && (
+                    <Text textAlign={'center'}>
+                      This recipe is now removed from your favourites
                     </Text>
                   )}
                 </Box>
