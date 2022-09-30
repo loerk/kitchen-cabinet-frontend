@@ -65,13 +65,17 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
   if (!items) return;
   return (
     <Box>
-      <Heading my={9} textAlign={'center'}>
-        Cabinet Overview
+      <Heading
+        fontSize="2xl"
+        style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
+        textAlign={'center'}
+      >
+        Expiration Overview
       </Heading>
       <SafeAreaView>
         <ScrollView mx={3} horizontal={true}>
           {reduced?.superUrgent && (
-            <Box px={5} py={7} maxH={500}>
+            <Box px={5} pb={7} maxH={500}>
               <Heading fontSize="xl" p="4" pb="3">
                 Expired
               </Heading>
@@ -88,7 +92,7 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
                     borderColor="muted.800"
                     pl={['0', '4']}
                     pr={['0', '5']}
-                    py="2"
+                    py="1"
                   >
                     <HStack
                       space={[2, 3]}
@@ -141,7 +145,7 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
             </Box>
           )}
           {reduced?.urgent && (
-            <Box px={5} py={7} maxH={500}>
+            <Box px={5} pb={7} pt={2} maxH={500}>
               <Heading fontSize="xl" p="4" pb="3">
                 Expiring soon
               </Heading>
@@ -158,7 +162,7 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
                     borderColor="muted.800"
                     pl={['0', '4']}
                     pr={['0', '5']}
-                    py="2"
+                    py="1"
                   >
                     <HStack
                       space={[2, 3]}
@@ -211,7 +215,7 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
             </Box>
           )}
           {reduced?.middle && (
-            <Box px={5} py={7} maxH={500}>
+            <Box px={5} pb={7} pt={2} maxH={500}>
               <Heading fontSize="xl" p="4" pb="3">
                 Expiring within 2 weeks
               </Heading>
@@ -228,7 +232,7 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
                     borderColor="muted.800"
                     pl={['0', '4']}
                     pr={['0', '5']}
-                    py="2"
+                    py="1"
                   >
                     <HStack
                       space={[2, 3]}
@@ -282,7 +286,7 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
           )}
         </ScrollView>
         {ingredients && (
-          <Box my={10}>
+          <Box>
             <ScrollView horizontal={true}>
               {suggestedRecipes?.map((recipe) => {
                 return <RecipeCard key={uuidv4()} item={recipe} />;
