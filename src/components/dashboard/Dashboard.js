@@ -30,7 +30,6 @@ import {
 import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
-import { HamburgerMenu } from '../utils/HamburgerMenu';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';

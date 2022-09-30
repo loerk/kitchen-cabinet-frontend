@@ -9,7 +9,6 @@ import {
   View,
 } from 'native-base';
 import { useContext } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 //Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
