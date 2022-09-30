@@ -29,6 +29,8 @@ import { OpenURLButton } from '../utils/ExternalLinking';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 export const RecipeDetails = ({
+  missingIngredients,
+  usedIngredients,
   missingIngredientsNames,
   usedIngredientsNames,
   id,
@@ -90,7 +92,7 @@ export const RecipeDetails = ({
                     uri: `${recipeDetails.image}`,
                   }}
                   style={{ resizeMode: 'contain' }}
-                  alt="Alternate Text"
+                  alt="recipe image"
                   size="sm"
                   w={'100%'}
                   h={300}
@@ -100,6 +102,8 @@ export const RecipeDetails = ({
               <View h={'70%'} pb={20} w={'100%'}>
                 {recipeDetails && (
                   <IngredientsList
+                    missingIngredients={missingIngredients}
+                    usedIngredients={usedIngredients}
                     missingIngredientsNames={missingIngredientsNames}
                     usedIngredientsNames={usedIngredientsNames}
                     ingredients={recipeDetails.extendedIngredients}
@@ -139,7 +143,10 @@ export const RecipeDetails = ({
                         We are sorry, there is no further Information provided.
                         But you may find something similar{' '}
                       </Text>
-                      <OpenURLButton url={recipeDetails.sourceUrl}>
+                      <OpenURLButton
+                        bg="secondary.100"
+                        url={recipeDetails.sourceUrl}
+                      >
                         here
                       </OpenURLButton>
                     </View>

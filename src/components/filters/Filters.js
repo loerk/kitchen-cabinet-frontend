@@ -30,7 +30,7 @@ const Filter = ({
     isSuccess,
     error,
   } = useGetFilteredRecipesQuery(
-    isPressed && recipeIds
+    isPressed & recipeIds
       ? { type, diet, intolerance, extras, recipeIds: recipeIds.join() }
       : skipToken
   );

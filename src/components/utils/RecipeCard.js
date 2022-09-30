@@ -11,12 +11,12 @@ import {
   useDisclose,
   useColorMode,
 } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import { RecipeDetails } from '../recipes/RecipeDetails';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
-export const RecipeCard = ({ item }) => {
+export const RecipeCard = ({ item, ingredientIds }) => {
   const { colorMode } = useColorMode();
   const missingIngredientsNames = item.missedIngredients?.map(
     (ingredient) => ingredient.name
@@ -24,8 +24,46 @@ export const RecipeCard = ({ item }) => {
   const usedIngredientsNames = item.usedIngredients?.map(
     (ingredient) => ingredient.name
   );
-  const { isOpen, onOpen, onClose } = useDisclose();
+  const ingredientsStatus = item?.extendedIngredients?.reduce(
+    (acc, curr) => {
+      if (ingredientIds.includes(curr.id)) {
+        return {
+          ...acc,
+          statusUsed: [
+            ...acc.statusUsed,
+            {
+              name: curr.name,
+              amount: Math.round(curr.measures.metric.amount),
+              id: curr.id,
+              metrics: curr.measures.metric.unitShort,
+            },
+          ],
+        };
+      }
 
+      if (!ingredientIds.includes(curr.id)) {
+        return {
+          ...acc,
+          statusMissed: [
+            ...acc.statusMissed,
+            {
+              name: curr.name,
+              amount: Math.round(curr.measures.metric.amount),
+              id: curr.id,
+              metrics: curr.measures.metric.unitShort,
+            },
+          ],
+        };
+      }
+
+      return acc;
+    },
+    {
+      statusUsed: [],
+      statusMissed: [],
+    }
+  );
+  const { isOpen, onOpen, onClose } = useDisclose();
   return (
     <Box key={uuidv4()} alignItems="center" m={3}>
       <Pressable onPress={onOpen}>
@@ -96,34 +134,41 @@ export const RecipeCard = ({ item }) => {
                 mt="-1"
               ></Text>
             </Stack>
-            {item.usedIngredientsCount || item.missedIngredientCount ? (
-              <HStack justifyContent="space-around">
-                <HStack>
-                  <MaterialCommunityIcons
-                    name="checkbox-marked-circle-outline"
-                    size={24}
-                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                  />
-                  <Text pl={2}>{item.usedIngredientCount}</Text>
-                </HStack>
-                <HStack>
-                  <MaterialCommunityIcons
-                    name="checkbox-blank-circle-outline"
-                    size={24}
-                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                  />
-                  <Text pl={2}>{item.missedIngredientCount}</Text>
-                </HStack>
+
+            <HStack justifyContent="space-around">
+              <HStack>
+                <MaterialCommunityIcons
+                  name="checkbox-marked-circle-outline"
+                  size={24}
+                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                />
+                <Text pl={2}>
+                  {item.usedIngredientCount ||
+                    ingredientsStatus.statusUsed.length}
+                </Text>
               </HStack>
-            ) : null}
+              <HStack>
+                <MaterialCommunityIcons
+                  name="checkbox-blank-circle-outline"
+                  size={24}
+                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                />
+                <Text pl={2}>
+                  {item.missedIngredientCount ||
+                    ingredientsStatus.statusMissed.length}
+                </Text>
+              </HStack>
+            </HStack>
           </Stack>
         </Box>
       </Pressable>
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
           <RecipeDetails
-            missingIngredientsNames={missingIngredientsNames ?? null}
-            usedIngredientsNames={usedIngredientsNames ?? null}
+            missingIngredientsNames={missingIngredientsNames}
+            missingIngredients={ingredientsStatus?.statusMissed}
+            usedIngredients={ingredientsStatus?.statusUsed}
+            usedIngredientsNames={usedIngredientsNames}
             id={item.id}
             isOpen={isOpen}
           />
