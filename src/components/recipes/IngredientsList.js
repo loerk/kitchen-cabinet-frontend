@@ -98,7 +98,12 @@ export const IngredientsList = ({
           );
         })}
       {missingIngredientsNames || usedIngredientsNames ? (
-        <Button onPress={addToShoppinglist} mt={7} maxW={'50%'}>
+        <Button
+          bg="secondary.100"
+          onPress={addToShoppinglist}
+          mt={7}
+          maxW={'50%'}
+        >
           Add to shopping list
         </Button>
       ) : null}

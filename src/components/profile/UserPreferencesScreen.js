@@ -1,15 +1,59 @@
-import React, { useState } from 'react';
-import { View, VStack, Select, CheckIcon, Button } from 'native-base';
+import React, { useContext, useState } from 'react';
+import {
+  View,
+  VStack,
+  Select,
+  CheckIcon,
+  Button,
+  Text,
+  Box,
+  Center,
+  HStack,
+} from 'native-base';
+import {
+  useAddPreferencesMutation,
+  useGetPreferencesQuery,
+} from '../../features/api/apiSlice';
+import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const DietPreferencesScreen = () => {
+  const { cabinetId } = useContext(AuthContext);
+
   const [filterOptions, setFilterOptions] = useState({
     diet: '',
     intolerance: '',
   });
-  const [postPreferences, setPostPreferences] = useState(false);
+  const { data: presetPreferences } = useGetPreferencesQuery(cabinetId);
+  const [addPreferences] = useAddPreferencesMutation();
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center' }} pt={10}>
       <VStack alignItems="center" space={4}>
+        {presetPreferences && (
+          <Box>
+            <Center>
+              <Text bold my={7}>
+                Your current settings
+              </Text>
+              <HStack justifyContent={'center'} w={350} mb={6}>
+                <VStack>
+                  <Text bold>Diet</Text>
+                  <Text bold>Intolerance</Text>
+                </VStack>
+                <VStack>
+                  <Text pl={4} textAlign={'left'}>
+                    {presetPreferences.diet.charAt(0).toUpperCase() +
+                      presetPreferences.diet.slice(1) || 'none'}
+                  </Text>
+                  <Text pl={4} textAlign={'left'}>
+                    {presetPreferences.intolerance.charAt(0).toUpperCase() +
+                      presetPreferences.intolerance.slice(1) || 'none'}
+                  </Text>
+                </VStack>
+              </HStack>
+            </Center>
+          </Box>
+        )}
         <Select
           selectedValue={filterOptions.diet}
           minWidth={200}
@@ -59,13 +103,31 @@ const DietPreferencesScreen = () => {
           <Select.Item label="Wheat" value="wheat" />
         </Select>
       </VStack>
-      <Button
-        mt={10}
-        bg="secondary.100"
-        onPress={() => setPostPreferences(true)}
-      >
-        Set Preferences
-      </Button>
+      <HStack space={4}>
+        <Button
+          minW={100}
+          mt={10}
+          bg="secondary.100"
+          onPress={() =>
+            addPreferences({
+              cabinetId,
+              preferences: { diet: '', intolerance: '' },
+            })
+          }
+        >
+          Reset
+        </Button>
+        <Button
+          minW={100}
+          mt={10}
+          bg="secondary.100"
+          onPress={() =>
+            addPreferences({ cabinetId, preferences: filterOptions })
+          }
+        >
+          Set
+        </Button>
+      </HStack>
     </View>
   );
 };
