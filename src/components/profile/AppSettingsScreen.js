@@ -34,7 +34,7 @@ const SettingsScreen = () => {
   return (
     <View>
       <HStack style={styles.headerContainer}>
-        <Text>Dark Mode</Text>
+        <Text bold>Dark Mode</Text>
         <Switch
           defaultIsChecked={isDarkMode}
           offTrackColor="secondary.200"
