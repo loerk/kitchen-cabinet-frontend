@@ -143,6 +143,9 @@ export const ProfileStack = () => {
           height: '10%',
           backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
         },
+        tabBarIndicatorStyle: {
+          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
+        },
       }}
     >
       <TopTab.Screen name="Favorites" component={FavoritesScreen} />
