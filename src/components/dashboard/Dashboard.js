@@ -16,6 +16,7 @@ import {
   Box,
   View,
 } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 
 import { AntDesign } from '@expo/vector-icons';
 import { skipToken } from '@reduxjs/toolkit/query/react';
@@ -29,7 +30,6 @@ import {
 import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
-import { HamburgerMenu } from '../utils/HamburgerMenu';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
@@ -39,6 +39,7 @@ const Dashboard = () => {
   const { cabinetId, user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const scrollViewRef = useRef();
+  const navigation = useNavigation();
   const [scrollToBottom, setScrollToBottom] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [showFilters, setShowFilters] = useState(false);
@@ -108,31 +109,32 @@ const Dashboard = () => {
 
   return (
     <View>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        ref={scrollViewRef}
-        onContentSizeChange={() =>
-          scrollToBottom &&
-          scrollViewRef.current.scrollToEnd({ animated: true })
-        }
-      >
+      <ScrollView keyboardShouldPersistTaps="handled" ref={scrollViewRef}>
         <SafeAreaView>
-          <StatusBar
-            barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
-          />
+          {
+            <StatusBar
+              barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+            />
+          }
           <HStack>
             <VStack>
               <Text style={{ paddingLeft: 18 }}>Welcome</Text>
               <Heading>{user.displayName && `${user.displayName}`}</Heading>
             </VStack>
-            <Box w={'100%'} justifyContent={'center'} alignItems={'flex-end'}>
-              <HamburgerMenu options={['Profile']} />
+            <Box w={'100%'} justifyContent={'center'} alignItems={'center'}>
+              <AntDesign
+                name="user"
+                size={28}
+                color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                style={{ marginLeft: 30 }}
+                onPress={() => navigation.navigate('Profile')}
+              />
             </Box>
             <Divider />
           </HStack>
 
           <HStack
-            mt={7}
+            mt={3}
             alignItems="center"
             justifyContent={'center'}
             w={'100%'}
@@ -150,7 +152,7 @@ const Dashboard = () => {
               onPress={() => setShowFilters(!showFilters)}
             />
           </HStack>
-          <Center mt={5}>
+          <Center mt={3}>
             {showFilters && (
               <Filters
                 setMoreFilteredRecipes={setMoreFilteredRecipes}
@@ -160,7 +162,11 @@ const Dashboard = () => {
                 filterOptions={filterOptions}
               />
             )}
-            <Text style={{ fontWeight: 'bold', marginTop: 20 }}>
+            <Text
+              fontSize="2xl"
+              style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
+              textAlign={'center'}
+            >
               Suggested Recipes:{' '}
               {moreFilteredRecipes?.length
                 ? moreFilteredRecipes.length
@@ -169,7 +175,7 @@ const Dashboard = () => {
                 : suggestedRecipes?.length}
             </Text>
           </Center>
-          <ScrollView horizontal={true} mt={4}>
+          <ScrollView horizontal={true}>
             {isLoadingRecipes && <Spinner />}
             {moreFilteredRecipes?.length && !searchInput ? (
               filteredRecipes?.map((filteredRecipe) => {

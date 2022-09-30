@@ -18,7 +18,6 @@ import { onAuthStateChanged } from 'firebase/auth';
 import AuthStack from './src/authNavigation/AuthNavigator';
 import { AuthContext } from './src/authNavigation/AuthProvider';
 
-/* import Favorites from './src/components/favorites/Favorites'; */
 import ShoppingList from './src/components/shoppinglist/Shoppinglist';
 import FavoritesScreen from './src/components/profile/FavoritesScreen';
 import SettingsScreen from './src/components/profile/AppSettingsScreen';
@@ -143,6 +142,9 @@ export const ProfileStack = () => {
         tabBarStyle: {
           height: '10%',
           backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
         },
       }}
     >

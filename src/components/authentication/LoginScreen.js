@@ -1,10 +1,4 @@
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  Image,
-} from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { ScrollView } from 'native-base';
 import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';

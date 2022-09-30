@@ -9,7 +9,6 @@ import {
   View,
 } from 'native-base';
 import { useContext } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 //Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
@@ -38,16 +37,18 @@ const SettingsScreen = () => {
         <Text>Dark Mode</Text>
         <Switch
           defaultIsChecked={isDarkMode}
-          offTrackColor="black.800"
-          onTrackColor="primary.200"
-          onThumbColor="black.800"
-          offThumbColor="primary.200"
+          offTrackColor="secondary.200"
+          onTrackColor="secondary.100"
+          onThumbColor="secondary.100"
+          offThumbColor="secondary.200"
           value={isDarkMode}
           onValueChange={toggleSwitch}
         />
       </HStack>
       <VStack alignItems="center">
-        <Button onPress={() => handleLogout()}>Logout</Button>
+        <Button mt={10} bg="secondary.100" onPress={() => handleLogout()}>
+          Logout
+        </Button>
       </VStack>
     </View>
   );
