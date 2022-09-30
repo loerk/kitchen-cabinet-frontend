@@ -28,7 +28,7 @@ const ShoppingList = () => {
   const { colorMode } = useColorMode();
   const [listData, setListData] = useState([]);
   const [toDelete, setToDelete] = useState([]);
-
+  console.log(shoppinglist);
   useEffect(() => {
     if (shoppinglist) {
       const keyShoppinglist = shoppinglist.map((item, index) => ({
@@ -80,7 +80,7 @@ const ShoppingList = () => {
             justifyContent={'space-between'}
           >
             <Avatar color="white" bg={'secondary.800'}>
-              {item.name.charAt(0).toUpperCase()}
+              {item?.name?.charAt(0).toUpperCase()}
             </Avatar>
             <Box h={7} w={'80%'}>
               <HStack flex={1} justifyContent={'space-between'}>
