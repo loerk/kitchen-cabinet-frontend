@@ -125,7 +125,7 @@ const ShoppingList = () => {
 
   return (
     <View>
-      <Heading>Shoppinglist</Heading>
+      <Heading>Shopping List</Heading>
       <Text italic fontSize="sm" ml={5} mt={3}>
         (swipe left to delete)
       </Text>
@@ -144,7 +144,7 @@ const ShoppingList = () => {
         </Box>
       ) : (
         <Text mt={10} textAlign={'center'}>
-          Your Shoppinglist is empty
+          Your Shopping List is empty
         </Text>
       )}
     </View>
