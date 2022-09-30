@@ -19,10 +19,18 @@ import { useAddShoppinglistMutation } from '../../features/api/apiSlice';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 export const IngredientsList = ({
+  missingIngredients,
+  usedIngredients,
   missingIngredientsNames,
   usedIngredientsNames,
   ingredients,
 }) => {
+  if (missingIngredients) {
+    missingIngredientsNames = missingIngredients.map((el) => el.name);
+  }
+  if (usedIngredients) {
+    usedIngredientsNames = usedIngredients.map((el) => el.name);
+  }
   const { cabinetId } = useContext(AuthContext);
   const [shoppinglist, setShoppinglist] = useState({
     name: '',
@@ -31,27 +39,31 @@ export const IngredientsList = ({
     metrics: '',
   });
   const { colorMode } = useColorMode();
+
   const [addShoppinglist, { isSuccess, isLoading }] =
     useAddShoppinglistMutation();
   useEffect(() => {
-    setShoppinglist(
-      ingredients
-        .map((ingredient) => {
-          if (missingIngredientsNames?.includes(ingredient.name)) {
-            return {
-              name: ingredient.name,
-              id: ingredient.id,
-              amount: Math.round(ingredient.measures.metric.amount),
-              metrics: ingredient.measures.metric.unitShort,
-            };
-          } else {
+    if (!missingIngredients) {
+      setShoppinglist(
+        ingredients
+          .map((ingredient) => {
+            if (missingIngredientsNames?.includes(ingredient.name)) {
+              return {
+                name: ingredient.name,
+                id: ingredient.id,
+                amount: Math.round(ingredient.measures.metric.amount),
+                metrics: ingredient.measures.metric.unitShort,
+              };
+            }
             return null;
-          }
-        })
-        .filter((item) => item !== null)
-    );
+          })
+          .filter((item) => item !== null)
+      );
+    } else {
+      setShoppinglist(missingIngredients);
+    }
   }, []);
-
+  console.log({ shoppinglist });
   const addToShoppinglist = () => {
     addShoppinglist({ cabinetId, shoppinglist });
   };
