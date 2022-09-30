@@ -58,6 +58,14 @@ const Dashboard = () => {
   const { data: suggestedRecipes, isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(itemNames ? payload : skipToken);
 
+  // useEffect for setting recipeIds from suggestedList to get Bulk in the next step
+  useEffect(() => {
+    if (suggestedRecipes && !searchedRecipes.length) {
+      const ids = suggestedRecipes?.map((recipe) => recipe.id);
+      setRecipeIds(ids);
+    }
+  }, [suggestedRecipes]);
+
   // useEffect for filtering By title
   useEffect(() => {
     const filteredSuggestions = suggestedRecipes?.filter((recipe) => {
@@ -75,14 +83,6 @@ const Dashboard = () => {
       setRecipeIds(ids);
     }
   }, [searchedRecipes]);
-
-  // useEffect for setting recipeIds from suggestedList to get Bulk in the next step
-  useEffect(() => {
-    if (!searchedRecipes.length) {
-      const ids = suggestedRecipes?.map((recipe) => recipe.id);
-      setRecipeIds(ids);
-    }
-  }, [showFilters]);
 
   // useEffect for setting filteredList to display them in next step
   useEffect(() => {
