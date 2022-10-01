@@ -73,11 +73,6 @@ export default function Diagrams({ navigation }) {
         chartData[element.type] = 1;
       }
     }
-    console.log(
-      modifiedCabinetItems
-        .filter((item) => item.type === 'sauce')
-        .map((item) => item.name)
-    );
 
     const titles = Object.keys(chartData);
     const values = Object.values(chartData);
