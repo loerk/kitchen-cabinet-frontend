@@ -19,20 +19,16 @@ import { useGetRecipeByIngredientsQuery } from '../../features/api/apiSlice';
 import { RecipeCard } from '../utils/RecipeCard';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
-function ExpirySuggestions({ items, setScrollToBottom }) {
+function ExpirySuggestions({ items }) {
   const { cabinetId } = useContext(AuthContext);
 
   const [ingredients, setIngredients] = useState('');
 
   const payload = { cabinetId, ingredients };
-  const {
-    data: suggestedRecipes,
-    isLoading,
-    isSuccess,
-  } = useGetRecipeByIngredientsQuery(ingredients.length ? payload : skipToken);
-  if (isSuccess) {
-    setScrollToBottom(true);
-  }
+  const { data: suggestedRecipes, isLoading } = useGetRecipeByIngredientsQuery(
+    ingredients.length ? payload : skipToken
+  );
+
   const reduced = items?.reduce((acc, curr) => {
     const date = new Date();
     const timeDifference = Math.round(
@@ -52,7 +48,7 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
 
     return acc;
   }, {});
-
+  console.log(reduced.middle);
   const getSoonRecipes = () => {
     setIngredients(reduced.middle.map((item) => item.name).join());
   };
@@ -73,15 +69,21 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
         Expiration Overview
       </Heading>
       <SafeAreaView>
-        <ScrollView mx={3} horizontal={true}>
+        <ScrollView mx={3} horizontal={true} pb={5}>
           {reduced?.superUrgent && (
-            <Box px={5} pb={7} maxH={500}>
+            <Box px={5} pb={7} maxH={500} w={350}>
               <Heading fontSize="xl" p="4" pb="3">
                 Expired
               </Heading>
               <FlatList
+                pr={3}
+                mb={6}
                 keyExtractor={() => uuidv4()}
-                data={reduced.superUrgent || null}
+                data={
+                  reduced.superUrgent.sort(
+                    (a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate)
+                  ) || null
+                }
                 renderItem={({ item }) => (
                   <Box
                     id={uuidv4()}
@@ -107,6 +109,9 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
                       />
                       <VStack>
                         <Text
+                          w={150}
+                          pl={4}
+                          isTruncated
                           _dark={{
                             color: 'warmGray.50',
                           }}
@@ -145,12 +150,18 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
             </Box>
           )}
           {reduced?.urgent && (
-            <Box px={5} pb={7} pt={2} maxH={500}>
+            <Box px={5} pb={7} pt={2} maxH={500} w={350}>
               <Heading fontSize="xl" p="4" pb="3">
                 Expiring soon
               </Heading>
               <FlatList
-                data={reduced.urgent || null}
+                pr={3}
+                mb={6}
+                data={
+                  reduced.urgent.sort(
+                    (a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate)
+                  ) || null
+                }
                 keyExtractor={() => uuidv4()}
                 renderItem={({ item }) => (
                   <Box
@@ -177,6 +188,9 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
                       />
                       <VStack>
                         <Text
+                          w={150}
+                          pl={4}
+                          isTruncated
                           _dark={{
                             color: 'warmGray.50',
                           }}
@@ -215,13 +229,19 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
             </Box>
           )}
           {reduced?.middle && (
-            <Box px={5} pb={7} pt={2} maxH={500}>
+            <Box px={5} pb={7} pt={2} maxH={500} w={350}>
               <Heading fontSize="xl" p="4" pb="3">
                 Expiring within 2 weeks
               </Heading>
               <FlatList
+                pr={3}
+                mb={6}
                 keyExtractor={() => uuidv4()}
-                data={reduced.middle || null}
+                data={
+                  reduced.middle.sort(
+                    (a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate)
+                  ) || null
+                }
                 renderItem={({ item }) => (
                   <Box
                     id={uuidv4()}
@@ -247,6 +267,9 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
                       />
                       <VStack>
                         <Text
+                          w={150}
+                          pl={4}
+                          isTruncated
                           _dark={{
                             color: 'warmGray.50',
                           }}
