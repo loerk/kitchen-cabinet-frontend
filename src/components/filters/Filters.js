@@ -20,7 +20,7 @@ const Filter = ({
   const { diet: presetDiet, intolerance: presetIntolerance } =
     useContext(AuthContext);
   const { diet, intolerance, type, extras } = filterOptions;
-  const recipeIds = displayedRecipes.map((recipe) => recipe.id);
+  const recipeIds = displayedRecipes?.map((recipe) => recipe.id);
   const {
     data: filteredIds,
     isLoading,
