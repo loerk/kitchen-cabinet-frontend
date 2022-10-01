@@ -1,49 +1,48 @@
 import React, { useContext, useState } from 'react';
-import {
-  Select,
-  VStack,
-  CheckIcon,
-  Button,
-  HStack,
-  useColorMode,
-} from 'native-base';
+import { Select, VStack, CheckIcon, Button, HStack } from 'native-base';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 const Filter = ({
-  setMoreFilteredRecipes,
+  suggestedRecipes,
   setShowFilters,
-  recipeIds,
-  setFilterOptions,
-  filterOptions,
+  displayedRecipes,
+  setDisplayedRecipes,
 }) => {
   const [isPressed, setIsPressed] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({
+    diet: '',
+    intolerance: '',
+    type: '',
+    extras: '',
+  });
   const { diet: presetDiet, intolerance: presetIntolerance } =
     useContext(AuthContext);
-
   const { diet, intolerance, type, extras } = filterOptions;
-  const { colorMode } = useColorMode();
-
+  const recipeIds = displayedRecipes.map((recipe) => recipe.id);
   const {
-    data: recipes,
+    data: filteredIds,
+    isLoading,
     isSuccess,
     error,
   } = useGetFilteredRecipesQuery(
-    isPressed & recipeIds
+    isPressed && recipeIds?.length
       ? { type, diet, intolerance, extras, recipeIds: recipeIds.join() }
       : skipToken
   );
-
   if (isSuccess) {
-    setMoreFilteredRecipes(recipes);
+    const filtered = displayedRecipes.filter((item) => {
+      return filteredIds.includes(item.id);
+    });
+    setDisplayedRecipes(filtered);
     setIsPressed(false);
     setShowFilters(false);
   }
   if (error) {
+    setIsPressed(false);
     console.log(error);
   }
-
   return (
     <VStack alignItems="center" space={4}>
       <Select
@@ -176,24 +175,24 @@ const Filter = ({
         <Button
           bg="secondary.100"
           onPress={() => {
-            setFilterOptions(() => ({
-              diet: '',
-              intolerance: '',
-              type: '',
-              extras: '',
-            }));
+            setDisplayedRecipes(suggestedRecipes);
+            setIsPressed(false);
           }}
         >
           Reset
         </Button>
-        <Button
-          bg="secondary.100"
-          onPress={() => {
-            setIsPressed(true);
-          }}
-        >
-          Apply
-        </Button>
+        {isLoading ? (
+          <Button bg="secondary.100" isLoading></Button>
+        ) : (
+          <Button
+            bg="secondary.100"
+            onPress={() => {
+              setIsPressed(true);
+            }}
+          >
+            Apply
+          </Button>
+        )}
       </HStack>
     </VStack>
   );
