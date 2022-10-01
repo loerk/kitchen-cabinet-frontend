@@ -11,7 +11,7 @@ import {
   useDisclose,
   useColorMode,
 } from 'native-base';
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable } from 'react-native';
 import { RecipeDetails } from '../recipes/RecipeDetails';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
@@ -24,48 +24,52 @@ export const RecipeCard = ({ item, ingredientIds }) => {
   const usedIngredientsNames = item.usedIngredients?.map(
     (ingredient) => ingredient.name
   );
-  const ingredientsStatus = item?.extendedIngredients?.reduce(
-    (acc, curr) => {
-      if (ingredientIds.includes(curr.id)) {
-        return {
-          ...acc,
-          statusUsed: [
-            ...acc.statusUsed,
-            {
-              name: curr.name,
-              amount: Math.round(curr.measures.metric.amount),
-              id: curr.id,
-              metrics: curr.measures.metric.unitShort,
-            },
-          ],
-        };
-      }
+  console.log({ item });
+  let ingredientsStatus = {};
+  if (ingredientIds?.length) {
+    ingredientsStatus = item?.extendedIngredients?.reduce(
+      (acc, curr) => {
+        if (ingredientIds.includes(curr.id)) {
+          return {
+            ...acc,
+            statusUsed: [
+              ...acc.statusUsed,
+              {
+                name: curr.name,
+                amount: Math.round(curr.measures.metric.amount),
+                id: curr.id,
+                metrics: curr.measures.metric.unitShort,
+              },
+            ],
+          };
+        }
 
-      if (!ingredientIds.includes(curr.id)) {
-        return {
-          ...acc,
-          statusMissed: [
-            ...acc.statusMissed,
-            {
-              name: curr.name,
-              amount: Math.round(curr.measures.metric.amount),
-              id: curr.id,
-              metrics: curr.measures.metric.unitShort,
-            },
-          ],
-        };
-      }
+        if (!ingredientIds.includes(curr.id)) {
+          return {
+            ...acc,
+            statusMissed: [
+              ...acc.statusMissed,
+              {
+                name: curr.name,
+                amount: Math.round(curr.measures.metric.amount),
+                id: curr.id,
+                metrics: curr.measures.metric.unitShort,
+              },
+            ],
+          };
+        }
 
-      return acc;
-    },
-    {
-      statusUsed: [],
-      statusMissed: [],
-    }
-  );
+        return acc;
+      },
+      {
+        statusUsed: [],
+        statusMissed: [],
+      }
+    );
+  }
   const { isOpen, onOpen, onClose } = useDisclose();
   return (
-    <Box key={uuidv4()} alignItems="center" m={3}>
+    <Box key={uuidv4()} alignItems="center" m={3} maxH={400}>
       <Pressable onPress={onOpen}>
         <Box
           maxW="80"
@@ -120,7 +124,9 @@ export const RecipeCard = ({ item, ingredientIds }) => {
           </Box>
           <Stack p="4" space={3}>
             <Stack space={2}>
-              <Heading size="md">{item.title}</Heading>
+              <Heading isTruncated size="md">
+                {item.title}
+              </Heading>
               <Text
                 fontSize="xs"
                 _light={{
@@ -142,10 +148,11 @@ export const RecipeCard = ({ item, ingredientIds }) => {
                   size={24}
                   color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
                 />
-                <Text pl={2}>
-                  {item.usedIngredientCount ||
-                    ingredientsStatus.statusUsed.length}
-                </Text>
+                {item?.usedIngredients ? (
+                  <Text pl={2}>{item.usedIngredients.length}</Text>
+                ) : (
+                  <Text pl={2}>{ingredientsStatus?.statusUsed?.length}</Text>
+                )}
               </HStack>
               <HStack>
                 <MaterialCommunityIcons
@@ -153,10 +160,11 @@ export const RecipeCard = ({ item, ingredientIds }) => {
                   size={24}
                   color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
                 />
-                <Text pl={2}>
-                  {item.missedIngredientCount ||
-                    ingredientsStatus.statusMissed.length}
-                </Text>
+                {item?.missedIngredients ? (
+                  <Text pl={2}> {item.missedIngredientCount}</Text>
+                ) : (
+                  <Text pl={2}>{ingredientsStatus?.statusMissed?.length}</Text>
+                )}
               </HStack>
             </HStack>
           </Stack>
