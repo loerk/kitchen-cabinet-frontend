@@ -129,7 +129,8 @@ const Dashboard = () => {
             </Text>
 
             <ScrollView horizontal={true}>
-              {isLoadingRecipes ? <Spinner size="large" /> : null}
+              {/* {isLoadingRecipes ? <Spinner size="large" /> : null} */}
+              {isLoadingRecipes ? <LoadingCards /> : null}
               {displayedRecipes?.length ? (
                 displayedRecipes?.map((recipe) => {
                   return <RecipeCard key={uuidv4()} item={recipe} />;
