@@ -48,7 +48,6 @@ function ExpirySuggestions({ items }) {
 
     return acc;
   }, {});
-  console.log(reduced.middle);
   const getSoonRecipes = () => {
     setIngredients(reduced.middle.map((item) => item.name).join());
   };
