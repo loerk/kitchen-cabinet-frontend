@@ -36,11 +36,11 @@ const DietPreferencesScreen = () => {
                 Your current settings
               </Text>
               <HStack justifyContent={'center'} w={350} mb={6}>
-                <VStack>
+                <VStack minW={100}>
                   <Text bold>Diet</Text>
                   <Text bold>Intolerance</Text>
                 </VStack>
-                <VStack>
+                <VStack minW={100}>
                   <Text pl={4} textAlign={'left'}>
                     {presetPreferences.diet.charAt(0).toUpperCase() +
                       presetPreferences.diet.slice(1) || 'none'}
