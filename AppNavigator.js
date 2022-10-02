@@ -11,17 +11,16 @@ import Cabinet from './src/components/cabinet/Cabinet';
 import Diagrams from './src/components/diagrams/Diagrams';
 import Loading from './src/components/Loading';
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
+import ShoppingList from './src/components/shoppinglist/Shoppinglist';
+import FavoritesScreen from './src/components/profile/FavoritesScreen';
+import SettingsScreen from './src/components/profile/AppSettingsScreen';
+import DietPreferencesScreen from './src/components/profile/UserPreferencesScreen';
 
 // auth components
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import AuthStack from './src/authNavigation/AuthNavigator';
 import { AuthContext } from './src/authNavigation/AuthProvider';
-
-import ShoppingList from './src/components/shoppinglist/Shoppinglist';
-import FavoritesScreen from './src/components/profile/FavoritesScreen';
-import SettingsScreen from './src/components/profile/AppSettingsScreen';
-import DietPreferencesScreen from './src/components/profile/UserPreferencesScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

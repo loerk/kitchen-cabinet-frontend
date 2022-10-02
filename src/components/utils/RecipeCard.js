@@ -24,7 +24,6 @@ export const RecipeCard = ({ item, ingredientIds }) => {
   const usedIngredientsNames = item.usedIngredients?.map(
     (ingredient) => ingredient.name
   );
-  console.log({ item });
   let ingredientsStatus = {};
   if (ingredientIds?.length) {
     ingredientsStatus = item?.extendedIngredients?.reduce(
