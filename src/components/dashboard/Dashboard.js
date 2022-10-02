@@ -68,79 +68,77 @@ const Dashboard = () => {
   return (
     <View>
       <ScrollView keyboardShouldPersistTaps="handled">
-        <SafeAreaView>
-          {
-            <StatusBar
-              barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
-            />
-          }
-          <HStack>
-            <VStack>
-              <Text style={{ paddingLeft: 18 }}>Welcome</Text>
-              <Heading>{user.displayName && `${user.displayName}`}</Heading>
-            </VStack>
-            <Box w={'100%'} justifyContent={'center'} alignItems={'center'}>
-              <AntDesign
-                name="user"
-                size={28}
-                color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                style={{ marginLeft: 30 }}
-                onPress={() => navigation.navigate('Profile')}
-              />
-            </Box>
-            <Divider />
-          </HStack>
-          <HStack
-            mt={3}
-            alignItems="center"
-            justifyContent={'center'}
-            w={'100%'}
-            space={2}
-          >
-            <SearchBar
-              placeholder="Search a recipe"
-              onChangeText={(newValue) => setSearchInput(newValue)}
-              defaultValue={searchInput}
-            />
-
-            <Ionicons
-              name="options"
-              size={34}
+        {
+          <StatusBar
+            barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+          />
+        }
+        <HStack>
+          <VStack>
+            <Text style={{ paddingLeft: 18 }}>Welcome</Text>
+            <Heading>{user.displayName && `${user.displayName}`}</Heading>
+          </VStack>
+          <Box w={'100%'} justifyContent={'center'} alignItems={'center'}>
+            <AntDesign
+              name="user"
+              size={28}
               color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-              onPress={() => setIsOpen(!isOpen)}
+              style={{ marginLeft: 30 }}
+              onPress={() => navigation.navigate('Profile')}
             />
-          </HStack>
-          <Center mt={3}>
-            <Slide in={isOpen} placement={'right'} duration={300}>
-              <Filters
-                suggestedRecipes={suggestedRecipes}
-                displayedRecipes={displayedRecipes}
-                setDisplayedRecipes={setDisplayedRecipes}
-                setIsOpen={setIsOpen}
-              />
-            </Slide>
-            <Text
-              fontSize="2xl"
-              style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
-              textAlign={'center'}
-            >
-              Suggested Recipes: {displayedRecipes?.length || 0}
-            </Text>
-            <ScrollView horizontal={true}>
-              {isLoadingRecipes ? <LoadingCards /> : null}
-              {displayedRecipes?.length ? (
-                displayedRecipes?.map((recipe) => {
-                  return <RecipeCard key={uuidv4()} item={recipe} />;
-                })
-              ) : isLoadingRecipes ? null : !cabinetItemNames?.length ? (
-                <Text textAlign={'center'}>
-                  Your cabinet is empty. Add an item.
-                </Text>
-              ) : null}
-            </ScrollView>
-          </Center>
-          <ExpirySuggestions items={cabinetItems} />
-        </SafeAreaView>
+          </Box>
+          <Divider />
+        </HStack>
+        <HStack
+          mt={3}
+          alignItems="center"
+          justifyContent={'center'}
+          w={'100%'}
+          space={2}
+        >
+          <SearchBar
+            placeholder="Search a recipe"
+            onChangeText={(newValue) => setSearchInput(newValue)}
+            defaultValue={searchInput}
+          />
+
+          <Ionicons
+            name="options"
+            size={34}
+            color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+            onPress={() => setIsOpen(!isOpen)}
+          />
+        </HStack>
+        <Center mt={3}>
+          <Slide in={isOpen} placement={'right'} duration={300}>
+            <Filters
+              suggestedRecipes={suggestedRecipes}
+              displayedRecipes={displayedRecipes}
+              setDisplayedRecipes={setDisplayedRecipes}
+              setIsOpen={setIsOpen}
+            />
+          </Slide>
+          <Text
+            fontSize="2xl"
+            style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
+            textAlign={'center'}
+          >
+            Suggested Recipes: {displayedRecipes?.length || 0}
+          </Text>
+          <ScrollView horizontal={true}>
+            {isLoadingRecipes ? <LoadingCards /> : null}
+            {displayedRecipes?.length ? (
+              displayedRecipes?.map((recipe) => {
+                return <RecipeCard key={uuidv4()} item={recipe} />;
+              })
+            ) : isLoadingRecipes ? null : !cabinetItemNames?.length ? (
+              <Text textAlign={'center'}>
+                Your cabinet is empty. Add an item.
+              </Text>
+            ) : null}
+          </ScrollView>
+        </Center>
+        <ExpirySuggestions items={cabinetItems} />
       </ScrollView>
     </View>
   );
