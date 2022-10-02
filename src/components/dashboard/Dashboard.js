@@ -10,15 +10,14 @@ import {
   Text,
   Center,
   ScrollView,
-  Spinner,
   HStack,
   VStack,
   Box,
   View,
+  Slide,
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import {
@@ -30,24 +29,25 @@ import {
 import SearchBar from '../utils/SearchBar';
 import Filters from '../filters/Filters';
 import { RecipeCard } from '../utils/RecipeCard';
-
-// Authentication
-import { AuthContext } from '../../authNavigation/AuthProvider';
 import ExpirySuggestions from './ExpirySuggestions';
 import LoadingCards from '../utils/LoadingCards';
 
+// Authentication
+import { AuthContext } from '../../authNavigation/AuthProvider';
+
 const Dashboard = () => {
   const navigation = useNavigation();
-  const { cabinetId, user } = useContext(AuthContext);
   const { colorMode } = useColorMode();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { cabinetId, user } = useContext(AuthContext);
   const [searchInput, setSearchInput] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
   const [displayedRecipes, setDisplayedRecipes] = useState([]);
 
   const { data: cabinetItems } = useGetCabinetItemsQuery(cabinetId);
-
   const cabinetItemNames = cabinetItems?.map((item) => item.name).join(',');
   const payload = { cabinetId, ingredients: cabinetItemNames };
+
   const { data: suggestedRecipes, isLoading: isLoadingRecipes } =
     useGetRecipeByIngredientsQuery(cabinetItemNames ? payload : skipToken);
 
@@ -56,7 +56,6 @@ const Dashboard = () => {
       setDisplayedRecipes(suggestedRecipes);
   }, [suggestedRecipes]);
 
-  // useEffect for filtering By title
   useEffect(() => {
     const filteredSuggestions = displayedRecipes?.filter((recipe) => {
       if (recipe.title.toLowerCase().includes(searchInput)) return true;
@@ -91,7 +90,6 @@ const Dashboard = () => {
             </Box>
             <Divider />
           </HStack>
-
           <HStack
             mt={3}
             alignItems="center"
@@ -104,22 +102,23 @@ const Dashboard = () => {
               onChangeText={(newValue) => setSearchInput(newValue)}
               defaultValue={searchInput}
             />
-            <AntDesign
-              name="filter"
-              size={28}
+
+            <Ionicons
+              name="options"
+              size={34}
               color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-              onPress={() => setShowFilters(!showFilters)}
+              onPress={() => setIsOpen(!isOpen)}
             />
           </HStack>
           <Center mt={3}>
-            {showFilters && (
+            <Slide in={isOpen} placement={'right'} duration={300}>
               <Filters
                 suggestedRecipes={suggestedRecipes}
-                setShowFilters={setShowFilters}
                 displayedRecipes={displayedRecipes}
                 setDisplayedRecipes={setDisplayedRecipes}
+                setIsOpen={setIsOpen}
               />
-            )}
+            </Slide>
             <Text
               fontSize="2xl"
               style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
@@ -127,9 +126,7 @@ const Dashboard = () => {
             >
               Suggested Recipes: {displayedRecipes?.length || 0}
             </Text>
-
             <ScrollView horizontal={true}>
-              {/* {isLoadingRecipes ? <Spinner size="large" /> : null} */}
               {isLoadingRecipes ? <LoadingCards /> : null}
               {displayedRecipes?.length ? (
                 displayedRecipes?.map((recipe) => {
