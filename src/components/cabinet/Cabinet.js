@@ -270,11 +270,13 @@ const Cabinet = ({ navigation }) => {
           </Text>
           <Pressable onPress={() => setShowCalendar(true)}>
             <HStack>
-              <Text>{toBeEdited.expiryDate} </Text>
+              <Text>
+                {toBeEdited.expiryDate.split('-').reverse().join('/')}{' '}
+              </Text>
               <MaterialCommunityIcons
                 name="calendar-edit"
                 size={24}
-                color="black"
+                color={colorMode === 'dark' ? 'white' : 'black'}
               />
             </HStack>
           </Pressable>
@@ -291,7 +293,7 @@ const Cabinet = ({ navigation }) => {
           <Button.Group space={2}>
             <Button
               variant="ghost"
-              colorScheme="blueGray"
+              colorScheme="coolGray"
               onPress={closeEditForm}
             >
               Cancel
@@ -358,7 +360,7 @@ const Cabinet = ({ navigation }) => {
           borderBottomColor={colorMode === 'dark' ? 'muted.50' : 'muted.800'}
           borderBottomWidth={1}
           justifyContent="center"
-          height={93}
+          height={91}
           underlayColor={'#AAA'}
           py={10}
         >
@@ -569,6 +571,8 @@ const Cabinet = ({ navigation }) => {
                   disableRightSwipe
                   data={filteredItems}
                   renderItem={renderItem}
+                  initialNumToRender={5}
+                  maxToRenderPerBatch={5}
                   renderHiddenItem={renderHiddenItem}
                   leftOpenValue={55}
                   rightOpenValue={-100}
