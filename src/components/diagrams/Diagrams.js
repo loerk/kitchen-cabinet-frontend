@@ -30,14 +30,16 @@ export default function Diagrams({ navigation }) {
     error,
   } = useGetCabinetItemsQuery(cabinetId);
   const colorScale = [
-    '#b30000',
-    '#7c1158',
-    '#4421af',
-    '#1a53ff',
-    '#0d88e6',
-    '#00b7c7',
-    '#5ad45a',
-    '#8be04e',
+    '#891D47',
+    '#c6878f',
+    '#b79d94',
+    '#969696',
+    '#67697c',
+    '#253d5b',
+    '#63899e',
+    '#4a756e',
+    '#1b4b43',
+    '#b7bf96',
     '#ebdc78',
   ];
   const chartData = {};
