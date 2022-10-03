@@ -3,13 +3,11 @@ import {
   Actionsheet,
   AspectRatio,
   Box,
-  Heading,
   HStack,
   Image,
   Stack,
   Text,
   useDisclose,
-  useColorMode,
 } from 'native-base';
 import React from 'react';
 import { Pressable } from 'react-native';
@@ -17,7 +15,6 @@ import { RecipeDetails } from '../recipes/RecipeDetails';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 export const RecipeCard = ({ item, ingredientIds }) => {
-  const { colorMode } = useColorMode();
   const missingIngredientsNames = item.missedIngredients?.map(
     (ingredient) => ingredient.name
   );
@@ -70,25 +67,6 @@ export const RecipeCard = ({ item, ingredientIds }) => {
   return (
     <Box key={uuidv4()} alignItems="center" m={3} maxH={400} shadow="4">
       <Pressable onPress={onOpen}>
-        {/* <Box
-          maxW="80"
-          minH="40"
-          rounded="md"
-          overflow="hidden"
-          borderColor="coolGray.200"
-          borderWidth="1"
-          _dark={{
-            borderColor: 'coolGray.600',
-            backgroundColor: 'gray.700',
-          }}
-          _web={{
-            shadow: 2,
-            borderWidth: 0,
-          }}
-          _light={{
-            backgroundColor: 'gray.50',
-          }}
-        > */}
         <Box maxW="80" maxH="80" rounded="md" overflow="hidden">
           <AspectRatio w="100%" ratio={4 / 3}>
             <Image
@@ -193,8 +171,6 @@ export const RecipeCard = ({ item, ingredientIds }) => {
             </HStack>
           </Stack>
         </Box>
-
-        {/* </Box> */}
       </Pressable>
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
