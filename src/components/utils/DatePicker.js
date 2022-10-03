@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Calendar, CalendarUtils } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import { StyleSheet } from 'react-native';
 
 const DatePicker = ({ INITIAL_DATE, onDayPress, selected, expiryDate }) => {

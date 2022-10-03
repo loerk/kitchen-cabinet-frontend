@@ -12,6 +12,7 @@ import {
   Center,
   useToast,
   useColorMode,
+  ScrollView,
   Pressable,
   View,
   Text,
@@ -28,7 +29,7 @@ import {
   MaterialIcons,
   AntDesign,
 } from '@expo/vector-icons';
-import { Keyboard } from 'react-native';
+/* import { Keyboard } from 'react-native'; */
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -52,7 +53,7 @@ const CURRENT_DATE = `${date.getFullYear()}-${String(
   date.getMonth() + 1
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-const Cabinet = () => {
+const Cabinet = ({ navigation }) => {
   const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const [searchInput, setSearchInput] = useState('');
@@ -296,6 +297,7 @@ const Cabinet = () => {
               Cancel
             </Button>
             <Button
+              bg="secondary.100"
               onPress={() => {
                 editCabinetItem(toBeEdited).unwrap();
                 closeEditForm();
@@ -519,14 +521,14 @@ const Cabinet = () => {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View keyboardShouldPersistTaps="handled">
-        <EditForm />
-        <ConfirmDelete />
-        <Heading>Cabinet</Heading>
-        <Text italic fontSize="sm" ml={5} mt={3}>
-          (swipe left to delete)
-        </Text>
+    <View keyboardShouldPersistTaps="handled">
+      <EditForm />
+      <ConfirmDelete />
+      <Heading mt={5}>Cabinet</Heading>
+      <Text italic fontSize="sm" ml={5} mt={3}>
+        (swipe left to edit / delete)
+      </Text>
+      {cabinetItems ? (
         <Center>
           <VStack alignItems="center" mb={5}>
             <SearchBar
@@ -534,35 +536,35 @@ const Cabinet = () => {
               onChangeText={(newValue) => setSearchInput(newValue)}
               defaultValue={searchInput}
             />
-            <Center>
-              {isSuccessEdit && (
-                <Text color="green.500">
-                  {toBeEdited.name} was successfully updated.
-                </Text>
-              )}
-              {isSuccessDelete && (
-                <Text color="green.500">
-                  {toBeDeleted.name} was successfully deleted.
-                </Text>
-              )}
-              {isErrorEdit && (
-                <Text color="red.500">
-                  Something went wrong. {toBeEdited.name} could not be updated.
-                </Text>
-              )}
-              {isErrorDelete && (
-                <Text color="red.500">
-                  Something went wrong. {toBeDeleted.name} could not be deleted.
-                </Text>
-              )}
-            </Center>
+
+            {isSuccessEdit && (
+              <Text color="green.500">
+                {toBeEdited.name} was successfully updated.
+              </Text>
+            )}
+            {isSuccessDelete && (
+              <Text color="green.500">
+                {toBeDeleted.name} was successfully deleted.
+              </Text>
+            )}
+            {isErrorEdit && (
+              <Text color="red.500">
+                Something went wrong. {toBeEdited.name} could not be updated.
+              </Text>
+            )}
+            {isErrorDelete && (
+              <Text color="red.500">
+                Something went wrong. {toBeDeleted.name} could not be deleted.
+              </Text>
+            )}
           </VStack>
+
           <Box w={'90%'} h={'90%'}>
             {isSuccess && cabinetItems.length === 0 && (
               <Text>Your cabinet is empty. Add an item.</Text>
             )}
             {filteredItems ? (
-              <Box textAlign="center" flex={1} mb={20}>
+              <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
                 <SwipeListView
                   disableRightSwipe
                   data={filteredItems}
@@ -580,8 +582,22 @@ const Cabinet = () => {
             ) : null}
           </Box>
         </Center>
-      </View>
-    </TouchableWithoutFeedback>
+      ) : (
+        <>
+          <Center>
+            <Text mt={5}>Your cabinet is empty.</Text>
+
+            <Button
+              onPress={() => navigation.navigate('Add')}
+              w="50%"
+              bg="secondary.100"
+            >
+              Add an item
+            </Button>
+          </Center>
+        </>
+      )}
+    </View>
   );
 };
 
