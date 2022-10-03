@@ -1,3 +1,5 @@
+import React, { useContext, useState } from 'react';
+import { SafeAreaView } from 'react-native';
 import 'react-native-get-random-values';
 import { uuidv4 } from '@firebase/util';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
@@ -13,26 +15,24 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, { useContext, useState } from 'react';
-import { SafeAreaView } from 'react-native';
-import { useGetRecipeByIngredientsQuery } from '../../features/api/apiSlice';
-import { RecipeCard } from '../utils/RecipeCard';
-import { AuthContext } from '../../authNavigation/AuthProvider';
 
-function ExpirySuggestions({ items, setScrollToBottom }) {
+import { useGetRecipeByIngredientsQuery } from '../../features/api/apiSlice';
+
+import { RecipeCard } from '../utils/RecipeCard';
+
+import { AuthContext } from '../../authNavigation/AuthProvider';
+import ExpiryList from '../utils/ExpiryList';
+
+function ExpirySuggestions({ items }) {
   const { cabinetId } = useContext(AuthContext);
 
   const [ingredients, setIngredients] = useState('');
 
   const payload = { cabinetId, ingredients };
-  const {
-    data: suggestedRecipes,
-    isLoading,
-    isSuccess,
-  } = useGetRecipeByIngredientsQuery(ingredients.length ? payload : skipToken);
-  if (isSuccess) {
-    setScrollToBottom(true);
-  }
+  const { data: suggestedRecipes, isLoading } = useGetRecipeByIngredientsQuery(
+    ingredients.length ? payload : skipToken
+  );
+
   const reduced = items?.reduce((acc, curr) => {
     const date = new Date();
     const timeDifference = Math.round(
@@ -52,7 +52,6 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
 
     return acc;
   }, {});
-
   const getSoonRecipes = () => {
     setIngredients(reduced.middle.map((item) => item.name).join());
   };
@@ -73,216 +72,30 @@ function ExpirySuggestions({ items, setScrollToBottom }) {
         Expiration Overview
       </Heading>
       <SafeAreaView>
-        <ScrollView mx={3} horizontal={true}>
+        <ScrollView mx={3} horizontal={true} pb={5}>
           {reduced?.superUrgent && (
-            <Box px={5} pb={7} maxH={500}>
-              <Heading fontSize="xl" p="4" pb="3">
-                Expired
-              </Heading>
-              <FlatList
-                keyExtractor={() => uuidv4()}
-                data={reduced.superUrgent || null}
-                renderItem={({ item }) => (
-                  <Box
-                    id={uuidv4()}
-                    borderBottomWidth="1"
-                    _dark={{
-                      borderColor: 'muted.50',
-                    }}
-                    borderColor="muted.800"
-                    pl={['0', '4']}
-                    pr={['0', '5']}
-                    py="1"
-                  >
-                    <HStack
-                      space={[2, 3]}
-                      justifyContent="space-between"
-                      alignItems={'center'}
-                    >
-                      <Avatar
-                        size="48px"
-                        source={{
-                          uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`,
-                        }}
-                      />
-                      <VStack>
-                        <Text
-                          _dark={{
-                            color: 'warmGray.50',
-                          }}
-                          color="coolGray.800"
-                          bold
-                        >
-                          {item.name}
-                        </Text>
-                      </VStack>
-                      <Spacer />
-                      <Text
-                        fontSize="xs"
-                        _dark={{
-                          color: 'warmGray.50',
-                        }}
-                        color="coolGray.800"
-                        alignSelf="center"
-                      >
-                        {item.expiryDate.split('-').reverse().join('/')}
-                      </Text>
-                    </HStack>
-                  </Box>
-                )}
-              />
-              {isLoading ? (
-                <Button
-                  bg="secondary.100"
-                  isLoading
-                  spinnerPlacement="end"
-                ></Button>
-              ) : (
-                <Button bg="secondary.100" onPress={getSuperUrgentRecipes}>
-                  Get Recipes
-                </Button>
-              )}
-            </Box>
+            <ExpiryList
+              title={'Expired'}
+              isLoading={isLoading}
+              arr={reduced.superUrgent}
+              action={getSuperUrgentRecipes}
+            />
           )}
           {reduced?.urgent && (
-            <Box px={5} pb={7} pt={2} maxH={500}>
-              <Heading fontSize="xl" p="4" pb="3">
-                Expiring soon
-              </Heading>
-              <FlatList
-                data={reduced.urgent || null}
-                keyExtractor={() => uuidv4()}
-                renderItem={({ item }) => (
-                  <Box
-                    id={uuidv4()}
-                    borderBottomWidth="1"
-                    _dark={{
-                      borderColor: 'muted.50',
-                    }}
-                    borderColor="muted.800"
-                    pl={['0', '4']}
-                    pr={['0', '5']}
-                    py="1"
-                  >
-                    <HStack
-                      space={[2, 3]}
-                      justifyContent="space-between"
-                      alignItems={'center'}
-                    >
-                      <Avatar
-                        size="48px"
-                        source={{
-                          uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`,
-                        }}
-                      />
-                      <VStack>
-                        <Text
-                          _dark={{
-                            color: 'warmGray.50',
-                          }}
-                          color="coolGray.800"
-                          bold
-                        >
-                          {item.name}
-                        </Text>
-                      </VStack>
-                      <Spacer />
-                      <Text
-                        fontSize="xs"
-                        _dark={{
-                          color: 'warmGray.50',
-                        }}
-                        color="coolGray.800"
-                        alignSelf="center"
-                      >
-                        {item.expiryDate.split('-').reverse().join('/')}
-                      </Text>
-                    </HStack>
-                  </Box>
-                )}
-              />
-              {isLoading ? (
-                <Button
-                  bg="secondary.100"
-                  isLoading
-                  spinnerPlacement="end"
-                ></Button>
-              ) : (
-                <Button bg="secondary.100" onPress={getUrgentRecipes}>
-                  Get Recipes
-                </Button>
-              )}
-            </Box>
+            <ExpiryList
+              title={'Expiring soon'}
+              isLoading={isLoading}
+              arr={reduced.urgent}
+              action={getUrgentRecipes}
+            />
           )}
           {reduced?.middle && (
-            <Box px={5} pb={7} pt={2} maxH={500}>
-              <Heading fontSize="xl" p="4" pb="3">
-                Expiring within 2 weeks
-              </Heading>
-              <FlatList
-                keyExtractor={() => uuidv4()}
-                data={reduced.middle || null}
-                renderItem={({ item }) => (
-                  <Box
-                    id={uuidv4()}
-                    borderBottomWidth="1"
-                    _dark={{
-                      borderColor: 'muted.50',
-                    }}
-                    borderColor="muted.800"
-                    pl={['0', '4']}
-                    pr={['0', '5']}
-                    py="1"
-                  >
-                    <HStack
-                      space={[2, 3]}
-                      justifyContent="space-between"
-                      alignItems={'center'}
-                    >
-                      <Avatar
-                        size="48px"
-                        source={{
-                          uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`,
-                        }}
-                      />
-                      <VStack>
-                        <Text
-                          _dark={{
-                            color: 'warmGray.50',
-                          }}
-                          color="coolGray.800"
-                          bold
-                        >
-                          {item.name}
-                        </Text>
-                      </VStack>
-                      <Spacer />
-                      <Text
-                        fontSize="xs"
-                        _dark={{
-                          color: 'warmGray.50',
-                        }}
-                        color="coolGray.800"
-                        alignSelf="center"
-                      >
-                        {item.expiryDate.split('-').reverse().join('/')}
-                      </Text>
-                    </HStack>
-                  </Box>
-                )}
-              />
-              {isLoading ? (
-                <Button
-                  bg="secondary.100"
-                  isLoading
-                  spinnerPlacement="end"
-                ></Button>
-              ) : (
-                <Button bg="secondary.100" onPress={getSoonRecipes}>
-                  Get Recipes
-                </Button>
-              )}
-            </Box>
+            <ExpiryList
+              title={'Expiring within 2 weeks'}
+              isLoading={isLoading}
+              arr={reduced.middle}
+              action={getSoonRecipes}
+            />
           )}
         </ScrollView>
         {ingredients && (

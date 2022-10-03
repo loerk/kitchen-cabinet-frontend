@@ -60,8 +60,14 @@ export const RecipeDetails = ({
       <Box w={width} bg={colorMode === 'dark' ? '#515050' : '#FCF5EA'}>
         <ScrollView>
           <Box flex={1}>
-            <Box>
-              <Text bold fontSize="xl" textAlign={'center'} mt={7}>
+            <Box alignItems={'center'}>
+              <Text
+                bold
+                fontSize="xl"
+                textAlign={'center'}
+                maxWidth={250}
+                mt={7}
+              >
                 {recipeDetails.title}
               </Text>
             </Box>
