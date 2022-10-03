@@ -68,12 +68,12 @@ export const RecipeCard = ({ item, ingredientIds }) => {
   }
   const { isOpen, onOpen, onClose } = useDisclose();
   return (
-    <Box key={uuidv4()} alignItems="center" m={3} maxH={400}>
+    <Box key={uuidv4()} alignItems="center" m={3} maxH={400} shadow="4">
       <Pressable onPress={onOpen}>
-        <Box
+        {/* <Box
           maxW="80"
-          minH="80"
-          rounded="lg"
+          minH="40"
+          rounded="md"
           overflow="hidden"
           borderColor="coolGray.200"
           borderWidth="1"
@@ -88,86 +88,113 @@ export const RecipeCard = ({ item, ingredientIds }) => {
           _light={{
             backgroundColor: 'gray.50',
           }}
-        >
-          <Box>
-            <AspectRatio w="100%" ratio={16 / 9}>
-              <Image
-                source={{
-                  uri: `${item.image}`,
-                }}
-                alt="recipe image"
-              />
-            </AspectRatio>
-            <HStack
-              bg="black"
-              opacity={0.7}
-              _dark={{
-                bg: 'violet.400',
+        > */}
+        <Box maxW="80" maxH="80" rounded="md" overflow="hidden">
+          <AspectRatio w="100%" ratio={4 / 3}>
+            <Image
+              source={{
+                uri: `${item.image}`,
               }}
-              _text={{
-                color: 'warmGray.50',
-                fontWeight: '700',
-                fontSize: 'xs',
-              }}
-              position="absolute"
-              bottom="0"
-              px="3"
-              py="1.5"
-              alignItems={'flex-end'}
-            >
-              <Entypo name="heart" size={22} color="white" />
-              <Text pl={1} bold size={'md'} color={'white'}>
-                {item.likes || 'by you'}
-              </Text>
-            </HStack>
-          </Box>
-          <Stack p="4" space={3}>
-            <Stack space={2}>
-              <Heading isTruncated size="md">
-                {item.title}
-              </Heading>
-              <Text
-                fontSize="xs"
-                _light={{
-                  color: 'violet.500',
-                }}
-                _dark={{
-                  color: 'violet.400',
-                }}
-                fontWeight="500"
-                ml="-0.5"
-                mt="-1"
-              ></Text>
-            </Stack>
-
+              alt="recipe image"
+            />
+          </AspectRatio>
+          <HStack
+            zIndex={2}
+            bg="black"
+            opacity={0.7}
+            _dark={{
+              bg: 'secondary.100',
+            }}
+            _text={{
+              color: 'warmGray.50',
+              fontWeight: '700',
+              fontSize: 'xs',
+            }}
+            position="absolute"
+            bottom="0"
+            px="3"
+            py="1.5"
+            alignItems={'flex-end'}
+          >
+            <Entypo name="heart" size={24} color="white" />
+            <Text pl={1} size={'md'} color={'white'}>
+              {item.likes || 'by you'}
+            </Text>
+          </HStack>
+          <Text
+            p={2}
+            width={'full'}
+            bg={'white'}
+            opacity={0.7}
+            position={'absolute'}
+            textAlign={'center'}
+            isTruncated
+            zIndex={2}
+            size="lg"
+            color={'black'}
+            bold
+          >
+            {item.title}
+          </Text>
+          <Stack
+            bg="black"
+            opacity={0.7}
+            _dark={{
+              bg: 'secondary.100',
+            }}
+            _text={{
+              color: 'white',
+              fontWeight: '700',
+              fontSize: 'xs',
+            }}
+            position="absolute"
+            p="4"
+            zIndex={2}
+            right={0}
+            bottom={0}
+            absolute
+            space={3}
+            px="3"
+            py="1.5"
+          >
             <HStack justifyContent="space-around">
               <HStack>
                 <MaterialCommunityIcons
                   name="checkbox-marked-circle-outline"
                   size={24}
-                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                  color={'white'}
                 />
                 {item?.usedIngredients ? (
-                  <Text pl={2}>{item.usedIngredients.length}</Text>
+                  <Text color={'white'} pl={2} pr={8}>
+                    {item.usedIngredients.length}
+                  </Text>
                 ) : (
-                  <Text pl={2}>{ingredientsStatus?.statusUsed?.length}</Text>
+                  <Text color={'white'} pl={2} pr={8}>
+                    {ingredientsStatus?.statusUsed?.length}
+                  </Text>
                 )}
               </HStack>
               <HStack>
                 <MaterialCommunityIcons
                   name="checkbox-blank-circle-outline"
                   size={24}
-                  color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                  color={'white'}
                 />
                 {item?.missedIngredients ? (
-                  <Text pl={2}> {item.missedIngredientCount}</Text>
+                  <Text color={'white'} pl={2} pr={2}>
+                    {item.missedIngredientCount}
+                  </Text>
                 ) : (
-                  <Text pl={2}>{ingredientsStatus?.statusMissed?.length}</Text>
+                  <Text color={'white'} pl={2} pr={2}>
+                    {ingredientsStatus?.statusMissed?.length}
+                  </Text>
                 )}
               </HStack>
             </HStack>
           </Stack>
         </Box>
+
+        {/* </Box> */}
       </Pressable>
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
