@@ -15,6 +15,7 @@ import {
   Box,
   View,
   Slide,
+  Button,
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
@@ -134,9 +135,16 @@ const Dashboard = () => {
                 return <RecipeCard key={uuidv4()} item={recipe} />;
               })
             ) : isLoadingRecipes ? null : !cabinetItemNames?.length ? (
-              <Text textAlign={'center'}>
-                Your cabinet is empty. Add an item.
-              </Text>
+              <Center>
+                <Text>Your cabinet is empty. {'\n'}</Text>
+                <Button
+                  onPress={() => navigation.navigate('Add')}
+                  w="100%"
+                  bg="secondary.100"
+                >
+                  Add an item
+                </Button>
+              </Center>
             ) : null}
           </ScrollView>
         </Center>
