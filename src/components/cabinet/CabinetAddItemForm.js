@@ -58,7 +58,7 @@ export const CabinetAddItemForm = () => {
 
   return (
     <View>
-      <Heading>Add Item</Heading>
+      <Heading mt={5}>Add Item</Heading>
       <ScrollView>
         <Center mt={'20%'}>
           <Text size="md" pt={4} bold>

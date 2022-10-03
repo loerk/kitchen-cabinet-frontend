@@ -125,7 +125,7 @@ const ShoppingList = () => {
 
   return (
     <View>
-      <Heading>Shopping List</Heading>
+      <Heading mt={5}>Shopping List</Heading>
       <Text italic fontSize="sm" ml={5} mt={3}>
         (swipe left to delete)
       </Text>

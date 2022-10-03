@@ -75,7 +75,9 @@ const Dashboard = () => {
         }
         <HStack>
           <VStack>
-            <Text style={{ paddingLeft: 18 }}>Welcome</Text>
+            <Text mt={5} style={{ paddingLeft: 18 }}>
+              Welcome
+            </Text>
             <Heading>{user.displayName && `${user.displayName}`}</Heading>
           </VStack>
           <Box w={'100%'} justifyContent={'center'} alignItems={'center'}>
