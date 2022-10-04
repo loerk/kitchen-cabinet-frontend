@@ -1,7 +1,6 @@
 import 'react-native-get-random-values';
 import React, { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Divider,
   StatusBar,
@@ -18,7 +17,7 @@ import {
   Button,
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import {
@@ -75,20 +74,21 @@ const Dashboard = () => {
           />
         }
         <HStack>
-          <VStack>
-            <Text mt={5} style={{ paddingLeft: 18 }}>
-              Welcome
-            </Text>
-            <Heading>{user.displayName && `${user.displayName}`}</Heading>
-          </VStack>
-          <Box w={'100%'} justifyContent={'center'} alignItems={'center'}>
-            <AntDesign
-              name="user"
-              size={28}
-              color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-              style={{ marginLeft: 30 }}
-              onPress={() => navigation.navigate('Profile')}
-            />
+          <Box w={'100%'}>
+            <HStack justifyContent={'space-between'} alignItems={'flex-end'}>
+              <VStack mt={5}>
+                <Text style={{ paddingLeft: 18 }}>Welcome</Text>
+                <Heading>{user.displayName && `${user.displayName}`}</Heading>
+              </VStack>
+
+              <Ionicons
+                name="person-circle-outline"
+                size={40}
+                color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                style={{ marginRight: 14 }}
+                onPress={() => navigation.navigate('Profile')}
+              />
+            </HStack>
           </Box>
           <Divider />
         </HStack>
@@ -104,7 +104,6 @@ const Dashboard = () => {
             onChangeText={(newValue) => setSearchInput(newValue)}
             defaultValue={searchInput}
           />
-
           <Ionicons
             name="options"
             size={34}

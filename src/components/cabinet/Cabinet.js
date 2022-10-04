@@ -527,18 +527,18 @@ const Cabinet = ({ navigation }) => {
       <EditForm />
       <ConfirmDelete />
       <Heading mt={5}>Cabinet</Heading>
-      <Text italic fontSize="sm" ml={5} mt={3}>
+      <Text italic fontSize="sm" ml={5}>
         (swipe left to edit / delete)
       </Text>
       {cabinetItems ? (
-        <Center>
-          <VStack alignItems="center" mb={5}>
-            <SearchBar
-              placeholder="Search an item"
-              onChangeText={(newValue) => setSearchInput(newValue)}
-              defaultValue={searchInput}
-            />
+        <Box ml={5} mt={4}>
+          <SearchBar
+            placeholder="Search an item"
+            onChangeText={(newValue) => setSearchInput(newValue)}
+            defaultValue={searchInput}
+          />
 
+          <VStack my={5}>
             {isSuccessEdit && (
               <Text color="green.500">
                 {toBeEdited.name} was successfully updated.
@@ -585,7 +585,7 @@ const Cabinet = ({ navigation }) => {
               <Spinner text="Loading..." />
             ) : null}
           </Box>
-        </Center>
+        </Box>
       ) : (
         <>
           <Center>
