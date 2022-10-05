@@ -1,13 +1,24 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
-import { Box, FlatList, Heading, Text, View } from 'native-base';
+import {
+  Box,
+  FlatList,
+  Text,
+  Center,
+  View,
+  Heading,
+  Button,
+  ScrollView,
+} from 'native-base';
 import { VictoryPie } from 'victory-native';
+
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 import { useGetCabinetItemsQuery } from '../../features/api/apiSlice';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-export default function Diagrams() {
+
+export default function Diagrams({ navigation }) {
   const { cabinetId } = useContext(AuthContext);
   const { width } = Dimensions.get('window');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -19,35 +30,65 @@ export default function Diagrams() {
     error,
   } = useGetCabinetItemsQuery(cabinetId);
   const colorScale = [
-    '#3b85c0',
-    '#fb7b8b',
-    '#294679',
-    '#575bac',
-    '#cfaca4',
-    '#623337',
+    '#891D47',
+    '#c6878f',
+    '#b79d94',
+    '#969696',
+    '#67697c',
+    '#253d5b',
+    '#63899e',
+    '#4a756e',
+    '#1b4b43',
+    '#b7bf96',
+    '#ebdc78',
   ];
   const chartData = {};
+  let modifiedCabinetItems = [];
   let toDisplay = [];
-  let categorizedCabinetItems = [];
+
   if (isSuccess) {
-    const categories = [...new Set(cabinetItems.map((item) => item.type))];
-
-    categorizedCabinetItems = categories.reduce((acc, category) => {
-      const items = cabinetItems.filter((item) => item.type === category);
-      return [...acc, { category: category, items }];
-    }, []);
-
-    for (const element of cabinetItems) {
+    modifiedCabinetItems = cabinetItems.map((item) => {
+      return item.name.includes('tuna') || item.name === 'Thunfisch'
+        ? { ...item, type: 'meat' }
+        : item.name === 'rub' || item.type === 'salt'
+        ? { ...item, type: 'spices' }
+        : item.type === 'gluten free cereal' || item.type === 'pasta'
+        ? { ...item, type: 'grains' }
+        : item.name.includes('milk') || item.type === 'cheese'
+        ? { ...item, type: 'dairy' }
+        : item.name === 'potatoes' ||
+          item.name === 'onions' ||
+          item.type === 'onion' ||
+          item.type === 'legumes'
+        ? { ...item, type: 'vegetable' }
+        : item.type === 'undefined' ||
+          item.type === 'sweetener' ||
+          item.type === 'olives' ||
+          item.name.includes('bean coffee') ||
+          item.type === 'sauce' ||
+          item.type === 'stock' ||
+          item.type === 'spread' ||
+          item.type === 'cooking fat' ||
+          !item.type
+        ? { ...item, type: 'other' }
+        : item;
+    });
+    for (const element of modifiedCabinetItems) {
       if (chartData[element.type]) {
         chartData[element.type] += 1;
       } else {
         chartData[element.type] = 1;
       }
     }
+    /*     console.log(
+          modifiedCabinetItems
+            .filter((item) => item.type === 'cooking fat')
+            .map((item) => item.name)
+        ); */
 
     const titles = Object.keys(chartData);
     const values = Object.values(chartData);
-    toDisplay = cabinetItems.map((item, index) => {
+    toDisplay = modifiedCabinetItems.map((item, index) => {
       return { x: titles[index], y: values[index] };
     });
   }
@@ -58,98 +99,147 @@ export default function Diagrams() {
       label: `${percentage}%`,
       x: item.x,
       y: item.y,
-      items: categorizedCabinetItems
-        .filter((i) => i.category === item.x)
-        .map((a) => a.items.map((b) => b.name)),
     };
   });
 
   finalChartData = finalChartData
     .filter((item) => item.label !== 'NaN%')
-    .map((item) => (item.x === 'undefined' ? { ...item, x: 'other' } : item));
+    .sort((a, b) => +b['label'].split('%')[0] - +a['label'].split('%')[0]);
+
+  finalChartData = finalChartData.map((item, index) => ({
+    ...item,
+    color: colorScale[index],
+  }));
 
   function setSelectCategoryByType(name) {
     setSelectedCategory(name);
   }
+
   return (
-    <View>
-      <Heading>Diagrams</Heading>
-      <Box style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text mt={5} mb={5} bold>
-          Types of ingredients in the cabinet:
-        </Text>
-        <VictoryPie
-          data={finalChartData}
-          radius={({ datum }) =>
-            selectedCategory && selectedCategory == datum.x
-              ? width * 0.4
-              : width * 0.4 - 10
-          }
-          innerRadius={70}
-          /*         labels={(datum) => `${datum.x}`} */
-          labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
-          colorScale={colorScale}
-          width={width * 0.8}
-          height={width * 0.8}
-          events={[
-            {
-              target: 'data',
-              eventHandlers: {
-                onPress: () => {
-                  return [
-                    {
-                      target: 'labels',
-                      mutation: (props) => {
-                        let categoryType = finalChartData[props.index].x;
-                        setSelectCategoryByType(categoryType);
+    <View keyboardShouldPersistTaps="handled">
+      <Heading mt={5}>Diagrams</Heading>
+      <ScrollView>
+        <Box flex={1} mb={20}>
+          {modifiedCabinetItems.length > 0 ? (
+            <Center>
+              <Text mt={5} mb={5} bold>
+                Types of ingredients in the cabinet:
+              </Text>
+            </Center>
+          ) : (
+            <>
+              <Center>
+                <Text mt={5}>Your cabinet is empty.</Text>
+
+                <Button
+                  onPress={() => navigation.navigate('Add')}
+                  w="50%"
+                  bg="secondary.100"
+                >
+                  Add an item
+                </Button>
+              </Center>
+            </>
+          )}
+          <VictoryPie
+            data={finalChartData}
+            radius={({ datum }) =>
+              selectedCategory && selectedCategory == datum.x
+                ? width * 0.4
+                : width * 0.4 - 10
+            }
+            innerRadius={60}
+            labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
+            colorScale={colorScale}
+            width={width * 0.8}
+            height={width * 0.8}
+            events={[
+              {
+                target: 'data',
+                eventHandlers: {
+                  onPress: () => {
+                    return [
+                      {
+                        target: 'labels',
+                        mutation: (props) => {
+                          let categoryType = finalChartData[props.index].x;
+                          setSelectCategoryByType(categoryType);
+                        },
                       },
-                    },
-                  ];
+                    ];
+                  },
                 },
               },
-            },
-          ]}
-          style={{
-            labels: { fill: 'white', fontSize: 18 },
-            parent: {
-              shadowColor: '#000',
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 3,
-            },
-          }}
-        />
+            ]}
+            style={{
+              labels: { fill: 'transparent', fontSize: 18 },
+              parent: {
+                shadowColor: '#000',
+                shadowOffset: { width: 5, height: 5 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 3,
+                alignItems: 'center',
+              },
+            }}
+          />
 
-        <Box mt={8}></Box>
-        <FlatList
-          data={finalChartData}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity /* style={{ flexDirection: 'row', height: 40, paddingHorizontal: 150, borderRadius: 10, backgroundColor: 'gray'}} */
-            >
-              <Box
-                style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-              >
-                <Box
-                  style={{
-                    width: 20,
-                    height: 20,
-                    backgroundColor: colorScale[index],
-                    borderRadius: 5,
-                  }}
-                ></Box>
-                <Text bold>
-                  {' '}
-                  {item.x.charAt(0).toUpperCase() + item.x.slice(1)}
-                </Text>
-              </Box>
-              <Box style={{ justifyContent: 'center' }}>
-                <Text>{item.items.join(' ')} </Text>
-              </Box>
-            </TouchableOpacity>
-          )}
-        />
-      </Box>
+          <Box w={'100%'} h={'90%'} mt={5}>
+            <FlatList
+              data={finalChartData}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      height: 40,
+                      paddingHorizontal: 130,
+                      borderRadius: 10,
+                      backgroundColor:
+                        selectedCategory && selectedCategory == item.x
+                          ? item.color
+                          : null,
+                    }}
+                  >
+                    <Box
+                      style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Box
+                        style={{
+                          width: 20,
+                          height: 20,
+                          backgroundColor:
+                            selectedCategory && selectedCategory == item.x
+                              ? null
+                              : item.color,
+                          borderRadius: 5,
+                        }}
+                      ></Box>
+                      <Text
+                        bold
+                        ml={1}
+                        color={
+                          selectedCategory && selectedCategory == item.x
+                            ? 'white'
+                            : null
+                        }
+                      >
+                        {' '}
+                        {item.x.charAt(0).toUpperCase() +
+                          item.x.slice(1)} - {item.label}
+                      </Text>
+                    </Box>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </Box>
+        </Box>
+      </ScrollView>
     </View>
   );
 }

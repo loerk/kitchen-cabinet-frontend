@@ -1,4 +1,4 @@
-import { VStack, Box, Divider, Icon, Input, View } from 'native-base';
+import { Icon, Input } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 
@@ -6,7 +6,6 @@ import React from 'react';
 const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
   return (
     <Input
-      w="70%"
       maxW="300px"
       placeholderTextColor={'grey'}
       size="lg"

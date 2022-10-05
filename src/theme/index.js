@@ -36,7 +36,7 @@ export default customTheme = extendTheme({
         };
       },
       defaultProps: {
-        paddingTop: '10%',
+        paddingTop: '3%',
         minHeight: '100%',
       },
     },

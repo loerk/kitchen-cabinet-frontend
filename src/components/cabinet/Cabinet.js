@@ -7,22 +7,20 @@ import React, {
 } from 'react';
 import {
   HStack,
-  Image,
+  Avatar,
   Icon,
   Center,
   useToast,
   useColorMode,
-  Pressable,
-  Divider,
-  View,
   ScrollView,
+  Pressable,
+  View,
   Text,
   Spinner,
   AlertDialog,
   Button,
   Box,
   VStack,
-  Item,
   Heading,
 } from 'native-base';
 
@@ -31,7 +29,7 @@ import {
   MaterialIcons,
   AntDesign,
 } from '@expo/vector-icons';
-import { Keyboard } from 'react-native';
+/* import { Keyboard } from 'react-native'; */
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -55,7 +53,7 @@ const CURRENT_DATE = `${date.getFullYear()}-${String(
   date.getMonth() + 1
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-const Cabinet = () => {
+const Cabinet = ({ navigation }) => {
   const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const [searchInput, setSearchInput] = useState('');
@@ -73,6 +71,7 @@ const Cabinet = () => {
   const closeDeleteAlert = () => setIsOpenDeleteAlert(false);
   const closeEditForm = () => setIsOpenEditForm(false);
   const [selected, setSelected] = useState(CURRENT_DATE);
+  const [toDelete, setToDelete] = useState(false);
 
   const toast = useToast();
 
@@ -105,6 +104,7 @@ const Cabinet = () => {
       isLoading: isLoadingDelete,
       isSuccess: isSuccessDelete,
       isError: isErrorDelete,
+      error: deleteError,
     },
   ] = useDeleteItemMutation();
 
@@ -117,7 +117,12 @@ const Cabinet = () => {
       );
   }, [searchInput]);
 
-  useEffect(() => {}, [isSuccessEdit, isSuccessDelete]);
+  useEffect(() => {
+    if (toDelete) deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
+    closeDeleteAlert();
+    if (isSuccessDelete) setToDelete(false);
+    if (isErrorDelete) console.log(deleteError);
+  }, [toDelete]);
 
   useEffect(() => {
     if (cabinetItems) {
@@ -162,12 +167,13 @@ const Cabinet = () => {
               key={uuidv4()}
             >
               <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                <Image
+                <Avatar
                   source={{
                     uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
                   }}
                   alt={name}
-                  size="sm"
+                  size="lg"
+                  ml={2}
                 />
                 <VStack>
                   <Text
@@ -221,14 +227,14 @@ const Cabinet = () => {
                 {isExpired ? (
                   <HStack>
                     <MaterialIcons name="dangerous" size={20} color="red" />
-                    <Text color="red.500" fontSize="sm">
+                    <Text color="red.500" fontSize="sm" mr={2}>
                       Expired!
                     </Text>
                   </HStack>
                 ) : aboutToExpire ? (
                   <HStack>
                     <AntDesign name="warning" size={16} color="darkorange" />
-                    <Text color="orange.400" fontSize="sm">
+                    <Text color="orange.400" fontSize="sm" mr={2}>
                       Expiring!
                     </Text>
                   </HStack>
@@ -242,10 +248,10 @@ const Cabinet = () => {
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
 
-  const deleteItem = () => {
-    deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
-    closeDeleteAlert();
-  };
+  /*   const deleteItem = () => {
+       deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
+      closeDeleteAlert(); 
+    }; */
 
   const EditForm = () => (
     <AlertDialog
@@ -264,11 +270,13 @@ const Cabinet = () => {
           </Text>
           <Pressable onPress={() => setShowCalendar(true)}>
             <HStack>
-              <Text>{toBeEdited.expiryDate} </Text>
+              <Text>
+                {toBeEdited.expiryDate.split('-').reverse().join('/')}{' '}
+              </Text>
               <MaterialCommunityIcons
                 name="calendar-edit"
                 size={24}
-                color="black"
+                color={colorMode === 'dark' ? 'white' : 'black'}
               />
             </HStack>
           </Pressable>
@@ -285,12 +293,13 @@ const Cabinet = () => {
           <Button.Group space={2}>
             <Button
               variant="ghost"
-              colorScheme="blueGray"
+              colorScheme="coolGray"
               onPress={closeEditForm}
             >
               Cancel
             </Button>
             <Button
+              bg="secondary.100"
               onPress={() => {
                 editCabinetItem(toBeEdited).unwrap();
                 closeEditForm();
@@ -326,7 +335,7 @@ const Cabinet = () => {
             >
               Cancel
             </Button>
-            <Button colorScheme="danger" onPress={deleteItem}>
+            <Button colorScheme="danger" onPress={() => setToDelete(true)}>
               Delete
             </Button>
           </Button.Group>
@@ -351,7 +360,7 @@ const Cabinet = () => {
           borderBottomColor={colorMode === 'dark' ? 'muted.50' : 'muted.800'}
           borderBottomWidth={1}
           justifyContent="center"
-          height={50}
+          height={91}
           underlayColor={'#AAA'}
           py={10}
         >
@@ -374,12 +383,13 @@ const Cabinet = () => {
               key={uuidv4()}
             >
               <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                <Image
+                <Avatar
                   source={{
                     uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}`,
                   }}
                   alt={item.name}
-                  size="sm"
+                  size="lg"
+                  ml={2}
                 />
                 <VStack>
                   <Text
@@ -433,14 +443,14 @@ const Cabinet = () => {
                 {isExpired ? (
                   <HStack alignItems="center">
                     <MaterialIcons name="dangerous" size={20} color="red" />
-                    <Text color="red.500" fontSize="sm">
+                    <Text color="red.500" fontSize="sm" mr={2}>
                       Expired!
                     </Text>
                   </HStack>
                 ) : aboutToExpire ? (
                   <HStack alignItems="center">
                     <AntDesign name="warning" size={16} color="darkorange" />
-                    <Text color="orange.400" fontSize="sm">
+                    <Text color="orange.400" fontSize="sm" mr={2}>
                       {' '}
                       Expiring!
                     </Text>
@@ -466,7 +476,9 @@ const Cabinet = () => {
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     const deletedItem = newData.splice(prevIndex, 1);
     setListData(newData.filter((item) => item !== deletedItem));
+
     setIsOpenDeleteAlert(!isOpenDeleteAlert);
+    setListData(newData);
   };
 
   const renderHiddenItem = (data, rowMap) => (
@@ -511,73 +523,85 @@ const Cabinet = () => {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View keyboardShouldPersistTaps="handled">
-        <EditForm />
-        <ConfirmDelete />
-        <Heading>Cabinet</Heading>
-        <Text italic fontSize="sm" ml={5} mt={3}>
-          (swipe left to delete)
-        </Text>
-        <Center>
-          <VStack alignItems="center" mb={5}>
-            <SearchBar
-              placeholder="Search an item"
-              onChangeText={(newValue) => setSearchInput(newValue)}
-              defaultValue={searchInput}
-            />
-            <Center>
-              {isSuccessEdit && (
-                <Text color="green.500">
-                  {toBeEdited.name} was successfully updated.
-                </Text>
-              )}
-              {isSuccessDelete && (
-                <Text color="green.500">
-                  {toBeDeleted.name} was successfully deleted.
-                </Text>
-              )}
-              {isErrorEdit && (
-                <Text color="red.500">
-                  Something went wrong. {toBeEdited.name} could not be updated.
-                </Text>
-              )}
-              {isErrorDelete && (
-                <Text color="red.500">
-                  Something went wrong. {toBeDeleted.name} could not be deleted.
-                </Text>
-              )}
-            </Center>
+    <View keyboardShouldPersistTaps="handled">
+      <EditForm />
+      <ConfirmDelete />
+      <Heading mt={5}>Cabinet</Heading>
+      <Text italic fontSize="sm" ml={5}>
+        (swipe left to edit / delete)
+      </Text>
+      {cabinetItems ? (
+        <Box ml={5} mt={4}>
+          <SearchBar
+            placeholder="Search an item"
+            onChangeText={(newValue) => setSearchInput(newValue)}
+            defaultValue={searchInput}
+          />
+
+          <VStack my={5}>
+            {isSuccessEdit && (
+              <Text color="green.500">
+                {toBeEdited.name} was successfully updated.
+              </Text>
+            )}
+            {isSuccessDelete && (
+              <Text color="green.500">
+                {toBeDeleted.name} was successfully deleted.
+              </Text>
+            )}
+            {isErrorEdit && (
+              <Text color="red.500">
+                Something went wrong. {toBeEdited.name} could not be updated.
+              </Text>
+            )}
+            {isErrorDelete && (
+              <Text color="red.500">
+                Something went wrong. {toBeDeleted.name} could not be deleted.
+              </Text>
+            )}
           </VStack>
-          <ScrollView w={'90%'} h={'90%'}>
-            <Box>
-              {isSuccess && cabinetItems.length === 0 && (
-                <Text textAlign={'center'}>
-                  Your cabinet is empty. Add an item.
-                </Text>
-              )}
-              {filteredItems ? (
-                <Box textAlign="center" flex={1} mb={20}>
-                  <SwipeListView
-                    disableRightSwipe
-                    data={filteredItems}
-                    renderItem={renderItem}
-                    renderHiddenItem={renderHiddenItem}
-                    leftOpenValue={55}
-                    rightOpenValue={-100}
-                    previewRowKey={'0'}
-                    previewOpenValue={-40}
-                    previewOpenDelay={3000}
-                  />
-                </Box>
-              ) : isLoading ? (
-                <Spinner text="Loading..." />
-              ) : null}
-            </Box>
-          </ScrollView>
-        </Center>
-      </View>
-    </TouchableWithoutFeedback>
+
+          <Box w={'90%'} h={'90%'}>
+            {isSuccess && cabinetItems.length === 0 && (
+              <Text>Your cabinet is empty. Add an item.</Text>
+            )}
+            {filteredItems ? (
+              <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
+                <SwipeListView
+                  disableRightSwipe
+                  data={filteredItems}
+                  renderItem={renderItem}
+                  initialNumToRender={5}
+                  maxToRenderPerBatch={5}
+                  renderHiddenItem={renderHiddenItem}
+                  leftOpenValue={55}
+                  rightOpenValue={-100}
+                  previewRowKey={'0'}
+                  previewOpenValue={-40}
+                  previewOpenDelay={3000}
+                />
+              </Box>
+            ) : isLoading ? (
+              <Spinner text="Loading..." />
+            ) : null}
+          </Box>
+        </Box>
+      ) : (
+        <>
+          <Center>
+            <Text mt={5}>Your cabinet is empty.</Text>
+
+            <Button
+              onPress={() => navigation.navigate('Add')}
+              w="50%"
+              bg="secondary.100"
+            >
+              Add an item
+            </Button>
+          </Center>
+        </>
+      )}
+    </View>
   );
 };
 

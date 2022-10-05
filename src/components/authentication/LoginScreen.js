@@ -1,10 +1,4 @@
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  Image,
-} from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { ScrollView } from 'native-base';
 import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
@@ -30,7 +24,7 @@ const LoginScreen = () => {
           <View style={styles.loginHeader}>
             <Image
               style={styles.loginHeaderLogo}
-              source={require('../../../assets/images/placeholder-logo.png')}
+              source={require('../../../assets/images/icon.png')}
             />
             <Text style={styles.loginHeaderText}>{'The Kitchen Cabinet'}</Text>
           </View>

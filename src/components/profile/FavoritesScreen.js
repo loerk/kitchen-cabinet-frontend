@@ -16,7 +16,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useState, useEffect } from 'react';
 import { AuthContext } from '../../authNavigation/AuthProvider';
-import { useGetFavoritesQuery } from '../../features/api/apiSlice';
+import {
+  useGetCabinetItemsQuery,
+  useGetFavoritesQuery,
+} from '../../features/api/apiSlice';
 import SearchBar from '../utils/SearchBar';
 import { RecipeCard } from '../utils/RecipeCard';
 
@@ -26,10 +29,9 @@ const Favorites = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchedRecipes, setSearchedRecipes] = useState([]);
   const { data: favoriteRecipes, isLoading } = useGetFavoritesQuery(cabinetId);
+  const { data: cabinetItems } = useGetCabinetItemsQuery(cabinetId);
 
-  // useEffect for filtering By title
-  console.log(favoriteRecipes);
-
+  // useEffect for searching By title
   useEffect(() => {
     const filteredFavorites = favoriteRecipes?.filter((recipe) => {
       if (recipe.title.toLowerCase().includes(searchInput)) return true;
@@ -38,13 +40,12 @@ const Favorites = () => {
     if (searchInput) setSearchedRecipes(filteredFavorites);
     if (!searchInput) setSearchedRecipes([]);
   }, [searchInput]);
+  const ids = cabinetItems?.map((item) => Number(item.spoonId));
+
   if (isLoading) return <Spinner />;
   return (
     <View>
-      <ScrollView
-        backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView keyboardShouldPersistTaps="handled">
         <SafeAreaView>
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
@@ -62,10 +63,18 @@ const Favorites = () => {
           <ScrollView mt={4}>
             {searchInput
               ? searchedRecipes?.map((recipe) => (
-                  <RecipeCard key={uuidv4()} item={recipe} />
+                  <RecipeCard
+                    key={uuidv4()}
+                    item={recipe}
+                    ingredientIds={ids}
+                  />
                 ))
               : favoriteRecipes?.map((recipe) => (
-                  <RecipeCard key={uuidv4()} item={recipe} />
+                  <RecipeCard
+                    key={uuidv4()}
+                    item={recipe}
+                    ingredientIds={ids}
+                  />
                 ))}
           </ScrollView>
         </SafeAreaView>

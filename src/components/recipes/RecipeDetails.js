@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import RenderHtml from 'react-native-render-html';
 import {
   useAddFavoriteRecipeMutation,
+  useDeleteFavoriteRecipeMutation,
   useGetRecipeByIdQuery,
 } from '../../features/api/apiSlice';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
@@ -28,6 +29,8 @@ import { OpenURLButton } from '../utils/ExternalLinking';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 
 export const RecipeDetails = ({
+  missingIngredients,
+  usedIngredients,
   missingIngredientsNames,
   usedIngredientsNames,
   id,
@@ -39,8 +42,12 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
-  const [addFavoriteRecipe, { isSuccess, isLoading: isSaving }] =
-    useAddFavoriteRecipeMutation();
+  const [
+    addFavoriteRecipe,
+    { isSuccess: isSuccessSaving, isLoading: isSaving },
+  ] = useAddFavoriteRecipeMutation();
+  const [deleteFavoriteRecipe, { isSuccess: isSuccessDeleting }] =
+    useDeleteFavoriteRecipeMutation();
 
   const saveFavorite = (id) => {
     addFavoriteRecipe({ cabinetId, recipeId: id }).unwrap();
@@ -53,8 +60,14 @@ export const RecipeDetails = ({
       <Box w={width} bg={colorMode === 'dark' ? '#515050' : '#FCF5EA'}>
         <ScrollView>
           <Box flex={1}>
-            <Box>
-              <Text bold fontSize="xl" textAlign={'center'} mt={7}>
+            <Box alignItems={'center'}>
+              <Text
+                bold
+                fontSize="xl"
+                textAlign={'center'}
+                maxWidth={250}
+                mt={7}
+              >
                 {recipeDetails.title}
               </Text>
             </Box>
@@ -85,7 +98,7 @@ export const RecipeDetails = ({
                     uri: `${recipeDetails.image}`,
                   }}
                   style={{ resizeMode: 'contain' }}
-                  alt="Alternate Text"
+                  alt="recipe image"
                   size="sm"
                   w={'100%'}
                   h={300}
@@ -95,6 +108,8 @@ export const RecipeDetails = ({
               <View h={'70%'} pb={20} w={'100%'}>
                 {recipeDetails && (
                   <IngredientsList
+                    missingIngredients={missingIngredients}
+                    usedIngredients={usedIngredients}
                     missingIngredientsNames={missingIngredientsNames}
                     usedIngredientsNames={usedIngredientsNames}
                     ingredients={recipeDetails.extendedIngredients}
@@ -122,11 +137,7 @@ export const RecipeDetails = ({
                               )}
                             </VStack>
                           </HStack>
-                          <Text
-                            maxW={'90%'}
-                            mb={10}
-                            /* style={{ fontSize: '19rem' }} */
-                          >
+                          <Text maxW={'90%'} mb={10}>
                             {step.step}
                           </Text>
                         </VStack>
@@ -138,20 +149,43 @@ export const RecipeDetails = ({
                         We are sorry, there is no further Information provided.
                         But you may find something similar{' '}
                       </Text>
-                      <OpenURLButton url={recipeDetails.sourceUrl}>
+                      <OpenURLButton
+                        bg="secondary.100"
+                        url={recipeDetails.sourceUrl}
+                      >
                         here
                       </OpenURLButton>
                     </View>
                   )}
                   {missingIngredientsNames || usedIngredientsNames ? (
-                    <Button onPress={() => saveFavorite(recipeDetails.id)}>
+                    <Button
+                      bg="secondary.100"
+                      onPress={() => saveFavorite(recipeDetails.id)}
+                    >
                       Add to favourites
                     </Button>
-                  ) : null}
+                  ) : (
+                    <Button
+                      bg="secondary.100"
+                      onPress={() =>
+                        deleteFavoriteRecipe({
+                          cabinetId,
+                          recipeId: recipeDetails.id,
+                        })
+                      }
+                    >
+                      Remove from Favorites
+                    </Button>
+                  )}
                   {isSaving && <Spinner text="Loading..." />}
-                  {isSuccess && (
+                  {isSuccessSaving && (
                     <Text textAlign={'center'}>
                       This recipe is now one of your favourites
+                    </Text>
+                  )}
+                  {isSuccessDeleting && (
+                    <Text textAlign={'center'}>
+                      This recipe is now removed from your favourites
                     </Text>
                   )}
                 </Box>

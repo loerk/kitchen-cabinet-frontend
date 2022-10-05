@@ -22,7 +22,9 @@ export const AuthProvider = ({ children }) => {
   let exception = false;
   const [addCabinet] = useAddCabinetMutation();
   // eslint-disable-next-line no-unused-vars
-  const { data: cabinetId } = useGetCabinetByUidQuery(uid ? uid : skipToken);
+  const { data: userInformation } = useGetCabinetByUidQuery(
+    uid ? uid : skipToken
+  );
 
   useEffect(() => {
     if (user !== null) {
@@ -87,7 +89,9 @@ export const AuthProvider = ({ children }) => {
         handleRegister,
         handleLogout,
         handleReset,
-        cabinetId,
+        cabinetId: userInformation?.cabinetId || null,
+        diet: userInformation?.diet || null,
+        intolerance: userInformation?.intolerance || null,
       }}
     >
       {children}
