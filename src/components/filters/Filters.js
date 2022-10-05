@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Select,
   VStack,
@@ -22,7 +23,8 @@ const initialFilterOptions = {
   type: '',
   extras: '',
 };
-const Filter = ({
+
+const Filters = ({
   setIsOpen,
   suggestedRecipes,
   displayedRecipes,
@@ -231,4 +233,11 @@ const Filter = ({
   );
 };
 
-export default Filter;
+Filters.propTypes = {
+  setIsOpen: PropTypes.func.isRequired,
+  suggestedRecipes: PropTypes.array.isRequired,
+  displayedRecipes: PropTypes.array.isRequired,
+  setDisplayedRecipes: PropTypes.func.isRequired,
+};
+
+export default Filters;
