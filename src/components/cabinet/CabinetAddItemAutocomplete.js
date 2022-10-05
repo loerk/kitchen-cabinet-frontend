@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from '@env';
+/* import { REACT_APP_BASE_URL } from '@env'; */
 
 import React, { useCallback, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
@@ -13,6 +13,7 @@ export const CabinetSelectItemAutocomplete = ({
   setSelectedIngredient,
   selectedIngredient,
 }) => {
+  const REACT_APP_BASE_URL = 'https://ill-pink-lobster-kit.cyclic.app/';
   const [loading, setLoading] = useState(false);
   const [suggestionsList, setSuggestionsList] = useState(null);
   const { colorMode } = useColorMode();
@@ -24,7 +25,7 @@ export const CabinetSelectItemAutocomplete = ({
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${BASE_URL}/recipes/ingredient?ingredient=${q}`
+        `${REACT_APP_BASE_URL}/recipes/ingredient?ingredient=${q}`
       );
       setLoading(false);
       setSuggestionsList(

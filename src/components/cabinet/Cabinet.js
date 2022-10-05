@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useRef,
   useContext,
+  memo,
 } from 'react';
 import {
   HStack,
@@ -12,12 +13,10 @@ import {
   Center,
   useToast,
   useColorMode,
-  ScrollView,
   Pressable,
   View,
   Text,
   Spinner,
-  AlertDialog,
   Button,
   Box,
   VStack,
@@ -37,6 +36,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 // custom components
 import SearchBar from '../utils/SearchBar';
 import DatePicker from '../utils/DatePicker';
+import AlertDialogMsg from '../utils/AlertDialogMsg';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
@@ -248,21 +248,14 @@ const Cabinet = ({ navigation }) => {
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
 
-  /*   const deleteItem = () => {
-       deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
-      closeDeleteAlert(); 
-    }; */
-
   const EditForm = () => (
-    <AlertDialog
-      leastDestructiveRef={cancelRefEdit}
+    <AlertDialogMsg
+      cancelRef={cancelRefEdit}
       isOpen={isOpenEditForm}
       onClose={closeEditForm}
-    >
-      <AlertDialog.Content>
-        <AlertDialog.CloseButton />
-        <AlertDialog.Header>Edit</AlertDialog.Header>
-        <AlertDialog.Body>
+      header="Edit"
+      body={
+        <>
           <Text bold>Item Name:</Text>
           <Text>{toBeEdited.name}</Text>
           <Text bold mt={5}>
@@ -288,60 +281,32 @@ const Cabinet = ({ navigation }) => {
               expiryDate={toBeEdited.expiryDate}
             />
           )}
-        </AlertDialog.Body>
-        <AlertDialog.Footer>
-          <Button.Group space={2}>
-            <Button
-              variant="ghost"
-              colorScheme="coolGray"
-              onPress={closeEditForm}
-            >
-              Cancel
-            </Button>
-            <Button
-              bg="secondary.100"
-              onPress={() => {
-                editCabinetItem(toBeEdited).unwrap();
-                closeEditForm();
-              }}
-            >
-              Save
-            </Button>
-          </Button.Group>
-        </AlertDialog.Footer>
-      </AlertDialog.Content>
-    </AlertDialog>
+        </>
+      }
+      onPressCancel={closeEditForm}
+      onPressContinue={() => {
+        editCabinetItem(toBeEdited).unwrap();
+        closeEditForm();
+      }}
+      continueBtnText="Save"
+    />
   );
 
   const ConfirmDelete = () => (
-    <AlertDialog
-      leastDestructiveRef={cancelRefDelete}
+    <AlertDialogMsg
+      cancelRef={cancelRefDelete}
       isOpen={isOpenDeleteAlert}
       onClose={closeDeleteAlert}
-    >
-      <AlertDialog.Content>
-        <AlertDialog.CloseButton />
-        <AlertDialog.Header>Confirm Delete</AlertDialog.Header>
-        <AlertDialog.Body>
+      header="Confirm Delete"
+      body={
+        <>
           <Text>{`Are you sure you want to delete ${toBeDeleted.name} ?`}</Text>
-        </AlertDialog.Body>
-        <AlertDialog.Footer>
-          <Button.Group space={2}>
-            <Button
-              variant="unstyled"
-              colorScheme="coolGray"
-              onPress={closeDeleteAlert}
-              ref={cancelRefDelete}
-            >
-              Cancel
-            </Button>
-            <Button colorScheme="danger" onPress={() => setToDelete(true)}>
-              Delete
-            </Button>
-          </Button.Group>
-        </AlertDialog.Footer>
-      </AlertDialog.Content>
-    </AlertDialog>
+        </>
+      }
+      onPressCancel={closeDeleteAlert}
+      onPressContinue={() => setToDelete(true)}
+      continueBtnText="Delete"
+    />
   );
 
   const renderItem = ({ item }) => {
@@ -568,6 +533,7 @@ const Cabinet = ({ navigation }) => {
             {filteredItems ? (
               <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
                 <SwipeListView
+                  removeClippedSubviews
                   disableRightSwipe
                   data={filteredItems}
                   renderItem={renderItem}
@@ -605,4 +571,4 @@ const Cabinet = ({ navigation }) => {
   );
 };
 
-export default Cabinet;
+export default memo(Cabinet);
