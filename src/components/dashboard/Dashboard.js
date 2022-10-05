@@ -128,12 +128,13 @@ const Dashboard = () => {
             Suggested Recipes: {displayedRecipes?.length || 0}
           </Text>
           <ScrollView horizontal={true}>
-            {isLoadingRecipes ? <LoadingCards /> : null}
             {displayedRecipes?.length ? (
               displayedRecipes?.map((recipe) => {
-                return <RecipeCard key={uuidv4()} item={recipe} />;
+                return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })
-            ) : isLoadingRecipes ? null : !cabinetItemNames?.length ? (
+            ) : isLoadingRecipes ? (
+              <LoadingCards />
+            ) : !cabinetItemNames?.length ? (
               <Center>
                 <Text>Your cabinet is empty. {'\n'}</Text>
                 <Button
