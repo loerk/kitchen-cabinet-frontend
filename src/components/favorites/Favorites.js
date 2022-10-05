@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Center,
   Divider,
-  Heading,
   ScrollView,
   Spinner,
   StatusBar,
@@ -28,7 +27,6 @@ const Favorites = () => {
   const { data: favoriteRecipes, isLoading } = useGetFavoritesQuery(cabinetId);
 
   // useEffect for filtering By title
-  console.log(favoriteRecipes);
 
   useEffect(() => {
     const filteredFavorites = favoriteRecipes?.filter((recipe) => {
@@ -62,10 +60,10 @@ const Favorites = () => {
           <ScrollView mt={4}>
             {searchInput
               ? searchedRecipes?.map((recipe) => (
-                  <RecipeCard key={uuidv4()} item={recipe} />
+                  <RecipeCard key={uuidv4()} recipe={recipe} />
                 ))
               : favoriteRecipes?.map((recipe) => (
-                  <RecipeCard key={uuidv4()} item={recipe} />
+                  <RecipeCard key={uuidv4()} recipe={recipe} />
                 ))}
           </ScrollView>
         </SafeAreaView>

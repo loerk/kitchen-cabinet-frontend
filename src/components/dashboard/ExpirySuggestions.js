@@ -102,7 +102,7 @@ function ExpirySuggestions({ items }) {
           <Box>
             <ScrollView horizontal={true}>
               {suggestedRecipes?.map((recipe) => {
-                return <RecipeCard key={uuidv4()} item={recipe} />;
+                return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })}
             </ScrollView>
           </Box>
