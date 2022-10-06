@@ -21,16 +21,17 @@ import { AuthContext } from '../../authNavigation/AuthProvider';
 export const IngredientsList = ({
   missingIngredients,
   usedIngredients,
-  missingIngredientsNames,
-  usedIngredientsNames,
+  missingIngredientsIds,
+  usedIngredientsIds,
   ingredients,
 }) => {
   if (missingIngredients) {
-    missingIngredientsNames = missingIngredients.map((el) => el.name);
+    missingIngredientsIds = missingIngredients.map((el) => el.id);
   }
   if (usedIngredients) {
-    usedIngredientsNames = usedIngredients.map((el) => el.name);
+    usedIngredientsIds = usedIngredients.map((el) => el.id);
   }
+
   const { cabinetId } = useContext(AuthContext);
   const [shoppinglist, setShoppinglist] = useState({
     name: '',
@@ -39,7 +40,7 @@ export const IngredientsList = ({
     metrics: '',
   });
   const { colorMode } = useColorMode();
-
+  // if (!usedIngredientsIds) usedIngredientsIds =
   const [addShoppinglist, { isSuccess, isLoading }] =
     useAddShoppinglistMutation();
   useEffect(() => {
@@ -47,7 +48,7 @@ export const IngredientsList = ({
       setShoppinglist(
         ingredients
           .map((ingredient) => {
-            if (missingIngredientsNames?.includes(ingredient.name)) {
+            if (missingIngredientsIds?.includes(ingredient.id)) {
               return {
                 name: ingredient.name,
                 id: ingredient.id,
@@ -63,7 +64,6 @@ export const IngredientsList = ({
       setShoppinglist(missingIngredients);
     }
   }, []);
-  console.log({ shoppinglist });
   const addToShoppinglist = () => {
     addShoppinglist({ cabinetId, shoppinglist });
   };
@@ -81,7 +81,7 @@ export const IngredientsList = ({
                 justifyContent={'space-between'}
                 alignItems={'center'}
               >
-                {usedIngredientsNames?.includes(ingredient.name) ? (
+                {usedIngredientsIds?.includes(ingredient.id) ? (
                   <MaterialCommunityIcons
                     name="checkbox-marked-circle-outline"
                     size={24}
@@ -109,7 +109,7 @@ export const IngredientsList = ({
             </VStack>
           );
         })}
-      {missingIngredientsNames || usedIngredientsNames ? (
+      {missingIngredientsIds.length ? (
         <Button
           bg="secondary.100"
           onPress={addToShoppinglist}

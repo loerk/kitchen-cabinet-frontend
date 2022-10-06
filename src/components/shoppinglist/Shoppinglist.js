@@ -28,7 +28,6 @@ const ShoppingList = () => {
   const { colorMode } = useColorMode();
   const [listData, setListData] = useState([]);
   const [toDelete, setToDelete] = useState([]);
-  console.log(shoppinglist);
   useEffect(() => {
     if (shoppinglist) {
       const keyShoppinglist = shoppinglist.map((item, index) => ({
@@ -87,7 +86,15 @@ const ShoppingList = () => {
                 <Text maxW={180} isTruncated>
                   {item?.name}
                 </Text>
-                <Text>{item?.amount + '  ' + item.metrics}</Text>
+                <Text>
+                  {item.amount +
+                    '  ' +
+                    (item.metrics !== undefined
+                      ? item.metrics
+                      : item.unit === 'tablespoon'
+                      ? 'tsps'
+                      : item.unit)}
+                </Text>
               </HStack>
             </Box>
           </HStack>

@@ -65,14 +65,14 @@ const Favorites = () => {
               ? searchedRecipes?.map((recipe) => (
                   <RecipeCard
                     key={uuidv4()}
-                    item={recipe}
+                    recipe={recipe}
                     ingredientIds={ids}
                   />
                 ))
               : favoriteRecipes?.map((recipe) => (
                   <RecipeCard
                     key={uuidv4()}
-                    item={recipe}
+                    recipe={recipe}
                     ingredientIds={ids}
                   />
                 ))}
