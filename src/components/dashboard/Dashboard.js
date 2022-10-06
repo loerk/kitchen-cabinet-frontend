@@ -71,12 +71,13 @@ const Dashboard = () => {
         {
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
           />
         }
         <HStack>
           <Box w={'100%'}>
             <HStack justifyContent={'space-between'} alignItems={'flex-end'}>
-              <VStack mt={5}>
+              <VStack mt={0}>
                 <Text style={{ paddingLeft: 18 }}>Welcome</Text>
                 <Heading>{user.displayName && `${user.displayName}`}</Heading>
               </VStack>
@@ -85,7 +86,7 @@ const Dashboard = () => {
                 name="person-circle-outline"
                 size={40}
                 color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                style={{ marginRight: 14 }}
+                style={{ marginRight: 34 }}
                 onPress={() => navigation.navigate('Profile')}
               />
             </HStack>

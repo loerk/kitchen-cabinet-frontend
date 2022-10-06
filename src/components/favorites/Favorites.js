@@ -48,6 +48,7 @@ const Favorites = () => {
         <SafeAreaView>
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
           />
 
           <Divider />
