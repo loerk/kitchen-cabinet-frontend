@@ -157,7 +157,7 @@ export default function Diagrams({ navigation }) {
               {
                 target: 'data',
                 eventHandlers: {
-                  onPress: () => {
+                  onPressIn: () => {
                     return [
                       {
                         target: 'labels',
