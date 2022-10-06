@@ -8,6 +8,8 @@ import {
   AlertDialog,
   Box,
   Heading,
+  useToast,
+  Spinner,
 } from 'native-base';
 
 import { EvilIcons } from '@expo/vector-icons';
@@ -16,6 +18,7 @@ import { useAddItemMutation } from '../../features/api/apiSlice';
 
 // custom components
 /* import DateTimePicker from '../utils/DateTimePicker';*/
+
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
 // Authentication
@@ -27,8 +30,8 @@ const INITIAL_DATE = `${date.getFullYear()}-${String(
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 export const CabinetAddItemForm = () => {
+  const toast = useToast();
   const { cabinetId } = useContext(AuthContext);
-  //const toast = useToast();
   const { colorMode } = useColorMode();
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const closeCalendar = () => setIsOpenCalendar(false);
@@ -54,6 +57,28 @@ export const CabinetAddItemForm = () => {
         expiryDate: selectedIngredient.expiryDate,
       }).unwrap();
     }
+    toast.show({
+      render: () => {
+        return (
+          <Box
+            bg={isError ? 'error.300' : 'success.300'}
+            px="2"
+            py="1"
+            shadow={3}
+            rounded="sm"
+            mb={8}
+          >
+            {isLoading ? (
+              <Spinner />
+            ) : !isError ? (
+              'You successfully added this item'
+            ) : (
+              'You may already have this item'
+            )}
+          </Box>
+        );
+      },
+    });
   };
 
   return (
@@ -64,7 +89,9 @@ export const CabinetAddItemForm = () => {
           <Text size="md" pt={4} bold>
             Please select an Item
           </Text>
-          <Text pb={4}>(Type 3+ letters)</Text>
+          <Text pb={4} fontSize="sm" italic>
+            (Type 3+ letters)
+          </Text>
           <CabinetSelectItemAutocomplete
             setSelectedIngredient={setSelectedIngredient}
             selectedIngredient={selectedIngredient}
@@ -119,47 +146,47 @@ export const CabinetAddItemForm = () => {
             {isLoading ? (
               <Button
                 isLoading
-                mb="33"
-                mt="60"
+                mb="13"
+                mt="30"
                 onPress={saveItem}
                 disabled={!selectedIngredient.name}
                 bg="secondary.100"
-                // bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
               >
                 Add Item
               </Button>
             ) : (
               <Button
                 cursor="pointer"
-                mb="33"
-                mt="60"
+                mb="13"
+                mt="30"
                 onPress={saveItem}
                 disabled={!selectedIngredient.name}
                 bg="secondary.100"
-                //bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
               >
                 Add Item
               </Button>
             )}
           </Box>
+          <Text>
+            {/* {
+              showErrorToast &&
+                toast.show({
+                  render: () => {
+                    return (
+                      <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+                        Hello! Have a nice day
+                      </Box>
+                    );
+                  },
+                })
+              // ? `You successfully added ${selectedIngredient.name}`
+              // : isError
+              // ? 'Ops something went wrong, please try again'
+              // : null
+            } */}
+          </Text>
         </Center>
       </ScrollView>
-      {isSuccess ? (
-        // ? toast.show({
-        //     render: () => {
-        //       return (
-        <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
-          <Text>
-            You successfully added {selectedIngredient.name} to your cabinet!
-          </Text>
-        </Box>
-      ) : // })
-      null}
-      {isError ? (
-        <Text>
-          Oops please check you cabinet, we are not sure if this worked
-        </Text>
-      ) : null}
     </View>
   );
 };

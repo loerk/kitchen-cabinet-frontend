@@ -34,6 +34,7 @@ import LoadingCards from '../utils/LoadingCards';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import { Pressable } from 'react-native';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -104,12 +105,14 @@ const Dashboard = () => {
             onChangeText={(newValue) => setSearchInput(newValue)}
             defaultValue={searchInput}
           />
-          <Ionicons
-            name="options"
-            size={34}
-            color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-            onPress={() => setIsOpen(!isOpen)}
-          />
+          <Pressable onPressIn={() => setIsOpen(!isOpen)}>
+            <Ionicons
+              name="options"
+              size={34}
+              color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+              //onPress={() => setIsOpen(!isOpen)}
+            />
+          </Pressable>
         </HStack>
         <Center mt={3}>
           <Slide in={isOpen} placement={'right'} duration={300}>

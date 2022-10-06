@@ -16,6 +16,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import { Pressable } from 'react-native';
 
 const initialFilterOptions = {
   diet: '',
@@ -64,12 +65,13 @@ const Filters = ({
 
   return (
     <View p={'8'} mt={'10'} rounded="md" shadow={9}>
-      <AntDesign
-        name="close"
-        size={28}
-        color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-        onPress={() => setIsOpen(false)}
-      />
+      <Pressable onPressIn={() => setIsOpen(false)}>
+        <AntDesign
+          name="close"
+          size={28}
+          color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+        />
+      </Pressable>
       <VStack alignItems="center" space={6} mt={10}>
         <Select
           selectedValue={diet}
