@@ -115,7 +115,7 @@ export const apiSlice = createApi({
     }),
     deleteShoppinglistItems: builder.mutation({
       query: ({ cabinetId, toDelete }) => ({
-        url: `/cabinet/shoppinglist?cabinetId=${cabinetId}&toDelete=${toDelete}`,
+        url: `/cabinet/shoppinglist/${cabinetId}?toDelete=${toDelete}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Shoppinglist'],

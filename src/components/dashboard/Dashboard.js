@@ -34,6 +34,7 @@ import LoadingCards from '../utils/LoadingCards';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import { Pressable } from 'react-native';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -105,12 +106,14 @@ const Dashboard = () => {
             onChangeText={(newValue) => setSearchInput(newValue)}
             defaultValue={searchInput}
           />
-          <Ionicons
-            name="options"
-            size={34}
-            color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-            onPress={() => setIsOpen(!isOpen)}
-          />
+          <Pressable onPressIn={() => setIsOpen(!isOpen)}>
+            <Ionicons
+              name="options"
+              size={34}
+              color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+              //onPress={() => setIsOpen(!isOpen)}
+            />
+          </Pressable>
         </HStack>
         <Center mt={3}>
           <Slide in={isOpen} placement={'right'} duration={300}>
@@ -129,12 +132,13 @@ const Dashboard = () => {
             Suggested Recipes: {displayedRecipes?.length || 0}
           </Text>
           <ScrollView horizontal={true}>
-            {isLoadingRecipes ? <LoadingCards /> : null}
             {displayedRecipes?.length ? (
               displayedRecipes?.map((recipe) => {
-                return <RecipeCard key={uuidv4()} item={recipe} />;
+                return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })
-            ) : isLoadingRecipes ? null : !cabinetItemNames?.length ? (
+            ) : isLoadingRecipes ? (
+              <LoadingCards />
+            ) : !cabinetItemNames?.length ? (
               <Center>
                 <Text>Your cabinet is empty. {'\n'}</Text>
                 <Button

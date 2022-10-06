@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Select,
   VStack,
@@ -15,6 +16,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useGetFilteredRecipesQuery } from '../../features/api/apiSlice';
 
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import { Pressable } from 'react-native';
 
 const initialFilterOptions = {
   diet: '',
@@ -22,7 +24,8 @@ const initialFilterOptions = {
   type: '',
   extras: '',
 };
-const Filter = ({
+
+const Filters = ({
   setIsOpen,
   suggestedRecipes,
   displayedRecipes,
@@ -62,12 +65,13 @@ const Filter = ({
 
   return (
     <View p={'8'} mt={'10'} rounded="md" shadow={9}>
-      <AntDesign
-        name="close"
-        size={28}
-        color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-        onPress={() => setIsOpen(false)}
-      />
+      <Pressable onPressIn={() => setIsOpen(false)}>
+        <AntDesign
+          name="close"
+          size={28}
+          color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+        />
+      </Pressable>
       <VStack alignItems="center" space={6} mt={10}>
         <Select
           selectedValue={diet}
@@ -231,4 +235,11 @@ const Filter = ({
   );
 };
 
-export default Filter;
+Filters.propTypes = {
+  setIsOpen: PropTypes.func.isRequired,
+  suggestedRecipes: PropTypes.array.isRequired,
+  displayedRecipes: PropTypes.array.isRequired,
+  setDisplayedRecipes: PropTypes.func.isRequired,
+};
+
+export default Filters;

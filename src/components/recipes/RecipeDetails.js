@@ -31,8 +31,8 @@ import { AuthContext } from '../../authNavigation/AuthProvider';
 export const RecipeDetails = ({
   missingIngredients,
   usedIngredients,
-  missingIngredientsNames,
-  usedIngredientsNames,
+  missingIngredientsIds,
+  usedIngredientsIds,
   id,
   isOpen,
 }) => {
@@ -42,6 +42,7 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
+
   const [
     addFavoriteRecipe,
     { isSuccess: isSuccessSaving, isLoading: isSaving },
@@ -110,8 +111,8 @@ export const RecipeDetails = ({
                   <IngredientsList
                     missingIngredients={missingIngredients}
                     usedIngredients={usedIngredients}
-                    missingIngredientsNames={missingIngredientsNames}
-                    usedIngredientsNames={usedIngredientsNames}
+                    missingIngredientsIds={missingIngredientsIds}
+                    usedIngredientsIds={usedIngredientsIds}
                     ingredients={recipeDetails.extendedIngredients}
                   />
                 )}
@@ -157,7 +158,8 @@ export const RecipeDetails = ({
                       </OpenURLButton>
                     </View>
                   )}
-                  {missingIngredientsNames || usedIngredientsNames ? (
+                  {missingIngredientsIds !== undefined ||
+                  usedIngredientsIds !== undefined ? (
                     <Button
                       bg="secondary.100"
                       onPress={() => saveFavorite(recipeDetails.id)}

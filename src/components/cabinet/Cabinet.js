@@ -303,6 +303,28 @@ const Cabinet = ({ navigation }) => {
               onPress={() => {
                 editCabinetItem(toBeEdited).unwrap();
                 closeEditForm();
+                toast.show({
+                  render: () => {
+                    return (
+                      <Box
+                        bg={
+                          isErrorDelete || isErrorEdit
+                            ? 'error.300'
+                            : 'success.300'
+                        }
+                        px="2"
+                        py="1"
+                        shadow={3}
+                        rounded="sm"
+                        mb={8}
+                      >
+                        {isErrorEdit
+                          ? 'We could not update this ingredient'
+                          : 'The ingredient was successfully updated'}
+                      </Box>
+                    );
+                  },
+                });
               }}
             >
               Save
@@ -335,7 +357,34 @@ const Cabinet = ({ navigation }) => {
             >
               Cancel
             </Button>
-            <Button colorScheme="danger" onPress={() => setToDelete(true)}>
+            <Button
+              colorScheme="danger"
+              onPress={() => {
+                setToDelete(true);
+                toast.show({
+                  render: () => {
+                    return (
+                      <Box
+                        bg={
+                          isErrorDelete || isErrorEdit
+                            ? 'error.300'
+                            : 'success.300'
+                        }
+                        px="2"
+                        py="1"
+                        shadow={3}
+                        rounded="sm"
+                        mb={8}
+                      >
+                        {isErrorDelete
+                          ? 'We could not delete this ingredient.'
+                          : 'The ingredient was successfully deleted.'}
+                      </Box>
+                    );
+                  },
+                });
+              }}
+            >
               Delete
             </Button>
           </Button.Group>
@@ -539,7 +588,7 @@ const Cabinet = ({ navigation }) => {
           />
 
           <VStack my={5}>
-            {isSuccessEdit && (
+            {/* {isSuccessEdit && (
               <Text color="green.500">
                 {toBeEdited.name} was successfully updated.
               </Text>
@@ -558,7 +607,7 @@ const Cabinet = ({ navigation }) => {
               <Text color="red.500">
                 Something went wrong. {toBeDeleted.name} could not be deleted.
               </Text>
-            )}
+            )} */}
           </VStack>
 
           <Box w={'90%'} h={'90%'}>

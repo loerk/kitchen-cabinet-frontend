@@ -129,40 +129,40 @@ export default function Diagrams({ navigation }) {
           <>
             <Center>
               <Text mt={5}>Your cabinet is empty.</Text>
-
-              <Button
-                onPress={() => navigation.navigate('Add')}
-                w="50%"
-                bg="secondary.100"
-              >
-                Add an item
-              </Button>
-            </Center>
-          </>
-        )}
-        <VictoryPie
-          data={finalChartData}
-          radius={({ datum }) =>
-            selectedCategory && selectedCategory == datum.x
-              ? width * 0.4
-              : width * 0.4 - 10
-          }
-          innerRadius={60}
-          labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
-          colorScale={colorScale}
-          width={width * 0.8}
-          height={width * 0.8}
-          events={[
-            {
-              target: 'data',
-              eventHandlers: {
-                onPressIn: () => {
-                  return [
-                    {
-                      target: 'labels',
-                      mutation: (props) => {
-                        let categoryType = finalChartData[props.index].x;
-                        setSelectCategoryByType(categoryType);
+                <Button
+                  onPress={() => navigation.navigate('Add')}
+                  w="50%"
+                  bg="secondary.100"
+                >
+                  Add an item
+                </Button>
+              </Center>
+            </>
+          )}
+          <VictoryPie
+            data={finalChartData}
+            radius={({ datum }) =>
+              selectedCategory && selectedCategory == datum.x
+                ? width * 0.4
+                : width * 0.4 - 10
+            }
+            innerRadius={60}
+            labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
+            colorScale={colorScale}
+            width={width * 0.8}
+            height={width * 0.8}
+            events={[
+              {
+                target: 'data',
+                eventHandlers: {
+                  onPressIn: () => {
+                    return [
+                      {
+                        target: 'labels',
+                        mutation: (props) => {
+                          let categoryType = finalChartData[props.index].x;
+                          setSelectCategoryByType(categoryType);
+                        },
                       },
                     },
                   ];
