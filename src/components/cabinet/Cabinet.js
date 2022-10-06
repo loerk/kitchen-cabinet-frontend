@@ -620,8 +620,8 @@ const Cabinet = ({ navigation }) => {
                   disableRightSwipe
                   data={filteredItems}
                   renderItem={renderItem}
-                  initialNumToRender={5}
-                  maxToRenderPerBatch={5}
+                  initialNumToRender={20}
+                  maxToRenderPerBatch={20}
                   renderHiddenItem={renderHiddenItem}
                   leftOpenValue={55}
                   rightOpenValue={-100}

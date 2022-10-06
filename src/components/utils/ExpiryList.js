@@ -19,6 +19,7 @@ export default function ExpiryList({ title, arr, isLoading, action }) {
         {title}
       </Heading>
       <FlatList
+        nestedScrollEnabled={true}
         pr={3}
         mb={6}
         keyExtractor={() => uuidv4()}
