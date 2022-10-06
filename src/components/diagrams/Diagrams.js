@@ -118,17 +118,19 @@ export default function Diagrams({ navigation }) {
   return (
     <View keyboardShouldPersistTaps="handled">
       <Heading mt={5}>Diagrams</Heading>
-      <Box flex={1}>
-        {modifiedCabinetItems.length > 0 ? (
-          <Center>
-            <Text mt={5} mb={5} bold>
-              Types of ingredients in the cabinet:
-            </Text>
-          </Center>
-        ) : (
-          <>
+      <ScrollView>
+        <Box flex={1} mb={20}>
+          {modifiedCabinetItems.length > 0 ? (
             <Center>
-              <Text mt={5}>Your cabinet is empty.</Text>
+              <Text mt={5} mb={5} bold>
+                Types of ingredients in the cabinet:
+              </Text>
+            </Center>
+          ) : (
+            <>
+              <Center>
+                <Text mt={5}>Your cabinet is empty.</Text>
+
                 <Button
                   onPress={() => navigation.navigate('Add')}
                   w="50%"
@@ -164,80 +166,80 @@ export default function Diagrams({ navigation }) {
                           setSelectCategoryByType(categoryType);
                         },
                       },
-                    },
-                  ];
+                    ];
+                  },
                 },
               },
-            },
-          ]}
-          style={{
-            labels: { fill: 'transparent', fontSize: 18 },
-            parent: {
-              shadowColor: '#000',
-              shadowOffset: { width: 5, height: 5 },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 3,
-              alignItems: 'center',
-            },
-          }}
-        />
-        <ScrollView w={'100%'} h={'90%'} mt={5}>
-          <FlatList
-            nestedScrollEnabled={true}
-            data={finalChartData}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    height: 40,
-                    paddingHorizontal: 130,
-                    borderRadius: 10,
-                    backgroundColor:
-                      selectedCategory && selectedCategory == item.x
-                        ? item.color
-                        : null,
-                  }}
-                >
-                  <Box
+            ]}
+            style={{
+              labels: { fill: 'transparent', fontSize: 18 },
+              parent: {
+                shadowColor: '#000',
+                shadowOffset: { width: 5, height: 5 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 3,
+                alignItems: 'center',
+              },
+            }}
+          />
+
+          <Box w={'100%'} h={'90%'} mt={5}>
+            <FlatList
+              data={finalChartData}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
                     style={{
-                      flex: 1,
                       flexDirection: 'row',
-                      alignItems: 'center',
+                      height: 40,
+                      paddingHorizontal: 130,
+                      borderRadius: 10,
+                      backgroundColor:
+                        selectedCategory && selectedCategory == item.x
+                          ? item.color
+                          : null,
                     }}
                   >
                     <Box
                       style={{
-                        width: 20,
-                        height: 20,
-                        backgroundColor:
-                          selectedCategory && selectedCategory == item.x
-                            ? null
-                            : item.color,
-                        borderRadius: 5,
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
                       }}
-                    ></Box>
-                    <Text
-                      bold
-                      ml={1}
-                      color={
-                        selectedCategory && selectedCategory == item.x
-                          ? 'white'
-                          : null
-                      }
                     >
-                      {' '}
-                      {item.x.charAt(0).toUpperCase() + item.x.slice(1)} -{' '}
-                      {item.label}
-                    </Text>
-                  </Box>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </ScrollView>
-      </Box>
+                      <Box
+                        style={{
+                          width: 20,
+                          height: 20,
+                          backgroundColor:
+                            selectedCategory && selectedCategory == item.x
+                              ? null
+                              : item.color,
+                          borderRadius: 5,
+                        }}
+                      ></Box>
+                      <Text
+                        bold
+                        ml={1}
+                        color={
+                          selectedCategory && selectedCategory == item.x
+                            ? 'white'
+                            : null
+                        }
+                      >
+                        {' '}
+                        {item.x.charAt(0).toUpperCase() +
+                          item.x.slice(1)} - {item.label}
+                      </Text>
+                    </Box>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </Box>
+        </Box>
+      </ScrollView>
     </View>
   );
 }

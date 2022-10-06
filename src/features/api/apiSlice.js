@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 /* import { REACT_APP_BASE_URL } from '@env'; */
 
-const REACT_APP_BASE_URL = 'http://192.168.1.241:8002';
+const REACT_APP_BASE_URL = 'https://ill-pink-lobster-kit.cyclic.app/';
 // Defines the single API slice object
 export const apiSlice = createApi({
   reducerPath: 'api',
