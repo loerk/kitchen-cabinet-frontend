@@ -12,7 +12,6 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const { handleLogin } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
-
   return (
     <>
       <View style={styles.loginContainer}>

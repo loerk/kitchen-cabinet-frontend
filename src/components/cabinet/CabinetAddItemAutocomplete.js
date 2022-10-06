@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from '@env';
+/* import { REACT_APP_BASE_URL } from '@env'; */
 
 import React, { useCallback, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
@@ -8,6 +8,7 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import Feather from 'react-native-vector-icons/Feather';
 import { Box, useColorMode } from 'native-base';
 Feather.loadFont();
+const REACT_APP_BASE_URL = 'https://ill-pink-lobster-kit.cyclic.app/';
 
 export const CabinetSelectItemAutocomplete = ({
   setSelectedIngredient,
@@ -24,7 +25,7 @@ export const CabinetSelectItemAutocomplete = ({
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${BASE_URL}/recipes/ingredient?ingredient=${q}`
+        `${REACT_APP_BASE_URL}/recipes/ingredient?ingredient=${q}`
       );
       setLoading(false);
       setSuggestionsList(
