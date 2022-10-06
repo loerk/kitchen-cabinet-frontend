@@ -11,7 +11,6 @@ import {
   Avatar,
   Icon,
   Center,
-  useToast,
   useColorMode,
   Pressable,
   View,
@@ -23,20 +22,16 @@ import {
   Heading,
 } from 'native-base';
 
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  AntDesign,
-} from '@expo/vector-icons';
-/* import { Keyboard } from 'react-native'; */
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { Keyboard } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 // custom components
 import SearchBar from '../utils/SearchBar';
-import DatePicker from '../utils/DatePicker';
-import AlertDialogMsg from '../utils/AlertDialogMsg';
+import EditItemDialog from './EditItemDialog';
+import DeleteItemDialog from './DeleteItemDialog';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
@@ -57,7 +52,6 @@ const Cabinet = ({ navigation }) => {
   const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const [searchInput, setSearchInput] = useState('');
-  const [filteredItems, setFilteredItems] = useState(''); // based on search input
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
   const [isOpenEditForm, setIsOpenEditForm] = useState(false);
   const [toBeDeleted, setToBeDeleted] = useState({ id: '', name: '' });
@@ -72,8 +66,6 @@ const Cabinet = ({ navigation }) => {
   const closeEditForm = () => setIsOpenEditForm(false);
   const [selected, setSelected] = useState(CURRENT_DATE);
   const [toDelete, setToDelete] = useState(false);
-
-  const toast = useToast();
 
   const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
@@ -110,7 +102,7 @@ const Cabinet = ({ navigation }) => {
 
   useEffect(() => {
     isSuccess &&
-      setFilteredItems(
+      setListData(
         cabinetItems.filter(({ name }) =>
           name.toLowerCase().startsWith(searchInput.toLowerCase())
         )
@@ -120,7 +112,7 @@ const Cabinet = ({ navigation }) => {
   useEffect(() => {
     if (toDelete) deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
     closeDeleteAlert();
-    if (isSuccessDelete) setToDelete(false);
+    if (isSuccessDelete) setToDelete('');
     if (isErrorDelete) console.log(deleteError);
   }, [toDelete]);
 
@@ -134,8 +126,8 @@ const Cabinet = ({ navigation }) => {
     }
   }, [cabinetItems]);
 
-  filteredItems &&
-    filteredItems
+  listData &&
+    listData
       .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
       .map(({ _id: id, name, image, expiryDate }) => {
         const isExpired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
@@ -249,63 +241,30 @@ const Cabinet = ({ navigation }) => {
   const cancelRefEdit = useRef(null);
 
   const EditForm = () => (
-    <AlertDialogMsg
-      cancelRef={cancelRefEdit}
-      isOpen={isOpenEditForm}
-      onClose={closeEditForm}
-      header="Edit"
-      body={
-        <>
-          <Text bold>Item Name:</Text>
-          <Text>{toBeEdited.name}</Text>
-          <Text bold mt={5}>
-            Expiry Date:
-          </Text>
-          <Pressable onPress={() => setShowCalendar(true)}>
-            <HStack>
-              <Text>
-                {toBeEdited.expiryDate.split('-').reverse().join('/')}{' '}
-              </Text>
-              <MaterialCommunityIcons
-                name="calendar-edit"
-                size={24}
-                color={colorMode === 'dark' ? 'white' : 'black'}
-              />
-            </HStack>
-          </Pressable>
-          {showCalendar && (
-            <DatePicker
-              INITIAL_DATE={CURRENT_DATE}
-              onDayPress={onDayPress}
-              selected={selected}
-              expiryDate={toBeEdited.expiryDate}
-            />
-          )}
-        </>
-      }
-      onPressCancel={closeEditForm}
-      onPressContinue={() => {
-        editCabinetItem(toBeEdited).unwrap();
-        closeEditForm();
-      }}
-      continueBtnText="Save"
+    <EditItemDialog
+      cancelRefEdit={cancelRefEdit}
+      isOpenEditForm={isOpenEditForm}
+      closeEditForm={closeEditForm}
+      toBeEdited={toBeEdited}
+      setShowCalendar={setShowCalendar}
+      colorMode={colorMode}
+      showCalendar={showCalendar}
+      CURRENT_DATE={CURRENT_DATE}
+      onDayPress={onDayPress}
+      selected={selected}
+      editCabinetItem={editCabinetItem}
     />
   );
 
   const ConfirmDelete = () => (
-    <AlertDialogMsg
-      cancelRef={cancelRefDelete}
-      isOpen={isOpenDeleteAlert}
-      onClose={closeDeleteAlert}
-      header="Confirm Delete"
-      body={
-        <>
-          <Text>{`Are you sure you want to delete ${toBeDeleted.name} ?`}</Text>
-        </>
-      }
-      onPressCancel={closeDeleteAlert}
-      onPressContinue={() => setToDelete(true)}
-      continueBtnText="Delete"
+    <DeleteItemDialog
+      cancelRefDelete={cancelRefDelete}
+      isOpenDeleteAlert={isOpenDeleteAlert}
+      closeDeleteAlert={closeDeleteAlert}
+      toBeDeleted={toBeDeleted}
+      setListData={setListData}
+      listData={listData}
+      setToDelete={setToDelete}
     />
   );
 
@@ -440,10 +399,8 @@ const Cabinet = ({ navigation }) => {
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     const deletedItem = newData.splice(prevIndex, 1);
-    setListData(newData.filter((item) => item !== deletedItem));
-
+    setToBeDeleted(() => ({ ...toBeDeleted, deletedItem }));
     setIsOpenDeleteAlert(!isOpenDeleteAlert);
-    setListData(newData);
   };
 
   const renderHiddenItem = (data, rowMap) => (
@@ -453,7 +410,7 @@ const Cabinet = ({ navigation }) => {
         ml="auto"
         bg="green.400"
         justifyContent="center"
-        onPress={() => {
+        onPressIn={() => {
           setToBeEdited({
             id: data.item._id,
             name:
@@ -473,9 +430,9 @@ const Cabinet = ({ navigation }) => {
         cursor="pointer"
         bg="red.400"
         justifyContent="center"
-        onPress={() => {
-          setToBeDeleted({ id: data.item._id, name: data.item.name });
+        onPressIn={() => {
           deleteRow(rowMap, data.item.key);
+          setToBeDeleted({ id: data.item._id, name: data.item.name });
         }}
       >
         <Icon
@@ -488,7 +445,7 @@ const Cabinet = ({ navigation }) => {
   );
 
   return (
-    <View keyboardShouldPersistTaps="handled">
+    <View /* keyboardShouldPersistTaps="handled" */>
       <EditForm />
       <ConfirmDelete />
       <Heading mt={5}>Cabinet</Heading>
@@ -501,6 +458,7 @@ const Cabinet = ({ navigation }) => {
             placeholder="Search an item"
             onChangeText={(newValue) => setSearchInput(newValue)}
             defaultValue={searchInput}
+            /* onSubmitEditing={Keyboard.dismiss} */
           />
 
           <VStack my={5}>
@@ -530,12 +488,12 @@ const Cabinet = ({ navigation }) => {
             {isSuccess && cabinetItems.length === 0 && (
               <Text>Your cabinet is empty. Add an item.</Text>
             )}
-            {filteredItems ? (
+            {listData ? (
               <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
                 <SwipeListView
                   removeClippedSubviews
                   disableRightSwipe
-                  data={filteredItems}
+                  data={listData}
                   renderItem={renderItem}
                   initialNumToRender={5}
                   maxToRenderPerBatch={5}
@@ -558,7 +516,7 @@ const Cabinet = ({ navigation }) => {
             <Text mt={5}>Your cabinet is empty.</Text>
 
             <Button
-              onPress={() => navigation.navigate('Add')}
+              onPressIn={() => navigation.navigate('Add')}
               w="50%"
               bg="secondary.100"
             >
