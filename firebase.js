@@ -15,6 +15,14 @@ import {
 } from '@env'; */
 
 // Firebase configuration
+const firebaseConfig = {
+  apiKey: 'FIREBASE_',
+  authDomain: 'FIREBASE_',
+  projectId: 'FIREBASE_',
+  storageBucket: 'FIREBASE_',
+  messagingSenderId: 'FIREBASE_',
+  appId: 'FIREBASE_',
+};
 
 // Initialize Firebase
 
