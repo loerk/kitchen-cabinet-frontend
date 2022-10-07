@@ -112,7 +112,7 @@ const Cabinet = ({ navigation }) => {
   useEffect(() => {
     if (toDelete) deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
     closeDeleteAlert();
-    if (isSuccessDelete) setToDelete('');
+    if (isSuccessDelete) setToDelete(false);
     if (isErrorDelete) console.log(deleteError);
   }, [toDelete]);
 
@@ -467,7 +467,7 @@ const Cabinet = ({ navigation }) => {
                 {toBeEdited.name} was successfully updated.
               </Text>
             )}
-            {isSuccessDelete && (
+            {isSuccessDelete && toDelete && (
               <Text color="green.500">
                 {toBeDeleted.name} was successfully deleted.
               </Text>
@@ -486,7 +486,16 @@ const Cabinet = ({ navigation }) => {
 
           <Box w={'90%'} h={'90%'}>
             {isSuccess && cabinetItems.length === 0 && (
-              <Text>Your cabinet is empty. Add an item.</Text>
+              <Center>
+                <Text>Your cabinet is empty.</Text>
+                <Button
+                  onPress={() => navigation.navigate('Add')}
+                  w="50%"
+                  bg="secondary.100"
+                >
+                  Add an item
+                </Button>
+              </Center>
             )}
             {listData ? (
               <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
