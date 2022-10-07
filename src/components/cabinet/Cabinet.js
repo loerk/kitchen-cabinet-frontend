@@ -11,6 +11,7 @@ import {
   Avatar,
   Icon,
   Center,
+  useToast,
   useColorMode,
   Pressable,
   View,
@@ -66,6 +67,8 @@ const Cabinet = ({ navigation }) => {
   const closeEditForm = () => setIsOpenEditForm(false);
   const [selected, setSelected] = useState(CURRENT_DATE);
   const [toDelete, setToDelete] = useState(false);
+
+  const toast = useToast();
 
   const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
@@ -452,7 +455,7 @@ const Cabinet = ({ navigation }) => {
       <Text italic fontSize="sm" ml={5}>
         (swipe left to edit / delete)
       </Text>
-      {cabinetItems ? (
+      {listData ? (
         <Box ml={5} mt={4}>
           <SearchBar
             placeholder="Search an item"
@@ -461,31 +464,10 @@ const Cabinet = ({ navigation }) => {
             /* onSubmitEditing={Keyboard.dismiss} */
           />
 
-          <VStack my={5}>
-            {isSuccessEdit && (
-              <Text color="green.500">
-                {toBeEdited.name} was successfully updated.
-              </Text>
-            )}
-            {isSuccessDelete && toDelete && (
-              <Text color="green.500">
-                {toBeDeleted.name} was successfully deleted.
-              </Text>
-            )}
-            {isErrorEdit && (
-              <Text color="red.500">
-                Something went wrong. {toBeEdited.name} could not be updated.
-              </Text>
-            )}
-            {isErrorDelete && (
-              <Text color="red.500">
-                Something went wrong. {toBeDeleted.name} could not be deleted.
-              </Text>
-            )}
-          </VStack>
+          <VStack my={5}></VStack>
 
           <Box w={'90%'} h={'90%'}>
-            {isSuccess && cabinetItems.length === 0 && (
+            {/*  {isSuccess && cabinetItems.length === 0 && (
               <Center>
                 <Text>Your cabinet is empty.</Text>
                 <Button
@@ -496,43 +478,40 @@ const Cabinet = ({ navigation }) => {
                   Add an item
                 </Button>
               </Center>
-            )}
-            {listData ? (
-              <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
-                <SwipeListView
-                  removeClippedSubviews
-                  disableRightSwipe
-                  data={listData}
-                  renderItem={renderItem}
-                  initialNumToRender={5}
-                  maxToRenderPerBatch={5}
-                  renderHiddenItem={renderHiddenItem}
-                  leftOpenValue={55}
-                  rightOpenValue={-100}
-                  previewRowKey={'0'}
-                  previewOpenValue={-40}
-                  previewOpenDelay={3000}
-                />
-              </Box>
-            ) : isLoading ? (
-              <Spinner text="Loading..." />
-            ) : null}
+            )} */}
+
+            <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
+              <SwipeListView
+                removeClippedSubviews
+                disableRightSwipe
+                data={listData}
+                renderItem={renderItem}
+                initialNumToRender={20}
+                maxToRenderPerBatch={20}
+                renderHiddenItem={renderHiddenItem}
+                leftOpenValue={55}
+                rightOpenValue={-100}
+                previewRowKey={'0'}
+                previewOpenValue={-40}
+                previewOpenDelay={3000}
+              />
+            </Box>
           </Box>
         </Box>
+      ) : isLoading ? (
+        <Spinner text="Loading..." />
       ) : (
-        <>
-          <Center>
-            <Text mt={5}>Your cabinet is empty.</Text>
+        <Center>
+          <Text mt={5}>Your cabinet is empty.</Text>
 
-            <Button
-              onPressIn={() => navigation.navigate('Add')}
-              w="50%"
-              bg="secondary.100"
-            >
-              Add an item
-            </Button>
-          </Center>
-        </>
+          <Button
+            onPressIn={() => navigation.navigate('Add')}
+            w="50%"
+            bg="secondary.100"
+          >
+            Add an item
+          </Button>
+        </Center>
       )}
     </View>
   );

@@ -8,6 +8,7 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import Feather from 'react-native-vector-icons/Feather';
 import { Box, useColorMode } from 'native-base';
 Feather.loadFont();
+const REACT_APP_BASE_URL = 'https://ill-pink-lobster-kit.cyclic.app/';
 
 export const CabinetSelectItemAutocomplete = ({
   setSelectedIngredient,

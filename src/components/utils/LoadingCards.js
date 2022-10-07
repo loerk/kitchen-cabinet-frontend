@@ -7,7 +7,7 @@ export default function LoadingCards() {
       <VStack
         w="90%"
         maxW="400"
-        maxH={400}
+        maxH="250"
         borderWidth="1"
         space={8}
         overflow="hidden"
@@ -19,9 +19,9 @@ export default function LoadingCards() {
           borderColor: 'secondary.100',
         }}
       >
-        <Skeleton w={300} />
+        <Skeleton w={350} />
         <Skeleton.Text px="4" />
-        <Skeleton px="4" my="4" rounded="md" startColor="secondary.100" />
+        <Skeleton px="4" my="4" rounded="md" startColor="gray" />
       </VStack>
     </Center>
   );

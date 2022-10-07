@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { uuidv4 } from '@firebase/util';
 import {
   Actionsheet,
@@ -14,55 +15,35 @@ import { Pressable } from 'react-native';
 import { RecipeDetails } from '../recipes/RecipeDetails';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
-export const RecipeCard = ({ item, ingredientIds }) => {
-  const missingIngredientsNames = item.missedIngredients?.map(
-    (ingredient) => ingredient.name
+export const RecipeCard = ({ recipe, ingredientIds }) => {
+  const missingIngredientsIds = recipe.missedIngredients?.map(
+    (ingredient) => ingredient.id
   );
-  const usedIngredientsNames = item.usedIngredients?.map(
-    (ingredient) => ingredient.name
+  const usedIngredientsIds = recipe.usedIngredients?.map(
+    (ingredient) => ingredient.id
   );
-  let ingredientsStatus = {};
-  if (ingredientIds?.length) {
-    ingredientsStatus = item?.extendedIngredients?.reduce(
-      (acc, curr) => {
-        if (ingredientIds.includes(curr.id)) {
-          return {
-            ...acc,
-            statusUsed: [
-              ...acc.statusUsed,
-              {
-                name: curr.name,
-                amount: Math.round(curr.measures.metric.amount),
-                id: curr.id,
-                metrics: curr.measures.metric.unitShort,
-              },
-            ],
-          };
-        }
-
-        if (!ingredientIds.includes(curr.id)) {
-          return {
-            ...acc,
-            statusMissed: [
-              ...acc.statusMissed,
-              {
-                name: curr.name,
-                amount: Math.round(curr.measures.metric.amount),
-                id: curr.id,
-                metrics: curr.measures.metric.unitShort,
-              },
-            ],
-          };
-        }
-
-        return acc;
-      },
-      {
-        statusUsed: [],
-        statusMissed: [],
-      }
-    );
+  function getFilteredItem(isUsed) {
+    return recipe.extendedIngredients
+      ?.filter((ingredient) => ingredientIds.includes(ingredient.id) === isUsed)
+      .map((item) => ({
+        name: item.name,
+        amount: Math.round(item.measures.metric.amount),
+        id: item.id,
+        metrics: item.measures.metric.unitShort,
+      }));
   }
+
+  const transformedItem = Object.prototype.hasOwnProperty.call(
+    recipe,
+    'missedIngredients'
+  )
+    ? recipe
+    : {
+        ...recipe,
+        usedIngredients: getFilteredItem(true),
+        missedIngredients: getFilteredItem(false),
+      };
+
   const { isOpen, onOpen, onClose } = useDisclose();
   return (
     <Box key={uuidv4()} alignItems="center" m={3} maxH={400} shadow="4">
@@ -71,7 +52,7 @@ export const RecipeCard = ({ item, ingredientIds }) => {
           <AspectRatio w="100%" ratio={4 / 3}>
             <Image
               source={{
-                uri: `${item.image}`,
+                uri: `${transformedItem.image}`,
               }}
               alt="recipe image"
             />
@@ -96,7 +77,7 @@ export const RecipeCard = ({ item, ingredientIds }) => {
           >
             <Entypo name="heart" size={24} color="white" />
             <Text pl={1} size={'md'} color={'white'}>
-              {item.likes || 'by you'}
+              {transformedItem.likes || 'by you'}
             </Text>
           </HStack>
           <Text
@@ -112,7 +93,7 @@ export const RecipeCard = ({ item, ingredientIds }) => {
             color={'black'}
             bold
           >
-            {item.title}
+            {transformedItem.title}
           </Text>
           <Stack
             bg="black"
@@ -142,15 +123,9 @@ export const RecipeCard = ({ item, ingredientIds }) => {
                   size={24}
                   color={'white'}
                 />
-                {item?.usedIngredients ? (
-                  <Text color={'white'} pl={2} pr={8}>
-                    {item.usedIngredients.length}
-                  </Text>
-                ) : (
-                  <Text color={'white'} pl={2} pr={8}>
-                    {ingredientsStatus?.statusUsed?.length}
-                  </Text>
-                )}
+                <Text color={'white'} pl={2} pr={8}>
+                  {transformedItem.usedIngredients.length}
+                </Text>
               </HStack>
               <HStack>
                 <MaterialCommunityIcons
@@ -158,15 +133,9 @@ export const RecipeCard = ({ item, ingredientIds }) => {
                   size={24}
                   color={'white'}
                 />
-                {item?.missedIngredients ? (
-                  <Text color={'white'} pl={2} pr={2}>
-                    {item.missedIngredientCount}
-                  </Text>
-                ) : (
-                  <Text color={'white'} pl={2} pr={2}>
-                    {ingredientsStatus?.statusMissed?.length}
-                  </Text>
-                )}
+                <Text color={'white'} pl={2} pr={2}>
+                  {transformedItem.missedIngredients.length}
+                </Text>
               </HStack>
             </HStack>
           </Stack>
@@ -175,15 +144,25 @@ export const RecipeCard = ({ item, ingredientIds }) => {
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
           <RecipeDetails
-            missingIngredientsNames={missingIngredientsNames}
-            missingIngredients={ingredientsStatus?.statusMissed}
-            usedIngredients={ingredientsStatus?.statusUsed}
-            usedIngredientsNames={usedIngredientsNames}
-            id={item.id}
+            missingIngredientsIds={missingIngredientsIds}
+            missingIngredients={transformedItem.missedIngredients}
+            usedIngredients={transformedItem.usedIngredients}
+            usedIngredientsIds={usedIngredientsIds}
+            id={transformedItem.id}
             isOpen={isOpen}
           />
         </Actionsheet.Content>
       </Actionsheet>
     </Box>
   );
+};
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.object.isRequired,
+  ingredientIds: PropTypes.array,
+};
+
+RecipeCard.defaultProps = {
+  item: PropTypes.object.isRequired,
+  ingredientIds: null,
 };

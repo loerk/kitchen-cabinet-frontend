@@ -49,6 +49,7 @@ const Favorites = () => {
         <SafeAreaView>
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
           />
 
           <Divider />
@@ -65,14 +66,14 @@ const Favorites = () => {
               ? searchedRecipes?.map((recipe) => (
                   <RecipeCard
                     key={uuidv4()}
-                    item={recipe}
+                    recipe={recipe}
                     ingredientIds={ids}
                   />
                 ))
               : favoriteRecipes?.map((recipe) => (
                   <RecipeCard
                     key={uuidv4()}
-                    item={recipe}
+                    recipe={recipe}
                     ingredientIds={ids}
                   />
                 ))}

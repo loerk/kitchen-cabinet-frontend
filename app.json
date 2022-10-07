@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FCF5EA"
-      }
+      },
+      "package": "com.yannwe.kitchencabinet"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a0ca7767-f857-49c7-b73a-d2dc0318bc2c"
+      }
     }
   }
 }

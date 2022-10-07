@@ -5,6 +5,7 @@ import {
   initializeAuth,
   getReactNativePersistence,
 } from 'firebase/auth/react-native';
+
 import {
   REACT_APP_FIREBASE_API_KEY,
   REACT_APP_FIREBASE_AUTH_DOMAIN,
