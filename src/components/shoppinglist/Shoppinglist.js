@@ -21,11 +21,7 @@ import {
   useGetShoppinglistQuery,
 } from '../../features/api/apiSlice';
 import { AuthContext } from '../../authNavigation/AuthProvider';
-
-function addWeeks(numOfWeeks, date = new Date()) {
-  date.setDate(date.getDate() + numOfWeeks * 7);
-  return date.toISOString().substring(0, 10);
-}
+import { addWeeks } from '../../helpers/getDefaultExpiryDate';
 
 const ShoppingList = () => {
   const { cabinetId } = useContext(AuthContext);

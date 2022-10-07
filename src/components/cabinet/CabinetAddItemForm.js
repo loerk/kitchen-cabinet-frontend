@@ -23,6 +23,7 @@ import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import { addWeeks } from '../../helpers/getDefaultExpiryDate';
 
 const date = new Date();
 const INITIAL_DATE = `${date.getFullYear()}-${String(
@@ -41,11 +42,9 @@ export const CabinetAddItemForm = () => {
     id: '',
     expiryDate: '',
   });
-  const [addItem, { isLoading, isSuccess, isError, error }] =
-    useAddItemMutation();
-
+  const [addItem, { isLoading, isError }] = useAddItemMutation();
   const [selected, setSelected] = useState(INITIAL_DATE);
-  if (isError) console.log(error);
+
   const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
   }, []);
@@ -55,24 +54,22 @@ export const CabinetAddItemForm = () => {
       addItem({
         cabinetId,
         id: selectedIngredient.id,
-        expiryDate: selectedIngredient.expiryDate,
+        expiryDate: selectedIngredient.expiryDate || addWeeks(2),
       }).unwrap();
     }
-    toast.show({
-      render: () => {
-        return (
-          <Box bg="transparent" px="2" py="1" shadow={3} rounded="sm" mb={8}>
-            {isLoading ? (
-              <Spinner />
-            ) : isSuccess && !isLoading ? (
-              'You successfully added this item'
-            ) : (
-              'Sorry, something went wrong'
-            )}
-          </Box>
-        );
-      },
-    });
+    setTimeout(() => {
+      toast.show({
+        render: () => {
+          return (
+            <Box bg="transparent" px="2" py="1" shadow={3} rounded="sm" mb={8}>
+              {!isError
+                ? 'You successfully added this item'
+                : 'Sorry, something went wrong'}
+            </Box>
+          );
+        },
+      });
+    }, 1000);
   };
 
   return (
