@@ -29,6 +29,7 @@ const DeleteItemDialog = ({
       onPressContinue={() => {
         setListData(listData.filter((item) => item !== toBeDeleted.deletedIem));
         setToDelete(true);
+        closeDeleteAlert();
         toast.show({
           render: () => {
             return (
