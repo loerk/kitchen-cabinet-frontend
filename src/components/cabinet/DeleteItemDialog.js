@@ -1,4 +1,4 @@
-import { Text } from 'native-base';
+import { Text, Box } from 'native-base';
 import React from 'react';
 
 import AlertDialogMsg from '../utils/AlertDialogMsg';
