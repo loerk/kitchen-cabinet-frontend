@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useRef,
   useContext,
+  memo,
 } from 'react';
 import {
   HStack,
@@ -12,31 +13,26 @@ import {
   Center,
   useToast,
   useColorMode,
-  ScrollView,
   Pressable,
   View,
   Text,
   Spinner,
-  AlertDialog,
   Button,
   Box,
   VStack,
   Heading,
 } from 'native-base';
 
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  AntDesign,
-} from '@expo/vector-icons';
-/* import { Keyboard } from 'react-native'; */
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { Keyboard } from 'react-native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 // custom components
 import SearchBar from '../utils/SearchBar';
-import DatePicker from '../utils/DatePicker';
+import EditItemDialog from './EditItemDialog';
+import DeleteItemDialog from './DeleteItemDialog';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
@@ -57,7 +53,6 @@ const Cabinet = ({ navigation }) => {
   const { cabinetId } = useContext(AuthContext);
   const { colorMode } = useColorMode();
   const [searchInput, setSearchInput] = useState('');
-  const [filteredItems, setFilteredItems] = useState(''); // based on search input
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
   const [isOpenEditForm, setIsOpenEditForm] = useState(false);
   const [toBeDeleted, setToBeDeleted] = useState({ id: '', name: '' });
@@ -110,7 +105,7 @@ const Cabinet = ({ navigation }) => {
 
   useEffect(() => {
     isSuccess &&
-      setFilteredItems(
+      setListData(
         cabinetItems.filter(({ name }) =>
           name.toLowerCase().startsWith(searchInput.toLowerCase())
         )
@@ -134,8 +129,8 @@ const Cabinet = ({ navigation }) => {
     }
   }, [cabinetItems]);
 
-  filteredItems &&
-    filteredItems
+  listData &&
+    listData
       .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
       .map(({ _id: id, name, image, expiryDate }) => {
         const isExpired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
@@ -248,149 +243,32 @@ const Cabinet = ({ navigation }) => {
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
 
-  /*   const deleteItem = () => {
-       deleteCabinetItem({ id: toBeDeleted.id }).unwrap();
-      closeDeleteAlert(); 
-    }; */
-
   const EditForm = () => (
-    <AlertDialog
-      leastDestructiveRef={cancelRefEdit}
-      isOpen={isOpenEditForm}
-      onClose={closeEditForm}
-    >
-      <AlertDialog.Content>
-        <AlertDialog.CloseButton />
-        <AlertDialog.Header>Edit</AlertDialog.Header>
-        <AlertDialog.Body>
-          <Text bold>Item Name:</Text>
-          <Text>{toBeEdited.name}</Text>
-          <Text bold mt={5}>
-            Expiry Date:
-          </Text>
-          <Pressable onPress={() => setShowCalendar(true)}>
-            <HStack>
-              <Text>
-                {toBeEdited.expiryDate.split('-').reverse().join('/')}{' '}
-              </Text>
-              <MaterialCommunityIcons
-                name="calendar-edit"
-                size={24}
-                color={colorMode === 'dark' ? 'white' : 'black'}
-              />
-            </HStack>
-          </Pressable>
-          {showCalendar && (
-            <DatePicker
-              INITIAL_DATE={CURRENT_DATE}
-              onDayPress={onDayPress}
-              selected={selected}
-              expiryDate={toBeEdited.expiryDate}
-            />
-          )}
-        </AlertDialog.Body>
-        <AlertDialog.Footer>
-          <Button.Group space={2}>
-            <Button
-              variant="ghost"
-              colorScheme="coolGray"
-              onPress={closeEditForm}
-            >
-              Cancel
-            </Button>
-            <Button
-              bg="secondary.100"
-              onPress={() => {
-                editCabinetItem(toBeEdited).unwrap();
-                closeEditForm();
-                toast.show({
-                  render: () => {
-                    return (
-                      <Box
-                        bg={
-                          isErrorDelete || isErrorEdit
-                            ? 'error.300'
-                            : 'success.300'
-                        }
-                        px="2"
-                        py="1"
-                        shadow={3}
-                        rounded="sm"
-                        mb={8}
-                      >
-                        {isErrorEdit
-                          ? 'We could not update this ingredient'
-                          : 'The ingredient was successfully updated'}
-                      </Box>
-                    );
-                  },
-                });
-              }}
-            >
-              Save
-            </Button>
-          </Button.Group>
-        </AlertDialog.Footer>
-      </AlertDialog.Content>
-    </AlertDialog>
+    <EditItemDialog
+      cancelRefEdit={cancelRefEdit}
+      isOpenEditForm={isOpenEditForm}
+      closeEditForm={closeEditForm}
+      toBeEdited={toBeEdited}
+      setShowCalendar={setShowCalendar}
+      colorMode={colorMode}
+      showCalendar={showCalendar}
+      CURRENT_DATE={CURRENT_DATE}
+      onDayPress={onDayPress}
+      selected={selected}
+      editCabinetItem={editCabinetItem}
+    />
   );
 
   const ConfirmDelete = () => (
-    <AlertDialog
-      leastDestructiveRef={cancelRefDelete}
-      isOpen={isOpenDeleteAlert}
-      onClose={closeDeleteAlert}
-    >
-      <AlertDialog.Content>
-        <AlertDialog.CloseButton />
-        <AlertDialog.Header>Confirm Delete</AlertDialog.Header>
-        <AlertDialog.Body>
-          <Text>{`Are you sure you want to delete ${toBeDeleted.name} ?`}</Text>
-        </AlertDialog.Body>
-        <AlertDialog.Footer>
-          <Button.Group space={2}>
-            <Button
-              variant="unstyled"
-              colorScheme="coolGray"
-              onPress={closeDeleteAlert}
-              ref={cancelRefDelete}
-            >
-              Cancel
-            </Button>
-            <Button
-              colorScheme="danger"
-              onPress={() => {
-                setToDelete(true);
-                toast.show({
-                  render: () => {
-                    return (
-                      <Box
-                        bg={
-                          isErrorDelete || isErrorEdit
-                            ? 'error.300'
-                            : 'success.300'
-                        }
-                        px="2"
-                        py="1"
-                        shadow={3}
-                        rounded="sm"
-                        mb={8}
-                      >
-                        {isErrorDelete
-                          ? 'We could not delete this ingredient.'
-                          : 'The ingredient was successfully deleted.'}
-                      </Box>
-                    );
-                  },
-                });
-              }}
-            >
-              Delete
-            </Button>
-          </Button.Group>
-        </AlertDialog.Footer>
-      </AlertDialog.Content>
-    </AlertDialog>
+    <DeleteItemDialog
+      cancelRefDelete={cancelRefDelete}
+      isOpenDeleteAlert={isOpenDeleteAlert}
+      closeDeleteAlert={closeDeleteAlert}
+      toBeDeleted={toBeDeleted}
+      setListData={setListData}
+      listData={listData}
+      setToDelete={setToDelete}
+    />
   );
 
   const renderItem = ({ item }) => {
@@ -524,10 +402,8 @@ const Cabinet = ({ navigation }) => {
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     const deletedItem = newData.splice(prevIndex, 1);
-    setListData(newData.filter((item) => item !== deletedItem));
-
+    setToBeDeleted(() => ({ ...toBeDeleted, deletedItem }));
     setIsOpenDeleteAlert(!isOpenDeleteAlert);
-    setListData(newData);
   };
 
   const renderHiddenItem = (data, rowMap) => (
@@ -537,7 +413,7 @@ const Cabinet = ({ navigation }) => {
         ml="auto"
         bg="green.400"
         justifyContent="center"
-        onPress={() => {
+        onPressIn={() => {
           setToBeEdited({
             id: data.item._id,
             name:
@@ -557,9 +433,9 @@ const Cabinet = ({ navigation }) => {
         cursor="pointer"
         bg="red.400"
         justifyContent="center"
-        onPress={() => {
-          setToBeDeleted({ id: data.item._id, name: data.item.name });
+        onPressIn={() => {
           deleteRow(rowMap, data.item.key);
+          setToBeDeleted({ id: data.item._id, name: data.item.name });
         }}
       >
         <Icon
@@ -572,86 +448,73 @@ const Cabinet = ({ navigation }) => {
   );
 
   return (
-    <View keyboardShouldPersistTaps="handled">
+    <View /* keyboardShouldPersistTaps="handled" */>
       <EditForm />
       <ConfirmDelete />
       <Heading mt={5}>Cabinet</Heading>
       <Text italic fontSize="sm" ml={5}>
         (swipe left to edit / delete)
       </Text>
-      {cabinetItems ? (
+      {listData ? (
         <Box ml={5} mt={4}>
           <SearchBar
             placeholder="Search an item"
             onChangeText={(newValue) => setSearchInput(newValue)}
             defaultValue={searchInput}
+            /* onSubmitEditing={Keyboard.dismiss} */
           />
 
-          <VStack my={5}>
-            {/* {isSuccessEdit && (
-              <Text color="green.500">
-                {toBeEdited.name} was successfully updated.
-              </Text>
-            )}
-            {isSuccessDelete && (
-              <Text color="green.500">
-                {toBeDeleted.name} was successfully deleted.
-              </Text>
-            )}
-            {isErrorEdit && (
-              <Text color="red.500">
-                Something went wrong. {toBeEdited.name} could not be updated.
-              </Text>
-            )}
-            {isErrorDelete && (
-              <Text color="red.500">
-                Something went wrong. {toBeDeleted.name} could not be deleted.
-              </Text>
-            )} */}
-          </VStack>
+          <VStack my={5}></VStack>
 
           <Box w={'90%'} h={'90%'}>
-            {isSuccess && cabinetItems.length === 0 && (
-              <Text>Your cabinet is empty. Add an item.</Text>
-            )}
-            {filteredItems ? (
-              <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
-                <SwipeListView
-                  disableRightSwipe
-                  data={filteredItems}
-                  renderItem={renderItem}
-                  initialNumToRender={20}
-                  maxToRenderPerBatch={20}
-                  renderHiddenItem={renderHiddenItem}
-                  leftOpenValue={55}
-                  rightOpenValue={-100}
-                  previewRowKey={'0'}
-                  previewOpenValue={-40}
-                  previewOpenDelay={3000}
-                />
-              </Box>
-            ) : isLoading ? (
-              <Spinner text="Loading..." />
-            ) : null}
+            {/*  {isSuccess && cabinetItems.length === 0 && (
+              <Center>
+                <Text>Your cabinet is empty.</Text>
+                <Button
+                  onPress={() => navigation.navigate('Add')}
+                  w="50%"
+                  bg="secondary.100"
+                >
+                  Add an item
+                </Button>
+              </Center>
+            )} */}
+
+            <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
+              <SwipeListView
+                removeClippedSubviews
+                disableRightSwipe
+                data={listData}
+                renderItem={renderItem}
+                initialNumToRender={20}
+                maxToRenderPerBatch={20}
+                renderHiddenItem={renderHiddenItem}
+                leftOpenValue={55}
+                rightOpenValue={-100}
+                previewRowKey={'0'}
+                previewOpenValue={-40}
+                previewOpenDelay={3000}
+              />
+            </Box>
           </Box>
         </Box>
+      ) : isLoading ? (
+        <Spinner text="Loading..." />
       ) : (
-        <>
-          <Center>
-            <Text mt={5}>Your cabinet is empty.</Text>
+        <Center>
+          <Text mt={5}>Your cabinet is empty.</Text>
 
-            <Button
-              onPress={() => navigation.navigate('Add')}
-              w="50%"
-              bg="secondary.100"
-            >
-              Add an item
-            </Button>
-          </Center>
-        </>
+          <Button
+            onPressIn={() => navigation.navigate('Add')}
+            w="50%"
+            bg="secondary.100"
+          >
+            Add an item
+          </Button>
+        </Center>
       )}
     </View>
   );
 };
 
-export default Cabinet;
+export default memo(Cabinet);

@@ -14,6 +14,7 @@ export const CabinetSelectItemAutocomplete = ({
   setSelectedIngredient,
   selectedIngredient,
 }) => {
+  const REACT_APP_BASE_URL = 'https://ill-pink-lobster-kit.cyclic.app/';
   const [loading, setLoading] = useState(false);
   const [suggestionsList, setSuggestionsList] = useState(null);
   const { colorMode } = useColorMode();
