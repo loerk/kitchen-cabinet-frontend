@@ -11,6 +11,8 @@ const DeleteItemDialog = ({
   setListData,
   listData,
   setToDelete,
+  toast,
+  isErrorDelete,
 }) => {
   return (
     <AlertDialogMsg
@@ -27,6 +29,24 @@ const DeleteItemDialog = ({
       onPressContinue={() => {
         setListData(listData.filter((item) => item !== toBeDeleted.deletedIem));
         setToDelete(true);
+        toast.show({
+          render: () => {
+            return (
+              <Box
+                bg={isErrorDelete ? 'error.300' : 'success.300'}
+                px="2"
+                py="1"
+                shadow={3}
+                rounded="sm"
+                mb={8}
+              >
+                {isErrorDelete
+                  ? 'We could not delete this ingredient'
+                  : 'The ingredient was successfully deleted'}
+              </Box>
+            );
+          },
+        });
       }}
       continueBtnText="Delete"
     />

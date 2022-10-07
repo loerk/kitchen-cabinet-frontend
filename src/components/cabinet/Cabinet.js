@@ -256,6 +256,8 @@ const Cabinet = ({ navigation }) => {
       onDayPress={onDayPress}
       selected={selected}
       editCabinetItem={editCabinetItem}
+      toast={toast}
+      isErrorEdit={isErrorEdit}
     />
   );
 
@@ -268,6 +270,8 @@ const Cabinet = ({ navigation }) => {
       setListData={setListData}
       listData={listData}
       setToDelete={setToDelete}
+      toast={toast}
+      isErrorDelete={isErrorDelete}
     />
   );
 
