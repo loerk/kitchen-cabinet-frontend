@@ -39,14 +39,16 @@ const DietPreferencesScreen = () => {
               </VStack>
               <VStack minW={100}>
                 <Text pl={4} textAlign={'left'}>
-                  {Object.entries(presetPreferences).length &&
+                  {presetPreferences &&
+                  Object.entries(presetPreferences).length &&
                   presetPreferences.diet
                     ? presetPreferences.diet.charAt(0).toUpperCase() +
                       presetPreferences.diet.slice(1)
                     : 'none'}
                 </Text>
                 <Text pl={4} textAlign={'left'}>
-                  {Object.entries(presetPreferences).length &&
+                  {presetPreferences &&
+                  Object.entries(presetPreferences).length &&
                   presetPreferences.intolerance
                     ? presetPreferences.intolerance.charAt(0).toUpperCase() +
                       presetPreferences.intolerance.slice(1)
