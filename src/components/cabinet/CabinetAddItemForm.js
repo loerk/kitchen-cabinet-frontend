@@ -41,10 +41,11 @@ export const CabinetAddItemForm = () => {
     id: '',
     expiryDate: '',
   });
-  const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
+  const [addItem, { isLoading, isSuccess, isError, error }] =
+    useAddItemMutation();
 
   const [selected, setSelected] = useState(INITIAL_DATE);
-
+  if (isError) console.log(error);
   const onDayPress = useCallback((day) => {
     setSelected(day.dateString);
   }, []);
@@ -60,20 +61,13 @@ export const CabinetAddItemForm = () => {
     toast.show({
       render: () => {
         return (
-          <Box
-            bg={isError ? 'error.300' : 'success.300'}
-            px="2"
-            py="1"
-            shadow={3}
-            rounded="sm"
-            mb={8}
-          >
+          <Box bg="transparent" px="2" py="1" shadow={3} rounded="sm" mb={8}>
             {isLoading ? (
               <Spinner />
-            ) : !isError ? (
+            ) : isSuccess && !isLoading ? (
               'You successfully added this item'
             ) : (
-              'You may already have this item'
+              'Sorry, something went wrong'
             )}
           </Box>
         );
@@ -167,24 +161,6 @@ export const CabinetAddItemForm = () => {
               </Button>
             )}
           </Box>
-          <Text>
-            {/* {
-              showErrorToast &&
-                toast.show({
-                  render: () => {
-                    return (
-                      <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
-                        Hello! Have a nice day
-                      </Box>
-                    );
-                  },
-                })
-              // ? `You successfully added ${selectedIngredient.name}`
-              // : isError
-              // ? 'Ops something went wrong, please try again'
-              // : null
-            } */}
-          </Text>
         </Center>
       </ScrollView>
     </View>

@@ -179,14 +179,14 @@ export const RecipeDetails = ({
                       Remove from Favorites
                     </Button>
                   )}
-                  {isSaving && <Spinner text="Loading..." />}
+                  {isSaving && <Spinner pt={3} />}
                   {isSuccessSaving && (
-                    <Text textAlign={'center'}>
+                    <Text pt={3} maxW={250} textAlign={'center'}>
                       This recipe is now one of your favourites
                     </Text>
                   )}
                   {isSuccessDeleting && (
-                    <Text textAlign={'center'}>
+                    <Text pt={3} maxW={250} textAlign={'center'}>
                       This recipe is now removed from your favourites
                     </Text>
                   )}
