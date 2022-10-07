@@ -1,4 +1,4 @@
-import { Text, Pressable, HStack } from 'native-base';
+import { Text, Pressable, HStack, Box } from 'native-base';
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -17,6 +17,8 @@ const EditItemDialog = ({
   onDayPress,
   selected,
   editCabinetItem,
+  toast,
+  isErrorEdit,
 }) => {
   return (
     <AlertDialogMsg
@@ -57,6 +59,24 @@ const EditItemDialog = ({
       onPressContinue={() => {
         editCabinetItem(toBeEdited).unwrap();
         closeEditForm();
+        toast.show({
+          render: () => {
+            return (
+              <Box
+                bg={isErrorEdit ? 'error.300' : 'success.300'}
+                px="2"
+                py="1"
+                shadow={3}
+                rounded="sm"
+                mb={8}
+              >
+                {isErrorEdit
+                  ? 'We could not update this ingredient'
+                  : 'The ingredient was successfully updated'}
+              </Box>
+            );
+          },
+        });
       }}
       continueBtnText="Save"
     />
