@@ -174,7 +174,6 @@ export default function ExpiryDateDiagram({ navigation }) {
                     style={{
                       flexDirection: 'row',
                       height: 40,
-                      width: 500,
                       paddingLeft: 80,
                       borderRadius: 10,
                       backgroundColor:
