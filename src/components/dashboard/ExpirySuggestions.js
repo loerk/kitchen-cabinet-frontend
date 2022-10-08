@@ -33,16 +33,15 @@ function ExpirySuggestions({ cabinetItems }) {
     );
     const twoWeeksLeft = Math.abs(remainingDaysLeft) <= 14;
     const fiveDaysLeft = Math.abs(remainingDaysLeft) <= 5;
-
     let key = '';
     if (expired) {
       key = 'expired';
       return { ...acc, [key]: [...(acc[key] ?? []), curr] };
-    } else if (twoWeeksLeft) {
-      key = 'twoWeeksLeft';
-      return { ...acc, [key]: [...(acc[key] ?? []), curr] };
     } else if (fiveDaysLeft) {
       key = 'fiveDaysLeft';
+      return { ...acc, [key]: [...(acc[key] ?? []), curr] };
+    } else if (twoWeeksLeft) {
+      key = 'twoWeeksLeft';
       return { ...acc, [key]: [...(acc[key] ?? []), curr] };
     }
 
@@ -64,13 +63,15 @@ function ExpirySuggestions({ cabinetItems }) {
   if (!cabinetItems) return;
   return (
     <Box>
-      <Heading
-        fontSize="2xl"
-        style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
-        textAlign={'center'}
-      >
-        Expiration Overview
-      </Heading>
+      {!!cabinetItems.length && (
+        <Heading
+          fontSize="2xl"
+          style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
+          textAlign={'center'}
+        >
+          Expiration Overview
+        </Heading>
+      )}
       <SafeAreaView>
         <ScrollView mx={3} horizontal={true} pb={5}>
           {sortedCabinetItems?.expired && (
