@@ -8,7 +8,6 @@ import { useColorMode } from 'native-base';
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
 import Cabinet from './src/components/cabinet/Cabinet';
-import Diagrams from './src/components/diagrams/Diagrams';
 import Loading from './src/components/Loading';
 import { CabinetAddItemForm } from './src/components/cabinet/CabinetAddItemForm';
 import ShoppingList from './src/components/shoppinglist/Shoppinglist';
@@ -21,6 +20,8 @@ import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import AuthStack from './src/authNavigation/AuthNavigator';
 import { AuthContext } from './src/authNavigation/AuthProvider';
+import ExpiryDateDiagram from './src/components/diagrams/ExpiryDateDiagram';
+import Diagrams from './src/components/diagrams/Diagrams';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -94,7 +95,7 @@ const AppNavigator = () => {
           <Tab.Screen name="Cabinet" component={Cabinet} />
           <Tab.Screen name="Add" component={CabinetAddItemForm} />
           <Tab.Screen name="Shopping List" component={ShoppingList} />
-          <Tab.Screen name="Diagrams" component={Diagrams} />
+          <Tab.Screen name="Diagrams" component={DiagramStack} />
         </Tab.Navigator>
       ) : (
         <AuthStack />
@@ -153,6 +154,29 @@ export const ProfileStack = () => {
         component={DietPreferencesScreen}
       />
       <TopTab.Screen name="Settings" component={SettingsScreen} />
+    </TopTab.Navigator>
+  );
+};
+
+export const DiagramStack = () => {
+  const { colorMode } = useColorMode();
+  return (
+    <TopTab.Navigator
+      initialRouteName="Type Diagram"
+      screenOptions={{
+        tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
+        tabBarStyle: {
+          height: '15%',
+          paddingTop: 40,
+          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
+        },
+      }}
+    >
+      <TopTab.Screen name="Types" component={Diagrams} />
+      <TopTab.Screen name="Expiry Date" component={ExpiryDateDiagram} />
     </TopTab.Navigator>
   );
 };
