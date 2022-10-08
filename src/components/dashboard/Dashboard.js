@@ -140,7 +140,7 @@ const Dashboard = () => {
               <LoadingCards />
             ) : !cabinetItemNames?.length ? (
               <Center>
-                <Text>Your cabinet is empty. {'\n'}</Text>
+                <Text>Your cabinet is empty.</Text>
                 <Button
                   onPress={() => navigation.navigate('Add')}
                   w="100%"
