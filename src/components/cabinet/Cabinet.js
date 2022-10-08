@@ -484,7 +484,7 @@ const Cabinet = ({ navigation }) => {
               </Center>
             )} */}
 
-            <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
+            <Box textAlign="center" flex={1} mb={250} safeAreaBottom>
               <SwipeListView
                 removeClippedSubviews
                 disableRightSwipe
