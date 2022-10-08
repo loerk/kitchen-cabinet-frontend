@@ -291,7 +291,7 @@ const Cabinet = ({ navigation }) => {
           borderBottomColor="trueGray.200"
           borderBottomWidth={1}
           justifyContent="center"
-          height={50}
+          height={91}
           underlayColor={'#AAA'}
           py={10}
         >
@@ -301,11 +301,11 @@ const Cabinet = ({ navigation }) => {
                 isExpired && colorMode === 'light'
                   ? 'red.100'
                   : isExpired && colorMode === 'dark'
-                  ? 'red.200'
+                  ? '#F7D9D3'
                   : aboutToExpire && colorMode === 'light'
                   ? 'orange.100'
                   : aboutToExpire && colorMode === 'dark'
-                  ? 'orange.200'
+                  ? '#FBF3D8'
                   : null
               }
               flex={1}
@@ -449,7 +449,6 @@ const Cabinet = ({ navigation }) => {
       ></Pressable>
       <Pressable
         px={4}
-        mr="auto"
         cursor="pointer"
         bg="black"
         justifyContent="center"
@@ -461,7 +460,7 @@ const Cabinet = ({ navigation }) => {
         <Icon
           as={<AntDesign name="delete" size={'lg'} />}
           color="white"
-          mr={6}
+          mr={7}
         />
       </Pressable>
     </HStack>
@@ -492,15 +491,16 @@ const Cabinet = ({ navigation }) => {
         </Text>
       </HStack>
       {listData.length ? (
-        <Box ml={5} mt={4}>
-          <SearchBar
-            placeholder="Search an item"
-            onChangeText={(newValue) => setSearchInput(newValue)}
-            defaultValue={searchInput}
-            /* onSubmitEditing={Keyboard.dismiss} */
-          />
-
-          <Box w={'95%'} h={'90%'} my={5}>
+        <Box mt={4}>
+          <Center>
+            <SearchBar
+              placeholder="Search an item"
+              onChangeText={(newValue) => setSearchInput(newValue)}
+              defaultValue={searchInput}
+              /* onSubmitEditing={Keyboard.dismiss} */
+            />
+          </Center>
+          <Box w={'90%'} h={'90%'} m={5}>
             <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
               <SwipeListView
                 removeClippedSubviews
