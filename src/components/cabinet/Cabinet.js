@@ -132,7 +132,7 @@ const Cabinet = ({ navigation }) => {
   listData &&
     listData
       .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
-      .map(({ _id: id, name, image, expiryDate }) => {
+      .map(({ name, image, expiryDate }) => {
         const isExpired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
         const remainingDaysLeft = Math.round(
           (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
@@ -288,7 +288,7 @@ const Cabinet = ({ navigation }) => {
         <Pressable
           bg={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
           alignItems="center"
-          borderBottomColor={colorMode === 'dark' ? 'muted.50' : 'muted.800'}
+          borderBottomColor="trueGray.200"
           borderBottomWidth={1}
           justifyContent="center"
           height={91}
@@ -301,11 +301,11 @@ const Cabinet = ({ navigation }) => {
                 isExpired && colorMode === 'light'
                   ? 'red.100'
                   : isExpired && colorMode === 'dark'
-                  ? 'red.200'
+                  ? '#F7D9D3'
                   : aboutToExpire && colorMode === 'light'
                   ? 'orange.100'
                   : aboutToExpire && colorMode === 'dark'
-                  ? 'orange.200'
+                  ? '#FBF3D8'
                   : null
               }
               flex={1}
@@ -411,11 +411,11 @@ const Cabinet = ({ navigation }) => {
   };
 
   const renderHiddenItem = (data, rowMap) => (
-    <HStack flex={1} pl={2}>
+    <HStack flex={1}>
       <Pressable
         px={5}
-        ml="auto"
-        bg="green.400"
+        cursor="pointer"
+        bg="#891D47"
         justifyContent="center"
         onPressIn={() => {
           setToBeEdited({
@@ -427,15 +427,30 @@ const Cabinet = ({ navigation }) => {
           setIsOpenEditForm(!isOpenEditForm);
         }}
       >
-        <Icon
-          as={<AntDesign name="edit" size={'lg'} />}
-          color={colorMode === 'dark' ? 'white' : 'black'}
-        />
+        <Icon as={<AntDesign name="edit" size={'lg'} />} color="white" ml={5} />
       </Pressable>
       <Pressable
         px={4}
+        mr="auto"
+        bg="#891D47"
+        justifyContent="center"
+        onPress={() => {
+          deleteRow(rowMap, data.item.key);
+        }}
+      ></Pressable>
+      <Pressable
+        px={4}
+        ml="auto"
+        bg="black"
+        justifyContent="center"
+        onPress={() => {
+          deleteRow(rowMap, data.item.key);
+        }}
+      ></Pressable>
+      <Pressable
+        px={4}
         cursor="pointer"
-        bg="red.400"
+        bg="black"
         justifyContent="center"
         onPressIn={() => {
           deleteRow(rowMap, data.item.key);
@@ -444,8 +459,8 @@ const Cabinet = ({ navigation }) => {
       >
         <Icon
           as={<AntDesign name="delete" size={'lg'} />}
-          color={colorMode === 'dark' ? 'white' : 'black'}
-          mr="auto"
+          color="white"
+          mr={7}
         />
       </Pressable>
     </HStack>
@@ -456,45 +471,46 @@ const Cabinet = ({ navigation }) => {
       <EditForm />
       <ConfirmDelete />
       <Heading mt={5}>Cabinet</Heading>
-      <Text italic fontSize="sm" ml={5}>
-        (swipe left to edit / delete)
-      </Text>
-      {listData ? (
-        <Box ml={5} mt={4}>
-          <SearchBar
-            placeholder="Search an item"
-            onChangeText={(newValue) => setSearchInput(newValue)}
-            defaultValue={searchInput}
-            /* onSubmitEditing={Keyboard.dismiss} */
+      <HStack ml={5} mt={2}>
+        <Text italic fontSize="sm">
+          <AntDesign
+            name="arrowleft"
+            size={24}
+            color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
           />
-
-          <VStack my={5}></VStack>
-
-          <Box w={'90%'} h={'90%'}>
-            {/*  {isSuccess && cabinetItems.length === 0 && (
-              <Center>
-                <Text>Your cabinet is empty.</Text>
-                <Button
-                  onPress={() => navigation.navigate('Add')}
-                  w="50%"
-                  bg="secondary.100"
-                >
-                  Add an item
-                </Button>
-              </Center>
-            )} */}
-
+        </Text>
+        <Text px={4} italic fontSize="sm">
+          swipe
+        </Text>
+        <Text italic fontSize="sm">
+          <AntDesign
+            name="arrowright"
+            size={24}
+            color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+          />
+        </Text>
+      </HStack>
+      {listData.length ? (
+        <Box mt={4}>
+          <Center>
+            <SearchBar
+              placeholder="Search an item"
+              onChangeText={(newValue) => setSearchInput(newValue)}
+              defaultValue={searchInput}
+              /* onSubmitEditing={Keyboard.dismiss} */
+            />
+          </Center>
+          <Box w={'90%'} h={'90%'} m={5}>
             <Box textAlign="center" flex={1} mb={128} safeAreaBottom>
               <SwipeListView
                 removeClippedSubviews
-                disableRightSwipe
                 data={listData}
                 renderItem={renderItem}
                 initialNumToRender={20}
                 maxToRenderPerBatch={20}
                 renderHiddenItem={renderHiddenItem}
-                leftOpenValue={55}
-                rightOpenValue={-100}
+                leftOpenValue={98}
+                rightOpenValue={-98}
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
