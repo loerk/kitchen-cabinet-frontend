@@ -53,14 +53,14 @@ const Dashboard = () => {
     useGetRecipeByIngredientsQuery(cabinetItemNames ? payload : skipToken);
 
   useEffect(() => {
+    console.log(suggestedRecipes);
     if (suggestedRecipes && !displayedRecipes?.length)
       setDisplayedRecipes(suggestedRecipes);
   }, [suggestedRecipes]);
 
   useEffect(() => {
     const filteredSuggestions = displayedRecipes?.filter((recipe) => {
-      if (recipe.title.toLowerCase().includes(searchInput)) return true;
-      return false;
+      return recipe.title.toLowerCase().includes(searchInput);
     });
     if (searchInput) setDisplayedRecipes(filteredSuggestions);
     if (!searchInput) setDisplayedRecipes(suggestedRecipes);
@@ -124,13 +124,15 @@ const Dashboard = () => {
               setIsOpen={setIsOpen}
             />
           </Slide>
-          <Text
-            fontSize="2xl"
-            style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
-            textAlign={'center'}
-          >
-            Suggested Recipes: {displayedRecipes?.length || 0}
-          </Text>
+          {displayedRecipes?.length && (
+            <Text
+              fontSize="2xl"
+              style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
+              textAlign={'center'}
+            >
+              Suggested Recipes: {displayedRecipes?.length || 0}
+            </Text>
+          )}
           <ScrollView horizontal={true}>
             {displayedRecipes?.length ? (
               displayedRecipes?.map((recipe) => {
@@ -138,15 +140,15 @@ const Dashboard = () => {
               })
             ) : isLoadingRecipes ? (
               <LoadingCards />
-            ) : !cabinetItemNames?.length ? (
+            ) : !cabinetItems?.length ? (
               <Center>
-                <Text>Your cabinet is empty.</Text>
+                <Text py={4}>Your cabinet is empty.</Text>
                 <Button
                   onPress={() => navigation.navigate('Add')}
                   w="100%"
                   bg="secondary.100"
                 >
-                  Add an item
+                  Add an Ingredient
                 </Button>
               </Center>
             ) : null}
