@@ -152,7 +152,7 @@ const Dashboard = () => {
             ) : null}
           </ScrollView>
         </Center>
-        <ExpirySuggestions items={cabinetItems} />
+        <ExpirySuggestions cabinetItems={cabinetItems} />
       </ScrollView>
     </View>
   );
