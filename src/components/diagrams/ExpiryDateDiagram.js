@@ -51,12 +51,13 @@ export default function ExpiryDateDiagram({ navigation }) {
     );
     const twoWeeksLeft = Math.abs(remainingDaysLeft) <= 14;
     const fiveDaysLeft = Math.abs(remainingDaysLeft) <= 5;
+
     if (expired) {
-      return { ...item, expiresIn: 'Within two weeks' };
+      return { ...item, expiresIn: 'Already expired' };
     } else if (fiveDaysLeft) {
       return { ...item, expiresIn: 'Within five days' };
     } else if (twoWeeksLeft) {
-      return { ...item, expiresIn: 'Already expired' };
+      return { ...item, expiresIn: 'Within two weeks' };
     } else {
       return { ...item, expiresIn: 'More than two weeks' };
     }
@@ -68,6 +69,7 @@ export default function ExpiryDateDiagram({ navigation }) {
       chartData[element.expiresIn] = 1;
     }
   }
+
   const titles = Object.keys(chartData);
   const values = Object.values(chartData);
   toDisplay = modifiedCabinetItems.map((item, index) => {
@@ -171,7 +173,7 @@ export default function ExpiryDateDiagram({ navigation }) {
                   style={{
                     flexDirection: 'row',
                     height: 40,
-                    width: 500,
+                    /* width: 500, */
                     paddingLeft: 80,
                     borderRadius: 10,
                     backgroundColor:
