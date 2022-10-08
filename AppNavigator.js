@@ -167,7 +167,7 @@ export const DiagramStack = () => {
         tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
         tabBarStyle: {
           height: '15%',
-          paddingTop: 30,
+          paddingTop: 40,
           backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
         },
         tabBarIndicatorStyle: {
