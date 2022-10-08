@@ -104,6 +104,8 @@ export default function Diagrams({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
+      <Heading>Diagrams</Heading>
+
       <Box flex={1} mb={20}>
         {modifiedCabinetItems.length > 0 ? (
           <Center>

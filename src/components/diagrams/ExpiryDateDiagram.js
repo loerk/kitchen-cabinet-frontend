@@ -1,6 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions } from 'react-native';
-import { Box, FlatList, Text, Center, View, Button } from 'native-base';
+import {
+  Box,
+  FlatList,
+  Text,
+  Center,
+  View,
+  Button,
+  Heading,
+} from 'native-base';
 import { VictoryPie } from 'victory-native';
 
 // Authentication
@@ -90,6 +98,7 @@ export default function ExpiryDateDiagram({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
+      <Heading>Diagrams</Heading>
       <Box mb={20}>
         {modifiedCabinetItems.length > 0 ? (
           <Center>
