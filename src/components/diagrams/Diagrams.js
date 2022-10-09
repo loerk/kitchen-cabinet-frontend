@@ -105,126 +105,123 @@ export default function Diagrams({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
-      <Heading>Diagrams</Heading>
-      <Text ml={5} italic size={'sm'} mb={3}>
-        shows the type of the ingredients in your Cabinet
-      </Text>
-      <ScrollView>
-        <Box flex={1} mb={20}>
-          {modifiedCabinetItems.length > 0 ? null : (
-            <>
-              <Center>
-                <Text mt={5}>Your cabinet is empty.</Text>
+      <Heading size="sm" mb={1} mt={1}>
+        Types of ingredients in your Cabinet
+      </Heading>
+      <Box flex={1} mb={324}>
+        {modifiedCabinetItems.length > 0 ? null : (
+          <>
+            <Center>
+              <Text mt={5}>Your cabinet is empty.</Text>
 
-                <Button
-                  onPress={() => navigation.navigate('Add')}
-                  w="50%"
-                  bg="secondary.100"
-                >
-                  Add an item
-                </Button>
-              </Center>
-            </>
-          )}
-          <VictoryPie
-            data={finalChartData}
-            radius={({ datum }) =>
-              selectedCategory && selectedCategory == datum.x
-                ? width * 0.4
-                : width * 0.4 - 10
-            }
-            innerRadius={60}
-            labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
-            colorScale={colorScale}
-            width={width * 0.8}
-            height={width * 0.8}
-            events={[
-              {
-                target: 'data',
-                eventHandlers: {
-                  onPressIn: () => {
-                    return [
-                      {
-                        target: 'labels',
-                        mutation: (props) => {
-                          let categoryType = finalChartData[props.index].x;
-                          setSelectCategoryByType(categoryType);
-                        },
+              <Button
+                onPress={() => navigation.navigate('Add')}
+                w="50%"
+                bg="secondary.100"
+              >
+                Add an item
+              </Button>
+            </Center>
+          </>
+        )}
+        <VictoryPie
+          data={finalChartData}
+          radius={({ datum }) =>
+            selectedCategory && selectedCategory == datum.x
+              ? width * 0.4
+              : width * 0.4 - 10
+          }
+          innerRadius={60}
+          labelRadius={({ innerRadius }) => (width * 0.4 + innerRadius) / 2.5}
+          colorScale={colorScale}
+          width={width * 0.8}
+          height={width * 0.8}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: 'labels',
+                      mutation: (props) => {
+                        let categoryType = finalChartData[props.index].x;
+                        setSelectCategoryByType(categoryType);
                       },
-                    ];
-                  },
+                    },
+                  ];
                 },
               },
-            ]}
-            style={{
-              labels: { fill: 'transparent', fontSize: 18 },
-              parent: {
-                shadowColor: '#000',
-                shadowOffset: { width: 5, height: 5 },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 3,
-                alignItems: 'center',
-              },
-            }}
-          />
+            },
+          ]}
+          style={{
+            labels: { fill: 'transparent', fontSize: 18 },
+            parent: {
+              shadowColor: '#000',
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 3,
+              alignItems: 'center',
+            },
+          }}
+        />
 
-          <Box w={'100%'} h={'90%'} mt={5}>
-            <FlatList
-              data={finalChartData}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
+        <Box w={'100%'} h={'90%'} mt={5}>
+          <FlatList
+            data={finalChartData}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    height: 40,
+                    paddingLeft: 80,
+                    borderRadius: 10,
+                    backgroundColor:
+                      selectedCategory && selectedCategory == item.x
+                        ? item.color
+                        : null,
+                  }}
+                >
+                  <Box
                     style={{
+                      flex: 1,
                       flexDirection: 'row',
-                      height: 40,
-                      paddingLeft: 80,
-                      borderRadius: 10,
-                      backgroundColor:
-                        selectedCategory && selectedCategory == item.x
-                          ? item.color
-                          : null,
+                      alignItems: 'center',
                     }}
                   >
                     <Box
                       style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Box
-                        style={{
-                          width: 20,
-                          height: 20,
-                          backgroundColor:
-                            selectedCategory && selectedCategory == item.x
-                              ? null
-                              : item.color,
-                          borderRadius: 5,
-                        }}
-                      ></Box>
-                      <Text
-                        bold
-                        ml={1}
-                        color={
+                        width: 20,
+                        height: 20,
+                        backgroundColor:
                           selectedCategory && selectedCategory == item.x
-                            ? 'white'
-                            : null
-                        }
-                      >
-                        {' '}
-                        {item.x.charAt(0).toUpperCase() +
-                          item.x.slice(1)} - {item.label}
-                      </Text>
-                    </Box>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </Box>
+                            ? null
+                            : item.color,
+                        borderRadius: 5,
+                      }}
+                    ></Box>
+                    <Text
+                      bold
+                      ml={1}
+                      color={
+                        selectedCategory && selectedCategory == item.x
+                          ? 'white'
+                          : null
+                      }
+                    >
+                      {' '}
+                      {item.x.charAt(0).toUpperCase() + item.x.slice(1)} -{' '}
+                      {item.label}
+                    </Text>
+                  </Box>
+                </TouchableOpacity>
+              );
+            }}
+          />
         </Box>
-      </ScrollView>
+      </Box>
     </View>
   );
 }
