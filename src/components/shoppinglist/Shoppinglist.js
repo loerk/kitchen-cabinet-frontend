@@ -287,7 +287,7 @@ const ShoppingList = () => {
         </Box>
       ) : (
         <Text mt={10} textAlign={'center'}>
-          Your Shopping List is empty
+          Your Shopping List is empty.
         </Text>
       )}
     </View>

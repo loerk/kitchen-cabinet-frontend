@@ -74,11 +74,11 @@ export const CabinetAddItemForm = () => {
 
   return (
     <View>
-      <Heading mt={5}>Add Item</Heading>
+      <Heading mt={5}>Add Ingredient</Heading>
       <ScrollView>
         <Center mt={'20%'}>
           <Text size="md" pt={4} bold>
-            Please select an Item
+            Please select an Ingredient
           </Text>
           <Text pb={4} fontSize="sm" italic>
             (Type 3+ letters)
@@ -100,7 +100,9 @@ export const CabinetAddItemForm = () => {
 
             {selectedIngredient.expiryDate ? (
               <Center>
-                <Text>{selectedIngredient.expiryDate}</Text>
+                <Text>
+                  {selectedIngredient.expiryDate.split('-').reverse().join('/')}
+                </Text>
               </Center>
             ) : null}
             <AlertDialog
@@ -143,7 +145,7 @@ export const CabinetAddItemForm = () => {
                 disabled={!selectedIngredient.name}
                 bg="secondary.100"
               >
-                Add Item
+                Add Ingredient
               </Button>
             ) : (
               <Button
@@ -154,7 +156,7 @@ export const CabinetAddItemForm = () => {
                 disabled={!selectedIngredient.name}
                 bg="secondary.100"
               >
-                Add Item
+                Add Ingredient
               </Button>
             )}
           </Box>

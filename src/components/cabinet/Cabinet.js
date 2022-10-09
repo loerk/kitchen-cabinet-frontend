@@ -478,7 +478,6 @@ const Cabinet = ({ navigation }) => {
             size={24}
             color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
           />
-
         </Text>
         <Text px={4} italic fontSize="sm">
           swipe
@@ -530,7 +529,7 @@ const Cabinet = ({ navigation }) => {
             w="50%"
             bg="secondary.100"
           >
-            Add an item
+            Add an Ingredient
           </Button>
         </Center>
       )}

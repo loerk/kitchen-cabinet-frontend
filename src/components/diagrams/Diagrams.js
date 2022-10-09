@@ -121,7 +121,7 @@ export default function Diagrams({ navigation }) {
                   w="50%"
                   bg="secondary.100"
                 >
-                  Add an item
+                  Add an Ingredient
                 </Button>
               </Center>
             </>
