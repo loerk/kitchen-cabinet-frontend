@@ -59,30 +59,30 @@ const EditItemDialog = ({
       onPressContinue={() => {
         editCabinetItem(toBeEdited).unwrap();
         closeEditForm();
-        setTimeout(() => {
-          toast.show({
-            duration: 1500,
-            render: () => {
-              return (
-                <Box
-                  bg={isErrorEdit ? 'error.300' : 'success.300'}
-                  px="2"
-                  py="1"
-                  shadow={3}
-                  rounded="sm"
-                  mb={12}
-                >
-                  {isErrorEdit
-                    ? `We could not update ${toBeEdited.name}`
-                    : `${
-                        toBeEdited.name.charAt(0).toUpperCase() +
-                        toBeEdited.name.slice(1)
-                      } was successfully updated`}
-                </Box>
-              );
-            },
-          });
-        }, 600);
+        toast.show({
+          duration: 1500,
+          render: () => {
+            return (
+              <Box
+                bg={isErrorEdit ? 'error.300' : 'success.300'}
+                px="2"
+                py="1"
+                shadow={3}
+                rounded="sm"
+                mb={12}
+              >
+                {isErrorEdit
+                  ? `We could not update ${toBeEdited.name}`
+                  : `${toBeEdited.name
+                      .split(' ')
+                      .map(
+                        (name) => name.charAt(0).toUpperCase() + name.slice(1)
+                      )
+                      .join(' ')} was successfully updated`}
+              </Box>
+            );
+          },
+        });
       }}
       continueBtnText="Save"
     />

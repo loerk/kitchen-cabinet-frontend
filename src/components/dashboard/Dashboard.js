@@ -46,7 +46,13 @@ const Dashboard = () => {
   const [displayedRecipes, setDisplayedRecipes] = useState([]);
 
   const { data: cabinetItems } = useGetCabinetItemsQuery(cabinetId);
-  const cabinetItemNames = cabinetItems?.map((item) => item.name).join(',');
+  const cabinetItemNames = cabinetItems
+    ?.map((item) => item.name)
+    .reduce((acc, curr) => {
+      if (!acc.includes(curr)) return [...acc, curr];
+      return [...acc];
+    }, [])
+    .join(',');
   const payload = { cabinetId, ingredients: cabinetItemNames };
 
   const { data: suggestedRecipes, isLoading: isLoadingRecipes } =
@@ -141,6 +147,17 @@ const Dashboard = () => {
               })
             ) : isLoadingRecipes ? (
               (<LoadingCards /> /* : !cabinetItems?.length ? (
+              <Center>
+                <Text py={4}>Your cabinet is empty.</Text>
+                <Button
+                  onPress={() => navigation.navigate('Add')}
+                  w="100%"
+                  bg="secondary.100"
+                >
+                  Add an Ingredient
+                </Button>
+              </Center>
+            ) */ /*: !cabinetItems?.length ? (
               <Center>
                 <Text py={4}>Your cabinet is empty.</Text>
                 <Button

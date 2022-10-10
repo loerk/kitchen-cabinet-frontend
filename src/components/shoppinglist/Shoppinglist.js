@@ -157,31 +157,29 @@ const ShoppingList = () => {
         onPress={() => {
           deleteRow(rowMap, data.item.key);
           addSetting(data.item.id);
-          setTimeout(() => {
-            toast.show({
-              duration: 1500,
-              render: () => {
-                return (
-                  <Box
-                    bg={isErrorAdd ? 'error.300' : 'success.300'}
-                    px="2"
-                    py="1"
-                    shadow={3}
-                    rounded="sm"
-                    mb={12}
-                  >
-                    {isLoading ? (
-                      <Spinner />
-                    ) : !isErrorAdd ? (
-                      'You successfully added this ingredient.'
-                    ) : (
-                      'Sorry, something went wrong'
-                    )}
-                  </Box>
-                );
-              },
-            });
-          }, 600);
+          toast.show({
+            duration: 1500,
+            render: () => {
+              return (
+                <Box
+                  bg={isErrorAdd ? 'error.300' : 'success.300'}
+                  px="2"
+                  py="1"
+                  shadow={3}
+                  rounded="sm"
+                  mb={12}
+                >
+                  {isLoading ? (
+                    <Spinner />
+                  ) : !isErrorAdd ? (
+                    'You successfully added this ingredient.'
+                  ) : (
+                    'Sorry, something went wrong'
+                  )}
+                </Box>
+              );
+            },
+          });
         }}
       >
         <Icon
@@ -218,31 +216,29 @@ const ShoppingList = () => {
         onPress={() => {
           deleteRow(rowMap, data.item.key);
           deleteSetting(data.item.id);
-          setTimeout(() => {
-            toast.show({
-              duration: 1500,
-              render: () => {
-                return (
-                  <Box
-                    bg={isErrorDelete ? 'error.300' : 'success.300'}
-                    px="2"
-                    py="1"
-                    shadow={3}
-                    rounded="sm"
-                    mb={12}
-                  >
-                    {isLoading ? (
-                      <Spinner />
-                    ) : !isErrorDelete ? (
-                      'You successfully deleted this ingredient'
-                    ) : (
-                      'Sorry, something went wrong'
-                    )}
-                  </Box>
-                );
-              },
-            });
-          }, 600);
+          toast.show({
+            duration: 1500,
+            render: () => {
+              return (
+                <Box
+                  bg={isErrorDelete ? 'error.300' : 'success.300'}
+                  px="2"
+                  py="1"
+                  shadow={3}
+                  rounded="sm"
+                  mb={12}
+                >
+                  {isLoading ? (
+                    <Spinner />
+                  ) : !isErrorDelete ? (
+                    'You successfully deleted this ingredient'
+                  ) : (
+                    'Sorry, something went wrong'
+                  )}
+                </Box>
+              );
+            },
+          });
         }}
       >
         <Icon

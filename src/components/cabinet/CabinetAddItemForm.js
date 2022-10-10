@@ -55,33 +55,31 @@ export const CabinetAddItemForm = () => {
         expiryDate: selectedIngredient.expiryDate || addWeeks(2),
       }).unwrap();
     }
-    setTimeout(() => {
-      toast.show({
-        duration: 1500,
-        render: () => {
-          return (
-            <Box
-              bg={isError ? 'error.300' : 'success.300'}
-              px="2"
-              py="1"
-              shadow={3}
-              rounded="sm"
-              mb={12}
-            >
-              {!isError
-                ? `You successfully added ${
-                    selectedIngredient.name.charAt(0).toUpperCase() +
-                    selectedIngredient.name.slice(1)
-                  } `
-                : `We could not add ${
-                    selectedIngredient.name.charAt(0).toUpperCase() +
-                    selectedIngredient.name.slice(1)
-                  }`}
-            </Box>
-          );
-        },
-      });
-    }, 600);
+    toast.show({
+      duration: 1500,
+      render: () => {
+        return (
+          <Box
+            bg={isError ? 'error.300' : 'success.300'}
+            px="2"
+            py="1"
+            shadow={3}
+            rounded="sm"
+            mb={12}
+          >
+            {!isError
+              ? `You successfully added ${selectedIngredient.name
+                  .split(' ')
+                  .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                  .join(' ')} `
+              : `We could not add ${selectedIngredient.name
+                  .split(' ')
+                  .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                  .join(' ')}`}
+          </Box>
+        );
+      },
+    });
   };
 
   return (
