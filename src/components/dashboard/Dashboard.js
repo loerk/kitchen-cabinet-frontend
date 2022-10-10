@@ -140,8 +140,8 @@ const Dashboard = () => {
               })
             ) : isLoadingRecipes ? (
               <LoadingCards />
-            ) : (
-              /* !cabinetItems?.length ? */ <Center>
+            ) : !cabinetItems?.length ? (
+              <Center>
                 <Text py={4}>Your cabinet is empty.</Text>
                 <Button
                   onPress={() => navigation.navigate('Add')}
@@ -151,7 +151,7 @@ const Dashboard = () => {
                   Add an Ingredient
                 </Button>
               </Center>
-            )}
+            ) : null}
           </ScrollView>
         </Center>
         <ExpirySuggestions cabinetItems={cabinetItems} />

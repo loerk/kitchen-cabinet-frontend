@@ -130,115 +130,7 @@ const Cabinet = ({ navigation }) => {
   }, [cabinetItems]);
 
   listData &&
-    listData
-      .sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate))
-      .map(({ name, image, expiryDate }) => {
-        const isExpired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
-        const remainingDaysLeft = Math.round(
-          (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
-            (1000 * 60 * 60 * 24)
-        );
-        const isTwoWeeksLeft = remainingDaysLeft <= 14;
-        const aboutToExpire = remainingDaysLeft < 5;
-        return (
-          <>
-            <HStack
-              bg={
-                isExpired && colorMode === 'light'
-                  ? 'red.100'
-                  : isExpired && colorMode === 'dark'
-                  ? 'red.200'
-                  : aboutToExpire && colorMode === 'light'
-                  ? 'orange.100'
-                  : aboutToExpire && colorMode === 'dark'
-                  ? 'orange.200'
-                  : null
-              }
-              flex={1}
-              justifyContent={'space-between'}
-              space={3}
-              p={2}
-              alignItems="center"
-              key={uuidv4()}
-            >
-              <Box flex={1} flexDir={'row'} alignItems={'center'}>
-                <Avatar
-                  source={{
-                    uri: `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
-                  }}
-                  alt={name}
-                  size="lg"
-                  ml={2}
-                />
-                <VStack>
-                  <Text
-                    bold
-                    ml={6}
-                    color={
-                      isExpired
-                        ? 'red.500'
-                        : aboutToExpire
-                        ? 'orange.400'
-                        : null
-                    }
-                  >
-                    {name
-                      .split(' ')
-                      .map(
-                        (name) => name.charAt(0).toUpperCase() + name.slice(1)
-                      )
-                      .join(' ')}
-                  </Text>
-                  <Text
-                    fontSize="sm"
-                    pl={6}
-                    color={
-                      isExpired
-                        ? 'red.500'
-                        : aboutToExpire
-                        ? 'orange.400'
-                        : null
-                    }
-                  >
-                    {'Expiry Date: \n'}
-                    {isTwoWeeksLeft ? (
-                      remainingDaysLeft >= 0 ? (
-                        `${remainingDaysLeft} day${
-                          remainingDaysLeft !== 1 ? 's' : ''
-                        } left`
-                      ) : (
-                        <Text style={{ color: 'red' }}>
-                          {Math.abs(remainingDaysLeft)} day
-                          {remainingDaysLeft !== -1 ? 's' : ''} ago
-                        </Text>
-                      )
-                    ) : (
-                      expiryDate.split('-').reverse().join('/')
-                    )}
-                  </Text>
-                </VStack>
-              </Box>
-              <Box alignItems="center">
-                {isExpired ? (
-                  <HStack>
-                    <MaterialIcons name="dangerous" size={20} color="red" />
-                    <Text color="red.500" fontSize="sm" mr={2}>
-                      Expired!
-                    </Text>
-                  </HStack>
-                ) : aboutToExpire ? (
-                  <HStack>
-                    <AntDesign name="warning" size={16} color="darkorange" />
-                    <Text color="orange.400" fontSize="sm" mr={2}>
-                      Expiring!
-                    </Text>
-                  </HStack>
-                ) : null}
-              </Box>
-            </HStack>
-          </>
-        );
-      });
+    listData.sort((a, b) => +new Date(a.expiryDate) - +new Date(b.expiryDate));
 
   const cancelRefDelete = useRef(null);
   const cancelRefEdit = useRef(null);
@@ -301,11 +193,11 @@ const Cabinet = ({ navigation }) => {
                 isExpired && colorMode === 'light'
                   ? 'red.100'
                   : isExpired && colorMode === 'dark'
-                  ? '#F7D9D3'
+                  ? '#370617'
                   : aboutToExpire && colorMode === 'light'
                   ? 'orange.100'
                   : aboutToExpire && colorMode === 'dark'
-                  ? '#FBF3D8'
+                  ? '#4d2c19'
                   : null
               }
               flex={1}
@@ -327,10 +219,14 @@ const Cabinet = ({ navigation }) => {
                     bold
                     ml={6}
                     color={
-                      isExpired
+                      isExpired && colorMode === 'light'
                         ? 'red.500'
-                        : aboutToExpire
+                        : isExpired && colorMode === 'dark'
+                        ? '#F7D9D3'
+                        : aboutToExpire && colorMode === 'light'
                         ? 'orange.400'
+                        : aboutToExpire && colorMode === 'dark'
+                        ? '#FAC898'
                         : null
                     }
                   >
@@ -345,10 +241,14 @@ const Cabinet = ({ navigation }) => {
                     fontSize="sm"
                     pl={6}
                     color={
-                      isExpired
+                      isExpired && colorMode === 'light'
                         ? 'red.500'
-                        : aboutToExpire
+                        : isExpired && colorMode === 'dark'
+                        ? '#F7D9D3'
+                        : aboutToExpire && colorMode === 'light'
                         ? 'orange.400'
+                        : aboutToExpire && colorMode === 'dark'
+                        ? '#FAC898'
                         : null
                     }
                   >
@@ -359,7 +259,11 @@ const Cabinet = ({ navigation }) => {
                           remainingDaysLeft !== 1 ? 's' : ''
                         } left`
                       ) : (
-                        <Text style={{ color: 'red' }}>
+                        <Text
+                          style={{
+                            color: colorMode === 'dark' ? '#F7D9D3' : 'red',
+                          }}
+                        >
                           {Math.abs(remainingDaysLeft)} day
                           {remainingDaysLeft !== -1 ? 's' : ''} ago
                         </Text>
@@ -373,15 +277,31 @@ const Cabinet = ({ navigation }) => {
               <Box alignItems="center">
                 {isExpired ? (
                   <HStack alignItems="center">
-                    <MaterialIcons name="dangerous" size={20} color="red" />
-                    <Text color="red.500" fontSize="sm" mr={2}>
+                    <MaterialIcons
+                      name="dangerous"
+                      size={20}
+                      color={colorMode === 'dark' ? '#F7D9D3' : 'red'}
+                    />
+                    <Text
+                      color={colorMode === 'dark' ? '#F7D9D3' : 'red.500'}
+                      fontSize="sm"
+                      mr={2}
+                    >
                       Expired!
                     </Text>
                   </HStack>
                 ) : aboutToExpire ? (
                   <HStack alignItems="center">
-                    <AntDesign name="warning" size={16} color="darkorange" />
-                    <Text color="orange.400" fontSize="sm" mr={2}>
+                    <AntDesign
+                      name="warning"
+                      size={16}
+                      color={colorMode === 'dark' ? '#FAC898' : 'darkorange'}
+                    />
+                    <Text
+                      color={colorMode === 'dark' ? '#FAC898' : 'orange.400'}
+                      fontSize="sm"
+                      mr={2}
+                    >
                       {' '}
                       Expiring!
                     </Text>
@@ -467,7 +387,7 @@ const Cabinet = ({ navigation }) => {
   );
 
   return (
-    <View /* keyboardShouldPersistTaps="handled" */>
+    <View /* keyboardShouldPersistTaps='handled' */>
       <EditForm />
       <ConfirmDelete />
       <Heading mt={5}>Cabinet</Heading>
@@ -522,7 +442,9 @@ const Cabinet = ({ navigation }) => {
         <Spinner text="Loading..." />
       ) : (
         <Center>
-          <Text mt={5}>Your cabinet is empty.</Text>
+          <Text mt={5} py={4}>
+            Your cabinet is empty.
+          </Text>
 
           <Button
             onPressIn={() => navigation.navigate('Add')}
