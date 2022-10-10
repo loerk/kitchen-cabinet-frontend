@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-import { ScrollView } from 'native-base';
+import { ScrollView, StatusBar } from 'native-base';
 import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +14,7 @@ const ResetPasswordScreen = () => {
 
   return (
     <>
+      <StatusBar backgroundColor={'#891D47'} />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"

@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-import { ScrollView } from 'native-base';
+import { ScrollView, StatusBar } from 'native-base';
 import { TextInput } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -12,9 +12,11 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const { handleLogin } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
+
   return (
     <>
       <View style={styles.loginContainer}>
+        <StatusBar backgroundColor={'#891D47'} />
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
