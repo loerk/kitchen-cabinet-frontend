@@ -31,9 +31,6 @@ export const IngredientsList = ({
   if (usedIngredients) {
     usedIngredientsIds = usedIngredients.map((el) => el.id);
   }
-  console.log({ ingredients });
-  console.log({ missingIngredients });
-  console.log({ usedIngredients });
 
   const { cabinetId } = useContext(AuthContext);
   const [shoppinglist, setShoppinglist] = useState({
