@@ -106,14 +106,14 @@ export default function ExpiryDateDiagram({ navigation }) {
   return (
     <View keyboardShouldPersistTaps="handled">
       <Heading size="sm" mb={1} mt={1} mr={5} textAlign="center">
-        Expiration time of the ingredients in your Cabinet
+        Expiration Time of the Ingredients in your Cabinet
       </Heading>
       <ScrollView>
         <Box flex={1} mb={20}>
           {modifiedCabinetItems.length > 0 ? null : (
             <>
               <Center>
-                <Text py={4}>Your cabinet is empty.</Text>
+                <Text py={4}>Your Cabinet is Empty</Text>
 
                 <Button
                   onPress={() => navigation.navigate('Add')}

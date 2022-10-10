@@ -22,7 +22,10 @@ const DeleteItemDialog = ({
       header="Confirm Delete"
       body={
         <>
-          <Text>{`Are you sure you want to delete ${toBeDeleted.name} ?`}</Text>
+          <Text>{`Are you sure you want to delete ${toBeDeleted.name
+            .split(' ')
+            .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+            .join(' ')} ?`}</Text>
         </>
       }
       onPressCancel={closeDeleteAlert}
@@ -43,7 +46,12 @@ const DeleteItemDialog = ({
                 mb={12}
               >
                 {isErrorDelete
-                  ? `We could not delete ${toBeDeleted.name}`
+                  ? `We could not delete ${toBeDeleted.name
+                      .split(' ')
+                      .map(
+                        (name) => name.charAt(0).toUpperCase() + name.slice(1)
+                      )
+                      .join(' ')}`
                   : `${toBeDeleted.name
                       .split(' ')
                       .map(

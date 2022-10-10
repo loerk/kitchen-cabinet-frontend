@@ -146,40 +146,7 @@ const Dashboard = () => {
                 return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })
             ) : isLoadingRecipes ? (
-              (<LoadingCards /> /* : !cabinetItems?.length ? (
-              <Center>
-                <Text py={4}>Your cabinet is empty.</Text>
-                <Button
-                  onPress={() => navigation.navigate('Add')}
-                  w="100%"
-                  bg="secondary.100"
-                >
-                  Add an Ingredient
-                </Button>
-              </Center>
-            ) */ /*: !cabinetItems?.length ? (
-              <Center>
-                <Text py={4}>Your cabinet is empty.</Text>
-                <Button
-                  onPress={() => navigation.navigate('Add')}
-                  w="100%"
-                  bg="secondary.100"
-                >
-                  Add an Ingredient
-                </Button>
-              </Center>
-            ) */ /*: !cabinetItems?.length ? (
-              <Center>
-                <Text py={4}>Your cabinet is empty.</Text>
-                <Button
-                  onPress={() => navigation.navigate('Add')}
-                  w="100%"
-                  bg="secondary.100"
-                >
-                  Add an Ingredient
-                </Button>
-              </Center>
-            ) */)
+              <LoadingCards />
             ) : null}
           </ScrollView>
         </Center>

@@ -88,7 +88,7 @@ export const CabinetAddItemForm = () => {
       <ScrollView>
         <Center mt={'20%'}>
           <Text size="md" pt={4} bold>
-            Please select an Ingredient
+            Please Select an Ingredient
           </Text>
           <Text pb={4} fontSize="sm" italic>
             (Type 3+ letters)
@@ -99,7 +99,7 @@ export const CabinetAddItemForm = () => {
           />
           <Box flex={1} alignItems={'center'}>
             <Text bold size="md" pb={5}>
-              Pick an expiry Date
+              Pick an Expiration Date
             </Text>
             <EvilIcons
               name="calendar"

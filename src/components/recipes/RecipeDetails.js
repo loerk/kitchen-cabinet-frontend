@@ -134,7 +134,7 @@ export const RecipeDetails = ({
                                   <Text key={uuidv4()}>{ingredient.name}</Text>
                                 ))
                               ) : (
-                                <Text>all Ingredients</Text>
+                                <Text>All Ingredients</Text>
                               )}
                             </VStack>
                           </HStack>
@@ -147,7 +147,7 @@ export const RecipeDetails = ({
                   ) : (
                     <View>
                       <Text textAlign={'center'} w={300}>
-                        We are sorry, there is no further Information provided.
+                        We are sorry, there is no further information provided.
                         But you may find something similar{' '}
                       </Text>
                       <OpenURLButton
@@ -164,7 +164,7 @@ export const RecipeDetails = ({
                       bg="secondary.100"
                       onPress={() => saveFavorite(recipeDetails.id)}
                     >
-                      Add to favourites
+                      Add to Favorites
                     </Button>
                   ) : (
                     <Button
@@ -200,7 +200,7 @@ export const RecipeDetails = ({
                       textAlign={'center'}
                       bg="success.300"
                     >
-                      This recipe is now removed from your favorites
+                      Removed from Favorites
                     </Text>
                   )}
                 </Box>

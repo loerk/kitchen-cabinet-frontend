@@ -115,7 +115,7 @@ export default function TypesDiagram({ navigation }) {
         {modifiedCabinetItems.length > 0 ? null : (
           <>
             <Center>
-              <Text py={4}>Your cabinet is empty.</Text>
+              <Text py={4}>Your Cabinet is Empty</Text>
 
               <Button
                 onPress={() => navigation.navigate('Add')}

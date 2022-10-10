@@ -62,7 +62,10 @@ export default function ExpiryList({ title, arr, isLoading, action }) {
                   color="coolGray.800"
                   bold
                 >
-                  {item.name}
+                  {item.name
+                    .split(' ')
+                    .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                    .join(' ')}
                 </Text>
               </VStack>
               <Spacer />

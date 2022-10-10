@@ -29,7 +29,12 @@ const EditItemDialog = ({
       body={
         <>
           <Text bold>Item Name:</Text>
-          <Text>{toBeEdited.name}</Text>
+          <Text>
+            {toBeEdited.name
+              .split(' ')
+              .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+              .join(' ')}
+          </Text>
           <Text bold mt={5}>
             Expiry Date:
           </Text>
@@ -72,7 +77,12 @@ const EditItemDialog = ({
                 mb={12}
               >
                 {isErrorEdit
-                  ? `We could not update ${toBeEdited.name}`
+                  ? `We could not update ${toBeEdited.name
+                      .split(' ')
+                      .map(
+                        (name) => name.charAt(0).toUpperCase() + name.slice(1)
+                      )
+                      .join(' ')}`
                   : `${toBeEdited.name
                       .split(' ')
                       .map(

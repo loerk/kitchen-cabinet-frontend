@@ -335,15 +335,6 @@ const Cabinet = ({ navigation }) => {
       >
         <Icon ml={2} as={<AntDesign name="edit" size={'lg'} />} color="white" />
       </Pressable>
-      {/* <Pressable
-        px={5}
-        mr="auto"
-        bg="#891D47"
-        justifyContent="center"
-        onPress={() => {
-          deleteRow(rowMap, data.item.key);
-        }}
-      ></Pressable> */}
       <Pressable
         px={4}
         ml="auto"
@@ -428,7 +419,7 @@ const Cabinet = ({ navigation }) => {
       ) : (
         <Center>
           <Text mt={5} py={4}>
-            Your cabinet is empty.
+            Your cabinet is Empty
           </Text>
 
           <Button

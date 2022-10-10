@@ -30,7 +30,7 @@ const DietPreferencesScreen = () => {
         <Box>
           <Center>
             <Text bold my={7}>
-              Your current settings
+              Your current Settings
             </Text>
             <HStack justifyContent={'center'} w={350} mb={6}>
               <VStack minW={100}>
