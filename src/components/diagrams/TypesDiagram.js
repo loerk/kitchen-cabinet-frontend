@@ -8,7 +8,6 @@ import {
   View,
   Heading,
   Button,
-  ScrollView,
 } from 'native-base';
 import { VictoryPie } from 'victory-native';
 
@@ -18,7 +17,7 @@ import { AuthContext } from '../../authNavigation/AuthProvider';
 import { useGetCabinetItemsQuery } from '../../features/api/apiSlice';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Diagrams({ navigation }) {
+export default function TypesDiagram({ navigation }) {
   const { cabinetId } = useContext(AuthContext);
   const { width } = Dimensions.get('window');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -44,11 +43,13 @@ export default function Diagrams({ navigation }) {
     modifiedCabinetItems = cabinetItems.map((item) => {
       return item.name.includes('tuna') || item.name === 'Thunfisch'
         ? { ...item, type: 'meat' }
-        : item.name === 'rub' || item.type === 'salt'
+        : item.name === 'rub' || item.type === 'salt' || item.type === 'herbs'
         ? { ...item, type: 'spices' }
         : item.type === 'gluten free cereal' || item.type === 'pasta'
         ? { ...item, type: 'grains' }
-        : item.name.includes('milk') || item.type === 'cheese'
+        : item.name.includes('milk') ||
+          item.type === 'cheese' ||
+          item.type === 'yogurt'
         ? { ...item, type: 'dairy' }
         : item.name === 'potatoes' ||
           item.name === 'onions' ||
@@ -63,6 +64,8 @@ export default function Diagrams({ navigation }) {
           item.type === 'stock' ||
           item.type === 'spread' ||
           item.type === 'cooking fat' ||
+          item.type === 'baking pieces' ||
+          item.type === 'vinegar' ||
           !item.type
         ? { ...item, type: 'other' }
         : item;
@@ -105,7 +108,7 @@ export default function Diagrams({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
-      <Heading size="sm" mb={1} mt={1}>
+      <Heading size="sm" mb={1} mt={1} textAlign="center">
         Types of Ingredients in your Cabinet
       </Heading>
       <Box flex={1} mb={324}>
@@ -176,7 +179,7 @@ export default function Diagrams({ navigation }) {
                   style={{
                     flexDirection: 'row',
                     height: 40,
-                    paddingLeft: 80,
+                    paddingLeft: 130,
                     borderRadius: 10,
                     backgroundColor:
                       selectedCategory && selectedCategory == item.x

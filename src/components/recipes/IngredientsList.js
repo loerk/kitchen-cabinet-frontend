@@ -106,8 +106,8 @@ export const IngredientsList = ({
 
       {isLoading && <Spinner pt={3} />}
       {isSuccess && (
-        <Text pt={3} maxW={250} textAlign={'center'}>
-          You sucessfully added the missing items to your shoppinglist
+        <Text pt={3} maxW={250} textAlign={'center'} bg="success.300">
+          You successfully added the missing ingredients to your shopping list.
         </Text>
       )}
     </Center>
