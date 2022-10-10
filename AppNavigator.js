@@ -21,7 +21,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import AuthStack from './src/authNavigation/AuthNavigator';
 import { AuthContext } from './src/authNavigation/AuthProvider';
 import ExpiryDateDiagram from './src/components/diagrams/ExpiryDateDiagram';
-import Diagrams from './src/components/diagrams/Diagrams';
+import TypesDiagram from './src/components/diagrams/TypesDiagram';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -174,7 +174,7 @@ export const DiagramStack = () => {
           },
         }}
       >
-        <TopTab.Screen name="Types" component={Diagrams} />
+        <TopTab.Screen name="Types" component={TypesDiagram} />
         <TopTab.Screen name="Expiry Date" component={ExpiryDateDiagram} />
       </TopTab.Navigator>
     </View>

@@ -333,7 +333,7 @@ const Cabinet = ({ navigation }) => {
   const renderHiddenItem = (data, rowMap) => (
     <HStack flex={1}>
       <Pressable
-        px={5}
+        px={4}
         cursor="pointer"
         bg="#891D47"
         justifyContent="center"
@@ -417,7 +417,6 @@ const Cabinet = ({ navigation }) => {
               placeholder="Search an item"
               onChangeText={(newValue) => setSearchInput(newValue)}
               defaultValue={searchInput}
-              /* onSubmitEditing={Keyboard.dismiss} */
             />
           </Center>
           <Box w={'90%'} h={'90%'} m={5}>
