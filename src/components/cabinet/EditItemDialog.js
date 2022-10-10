@@ -74,12 +74,15 @@ const EditItemDialog = ({
                 >
                   {isErrorEdit
                     ? `We could not update ${toBeEdited.name}`
-                    : `${toBeEdited.name}was successfully updated`}
+                    : `${
+                        toBeEdited.name.charAt(0).toUpperCase() +
+                        toBeEdited.name.slice(1)
+                      } was successfully updated`}
                 </Box>
               );
             },
           });
-        }, 1000);
+        }, 600);
       }}
       continueBtnText="Save"
     />

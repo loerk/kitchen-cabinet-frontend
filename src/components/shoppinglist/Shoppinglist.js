@@ -173,7 +173,7 @@ const ShoppingList = () => {
                     {isLoading ? (
                       <Spinner />
                     ) : !isErrorAdd ? (
-                      'You successfully added this item.'
+                      'You successfully added this ingredient.'
                     ) : (
                       'Sorry, something went wrong'
                     )}
@@ -181,7 +181,7 @@ const ShoppingList = () => {
                 );
               },
             });
-          }, 1000);
+          }, 600);
         }}
       >
         <Icon
@@ -234,7 +234,7 @@ const ShoppingList = () => {
                     {isLoading ? (
                       <Spinner />
                     ) : !isErrorDelete ? (
-                      'You successfully deleted this item'
+                      'You successfully deleted this ingredient'
                     ) : (
                       'Sorry, something went wrong'
                     )}
@@ -242,7 +242,7 @@ const ShoppingList = () => {
                 );
               },
             });
-          }, 1000);
+          }, 600);
         }}
       >
         <Icon

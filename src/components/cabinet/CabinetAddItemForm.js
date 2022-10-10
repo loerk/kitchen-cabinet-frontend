@@ -70,13 +70,19 @@ export const CabinetAddItemForm = () => {
               mb={12}
             >
               {!isError
-                ? `You successfully added ${selectedIngredient.name} `
-                : `We could not add ${selectedIngredient.name}`}
+                ? `You successfully added ${
+                    selectedIngredient.name.charAt(0).toUpperCase() +
+                    selectedIngredient.name.slice(1)
+                  } `
+                : `We could not add ${
+                    selectedIngredient.name.charAt(0).toUpperCase() +
+                    selectedIngredient.name.slice(1)
+                  }`}
             </Box>
           );
         },
       });
-    }, 1000);
+    }, 600);
   };
 
   return (

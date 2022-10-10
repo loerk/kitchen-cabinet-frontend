@@ -45,12 +45,15 @@ const DeleteItemDialog = ({
                 >
                   {isErrorDelete
                     ? `We could not delete ${toBeDeleted.name}`
-                    : `${toBeDeleted.name} was successfully deleted`}
+                    : `${
+                        toBeDeleted.name.charAt(0).toUpperCase() +
+                        toBeDeleted.name.slice(1)
+                      } was successfully deleted`}
                 </Box>
               );
             },
           });
-        }, 1000);
+        }, 600);
       }}
       continueBtnText="Delete"
     />

@@ -333,7 +333,9 @@ const Cabinet = ({ navigation }) => {
   const renderHiddenItem = (data, rowMap) => (
     <HStack flex={1}>
       <Pressable
-        px={4}
+        pl={8}
+        pr={12}
+        mr={12}
         cursor="pointer"
         bg="#891D47"
         justifyContent="center"
@@ -347,17 +349,17 @@ const Cabinet = ({ navigation }) => {
           setIsOpenEditForm(!isOpenEditForm);
         }}
       >
-        <Icon as={<AntDesign name="edit" size={'lg'} />} color="white" ml={5} />
+        <Icon ml={2} as={<AntDesign name="edit" size={'lg'} />} color="white" />
       </Pressable>
-      <Pressable
-        px={4}
+      {/* <Pressable
+        px={5}
         mr="auto"
         bg="#891D47"
         justifyContent="center"
         onPress={() => {
           deleteRow(rowMap, data.item.key);
         }}
-      ></Pressable>
+      ></Pressable> */}
       <Pressable
         px={4}
         ml="auto"
