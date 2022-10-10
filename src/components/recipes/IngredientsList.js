@@ -100,14 +100,23 @@ export const IngredientsList = ({
           mt={7}
           maxW={'50%'}
         >
-          Add to shopping list
+          Add to Shopping List
         </Button>
       ) : null}
 
       {isLoading && <Spinner pt={3} />}
       {isSuccess && (
-        <Text pt={3} maxW={250} textAlign={'center'} bg="success.300">
-          You successfully added the missing ingredients to your shopping list.
+        <Text
+          mt={3}
+          p={3}
+          maxW={250}
+          shadow={3}
+          rounded="sm"
+          maxW={250}
+          textAlign={'center'}
+          bg="success.300"
+        >
+          Added to Shopping List
         </Text>
       )}
     </Center>

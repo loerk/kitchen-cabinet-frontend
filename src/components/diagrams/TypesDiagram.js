@@ -108,7 +108,7 @@ export default function TypesDiagram({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
-      <Heading size="sm" mb={1} mt={1} textAlign="center">
+      <Heading size="sm" mb={1} mt={1} mr={5} textAlign="center">
         Types of Ingredients in your Cabinet
       </Heading>
       <Box flex={1} mb={324}>
@@ -178,7 +178,7 @@ export default function TypesDiagram({ navigation }) {
                 <TouchableOpacity
                   style={{
                     flexDirection: 'row',
-                    height: 40,
+                    height: 30,
                     paddingLeft: 130,
                     borderRadius: 10,
                     backgroundColor:

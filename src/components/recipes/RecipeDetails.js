@@ -182,12 +182,15 @@ export const RecipeDetails = ({
                   {isSaving && <Spinner pt={3} />}
                   {isSuccessSaving && (
                     <Text
-                      pt={3}
+                      mt={3}
+                      p={3}
                       maxW={250}
+                      shadow={3}
+                      rounded="sm"
                       textAlign={'center'}
                       bg="success.300"
                     >
-                      This recipe is now one of your favorites.
+                      Added to Favorites
                     </Text>
                   )}
                   {isSuccessDeleting && (
@@ -197,7 +200,7 @@ export const RecipeDetails = ({
                       textAlign={'center'}
                       bg="success.300"
                     >
-                      This recipe is now removed from your favorites.
+                      This recipe is now removed from your favorites
                     </Text>
                   )}
                 </Box>

@@ -105,7 +105,7 @@ export default function ExpiryDateDiagram({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
-      <Heading size="sm" mb={1} mt={1}>
+      <Heading size="sm" mb={1} mt={1} mr={5} textAlign="center">
         Expiration time of the ingredients in your Cabinet
       </Heading>
       <ScrollView>
@@ -176,7 +176,7 @@ export default function ExpiryDateDiagram({ navigation }) {
                   <TouchableOpacity
                     style={{
                       flexDirection: 'row',
-                      height: 40,
+                      height: 30,
                       paddingLeft: 80,
                       borderRadius: 10,
                       backgroundColor:
