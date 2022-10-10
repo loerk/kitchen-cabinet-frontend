@@ -22,7 +22,7 @@ export default function ExpiryDateDiagram({ navigation }) {
   const { cabinetId } = useContext(AuthContext);
   const { width } = Dimensions.get('window');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const { data: cabinetItems } = useGetCabinetItemsQuery(cabinetId);
+  const { data: cabinetItems, isSuccess } = useGetCabinetItemsQuery(cabinetId);
   const colorScale = [
     '#891D47',
     '#c6878f',
@@ -39,30 +39,34 @@ export default function ExpiryDateDiagram({ navigation }) {
   const chartData = {};
 
   let toDisplay = [];
+  let modifiedCabinetItems = [];
   const date = new Date();
   const CURRENT_DATE = `${date.getFullYear()}-${String(
     date.getMonth() + 1
   ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-  const modifiedCabinetItems = cabinetItems.map((item) => {
-    const { expiryDate } = item;
-    const expired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
-    const remainingDaysLeft = Math.round(
-      (+new Date(expiryDate) - +new Date(CURRENT_DATE)) / (1000 * 60 * 60 * 24)
-    );
-    const twoWeeksLeft = Math.abs(remainingDaysLeft) <= 14;
-    const fiveDaysLeft = Math.abs(remainingDaysLeft) <= 5;
+  if (isSuccess) {
+    modifiedCabinetItems = cabinetItems.map((item) => {
+      const { expiryDate } = item;
+      const expired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
+      const remainingDaysLeft = Math.round(
+        (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
+          (1000 * 60 * 60 * 24)
+      );
+      const twoWeeksLeft = Math.abs(remainingDaysLeft) <= 14;
+      const fiveDaysLeft = Math.abs(remainingDaysLeft) <= 5;
 
-    if (expired) {
-      return { ...item, expiresIn: 'Already expired' };
-    } else if (fiveDaysLeft) {
-      return { ...item, expiresIn: 'Within five days' };
-    } else if (twoWeeksLeft) {
-      return { ...item, expiresIn: 'Within two weeks' };
-    } else {
-      return { ...item, expiresIn: 'More than two weeks' };
-    }
-  });
+      if (expired) {
+        return { ...item, expiresIn: 'Already expired' };
+      } else if (fiveDaysLeft) {
+        return { ...item, expiresIn: 'Within five days' };
+      } else if (twoWeeksLeft) {
+        return { ...item, expiresIn: 'Within two weeks' };
+      } else {
+        return { ...item, expiresIn: 'More than two weeks' };
+      }
+    });
+  }
   for (const element of modifiedCabinetItems) {
     if (chartData[element.expiresIn]) {
       chartData[element.expiresIn] += 1;
@@ -109,14 +113,14 @@ export default function ExpiryDateDiagram({ navigation }) {
           {modifiedCabinetItems.length > 0 ? null : (
             <>
               <Center>
-                <Text mt={5}>Your cabinet is empty.</Text>
+                <Text py={4}>Your cabinet is empty.</Text>
 
                 <Button
                   onPress={() => navigation.navigate('Add')}
                   w="50%"
                   bg="secondary.100"
                 >
-                  Add an item
+                  Add an Ingredient
                 </Button>
               </Center>
             </>
