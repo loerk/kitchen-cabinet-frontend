@@ -166,7 +166,7 @@ const ShoppingList = () => {
                   py="1"
                   shadow={3}
                   rounded="sm"
-                  mb={8}
+                  mb={12}
                 >
                   {isLoading ? (
                     <Spinner />
@@ -224,7 +224,7 @@ const ShoppingList = () => {
                   py="1"
                   shadow={3}
                   rounded="sm"
-                  mb={8}
+                  mb={12}
                 >
                   {isLoading ? (
                     <Spinner />

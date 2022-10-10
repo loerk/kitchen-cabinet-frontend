@@ -39,7 +39,7 @@ const DeleteItemDialog = ({
                 py="1"
                 shadow={3}
                 rounded="sm"
-                mb={8}
+                mb={12}
               >
                 {isErrorDelete
                   ? 'We could not delete this ingredient'

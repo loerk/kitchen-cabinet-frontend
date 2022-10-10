@@ -61,7 +61,14 @@ export const CabinetAddItemForm = () => {
       toast.show({
         render: () => {
           return (
-            <Box bg="transparent" px="2" py="1" shadow={3} rounded="sm" mb={8}>
+            <Box
+              bg={isError ? 'error.300' : 'success.300'}
+              px="2"
+              py="1"
+              shadow={3}
+              rounded="sm"
+              mb={12}
+            >
               {!isError
                 ? 'You successfully added this item'
                 : 'Sorry, something went wrong'}

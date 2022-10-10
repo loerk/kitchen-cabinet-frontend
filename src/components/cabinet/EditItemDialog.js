@@ -68,7 +68,7 @@ const EditItemDialog = ({
                 py="1"
                 shadow={3}
                 rounded="sm"
-                mb={8}
+                mb={12}
               >
                 {isErrorEdit
                   ? 'We could not update this ingredient'
