@@ -114,14 +114,14 @@ export default function Diagrams({ navigation }) {
           {modifiedCabinetItems.length > 0 ? null : (
             <>
               <Center>
-                <Text mt={5}>Your cabinet is empty.</Text>
+                <Text py={4}>Your cabinet is empty.</Text>
 
                 <Button
                   onPress={() => navigation.navigate('Add')}
                   w="50%"
                   bg="secondary.100"
                 >
-                  Add an item
+                  Add an Ingredient
                 </Button>
               </Center>
             </>
