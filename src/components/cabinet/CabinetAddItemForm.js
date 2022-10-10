@@ -9,7 +9,6 @@ import {
   Box,
   Heading,
   useToast,
-  Spinner,
 } from 'native-base';
 
 import { EvilIcons } from '@expo/vector-icons';
@@ -59,17 +58,25 @@ export const CabinetAddItemForm = () => {
     }
     setTimeout(() => {
       toast.show({
+        duration: 1500,
         render: () => {
           return (
-            <Box bg="transparent" px="2" py="1" shadow={3} rounded="sm" mb={8}>
+            <Box
+              bg={isError ? 'error.300' : 'success.300'}
+              px="2"
+              py="1"
+              shadow={3}
+              rounded="sm"
+              mb={12}
+            >
               {!isError
-                ? 'You successfully added this item'
-                : 'Sorry, something went wrong'}
+                ? `You successfully added ${selectedIngredient.name} `
+                : `We could not add ${selectedIngredient.name}`}
             </Box>
           );
         },
       });
-    }, 1000);
+    }, 2000);
   };
 
   return (

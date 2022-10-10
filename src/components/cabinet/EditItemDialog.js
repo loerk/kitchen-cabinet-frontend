@@ -59,24 +59,27 @@ const EditItemDialog = ({
       onPressContinue={() => {
         editCabinetItem(toBeEdited).unwrap();
         closeEditForm();
-        toast.show({
-          render: () => {
-            return (
-              <Box
-                bg={isErrorEdit ? 'error.300' : 'success.300'}
-                px="2"
-                py="1"
-                shadow={3}
-                rounded="sm"
-                mb={8}
-              >
-                {isErrorEdit
-                  ? 'We could not update this ingredient'
-                  : 'The ingredient was successfully updated'}
-              </Box>
-            );
-          },
-        });
+        setTimeout(() => {
+          toast.show({
+            duration: 1500,
+            render: () => {
+              return (
+                <Box
+                  bg={isErrorEdit ? 'error.300' : 'success.300'}
+                  px="2"
+                  py="1"
+                  shadow={3}
+                  rounded="sm"
+                  mb={12}
+                >
+                  {isErrorEdit
+                    ? `We could not update ${toBeEdited.name}`
+                    : `${toBeEdited.name}was successfully updated`}
+                </Box>
+              );
+            },
+          });
+        }, 2000);
       }}
       continueBtnText="Save"
     />
