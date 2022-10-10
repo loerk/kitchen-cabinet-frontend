@@ -119,7 +119,6 @@ export const DashboardScreenNavigator = () => {
       />
       <Stack.Screen
         options={{
-          headerShown: false,
           headerBackTitleVisible: false,
           headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
           headerStyle: {
@@ -136,28 +135,25 @@ export const DashboardScreenNavigator = () => {
 export const ProfileStack = () => {
   const { colorMode } = useColorMode();
   return (
-    <View>
-      <Heading mt={5}>Profile</Heading>
-      <TopTab.Navigator
-        initialRouteName="Favorites"
-        screenOptions={{
-          tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
-          tabBarStyle: {
-            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
-          },
-        }}
-      >
-        <TopTab.Screen name="Favorites" component={FavoritesScreen} />
-        <TopTab.Screen
-          name="Diet Preferences"
-          component={DietPreferencesScreen}
-        />
-        <TopTab.Screen name="Settings" component={SettingsScreen} />
-      </TopTab.Navigator>
-    </View>
+    <TopTab.Navigator
+      initialRouteName="Favorites"
+      screenOptions={{
+        tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
+        tabBarStyle: {
+          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
+        },
+      }}
+    >
+      <TopTab.Screen name="Favorites" component={FavoritesScreen} />
+      <TopTab.Screen
+        name="Diet Preferences"
+        component={DietPreferencesScreen}
+      />
+      <TopTab.Screen name="Settings" component={SettingsScreen} />
+    </TopTab.Navigator>
   );
 };
 
@@ -171,7 +167,6 @@ export const DiagramStack = () => {
         screenOptions={{
           tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
           tabBarStyle: {
-            height: '8.8%',
             backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
           },
           tabBarIndicatorStyle: {

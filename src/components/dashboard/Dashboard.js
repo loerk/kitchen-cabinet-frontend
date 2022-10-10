@@ -53,7 +53,6 @@ const Dashboard = () => {
     useGetRecipeByIngredientsQuery(cabinetItemNames ? payload : skipToken);
 
   useEffect(() => {
-    console.log(suggestedRecipes);
     if (suggestedRecipes && !displayedRecipes?.length)
       setDisplayedRecipes(suggestedRecipes);
   }, [suggestedRecipes]);
@@ -79,8 +78,10 @@ const Dashboard = () => {
           <Box w={'100%'}>
             <HStack justifyContent={'space-between'} alignItems={'flex-end'}>
               <VStack mt={0}>
-                <Text style={{ paddingLeft: 18 }}>Welcome</Text>
-                <Heading>{user.displayName && `${user.displayName}`}</Heading>
+                <Text style={{ paddingLeft: 35 }}>Welcome</Text>
+                <Heading style={{ paddingLeft: 35 }}>
+                  {user.displayName && `${user.displayName}`}
+                </Heading>
               </VStack>
 
               <Ionicons
@@ -139,7 +140,7 @@ const Dashboard = () => {
                 return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })
             ) : isLoadingRecipes ? (
-              <LoadingCards /> /* : !cabinetItems?.length ? (
+              (<LoadingCards /> /* : !cabinetItems?.length ? (
               <Center>
                 <Text py={4}>Your cabinet is empty.</Text>
                 <Button
@@ -150,7 +151,18 @@ const Dashboard = () => {
                   Add an Ingredient
                 </Button>
               </Center>
-            ) */
+            ) */ /*: !cabinetItems?.length ? (
+              <Center>
+                <Text py={4}>Your cabinet is empty.</Text>
+                <Button
+                  onPress={() => navigation.navigate('Add')}
+                  w="100%"
+                  bg="secondary.100"
+                >
+                  Add an Ingredient
+                </Button>
+              </Center>
+            ) */)
             ) : null}
           </ScrollView>
         </Center>
