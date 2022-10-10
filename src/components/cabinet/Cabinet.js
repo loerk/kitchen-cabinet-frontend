@@ -24,7 +24,7 @@ import {
 } from 'native-base';
 
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
-import { Keyboard } from 'react-native';
+
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -42,7 +42,6 @@ import {
   useDeleteItemMutation,
   useEditItemMutation,
 } from '../../features/api/apiSlice';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const date = new Date();
 const CURRENT_DATE = `${date.getFullYear()}-${String(
@@ -80,27 +79,12 @@ const Cabinet = ({ navigation }) => {
     data: cabinetItems,
     isLoading,
     isSuccess,
-    isError,
-    error,
   } = useGetCabinetItemsQuery(cabinetId);
 
-  const [
-    editCabinetItem,
-    {
-      isLoading: isLoadingEdit,
-      isSuccess: isSuccessEdit,
-      isError: isErrorEdit,
-      error: editError,
-    },
-  ] = useEditItemMutation();
+  const [editCabinetItem, { isError: isErrorEdit }] = useEditItemMutation();
   const [
     deleteCabinetItem,
-    {
-      isLoading: isLoadingDelete,
-      isSuccess: isSuccessDelete,
-      isError: isErrorDelete,
-      error: deleteError,
-    },
+    { isSuccess: isSuccessDelete, isError: isErrorDelete, error: deleteError },
   ] = useDeleteItemMutation();
 
   useEffect(() => {
@@ -387,7 +371,7 @@ const Cabinet = ({ navigation }) => {
   );
 
   return (
-    <View /* keyboardShouldPersistTaps='handled' */>
+    <View>
       <EditForm />
       <ConfirmDelete />
       <Heading mt={5}>Cabinet</Heading>

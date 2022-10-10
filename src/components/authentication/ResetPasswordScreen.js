@@ -5,7 +5,6 @@ import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './AuthStyles';
 import { AuthContext } from '../../authNavigation/AuthProvider';
-import theme from '../../theme';
 
 const ResetPasswordScreen = () => {
   const navigation = useNavigation();
