@@ -16,10 +16,9 @@ import React, { useState, useCallback, useRef, useContext } from 'react';
 import { useAddItemMutation } from '../../features/api/apiSlice';
 
 // custom components
-/* import DateTimePicker from '../utils/DateTimePicker';*/
-
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
+
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
 import { addWeeks } from '../../helpers/getDefaultExpiryDate';

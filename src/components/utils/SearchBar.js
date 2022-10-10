@@ -2,7 +2,6 @@ import { Icon, Input } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 
-// eslint-disable-next-line react/prop-types
 const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
   return (
     <Input
@@ -15,7 +14,6 @@ const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
       autoCapitalize="none"
       variant="filled"
       returnKeyType="search"
-      /*        borderRadius="10" */
       py="4"
       InputLeftElement={
         <Icon

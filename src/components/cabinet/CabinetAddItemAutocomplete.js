@@ -89,11 +89,7 @@ export const CabinetSelectItemAutocomplete = ({
             alignSelf: 'center',
           }}
           inputContainerStyle={{
-            //borderWidth: '1',
-            //borderColor: '#891D4740',
-            //color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
             backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D4710',
-            // width: 200,
           }}
           containerStyle={{ flexGrow: 1, flexShrink: 1 }}
           ChevronIconComponent={

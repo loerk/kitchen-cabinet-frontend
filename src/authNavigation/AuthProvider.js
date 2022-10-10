@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
   const [uid, setUid] = useState(null);
   let exception = false;
   const [addCabinet] = useAddCabinetMutation();
-  // eslint-disable-next-line no-unused-vars
   const { data: userInformation } = useGetCabinetByUidQuery(
     uid ? uid : skipToken
   );
@@ -34,11 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   const handleRegister = async (email, password, username) => {
     try {
-      const newUser = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(auth.currentUser, { displayName: username });
       addCabinet({
         name: auth.currentUser.displayName,
@@ -54,7 +49,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const signedIn = await signInWithEmailAndPassword(auth, email, password);
       if (signedIn) {
-        // eslint-disable-next-line no-unused-vars
         setUid((uid = auth.currentUser.uid));
       }
     } catch (error) {
