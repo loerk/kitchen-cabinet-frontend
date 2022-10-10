@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useColorMode } from 'native-base';
+import { useColorMode, View, Heading } from 'native-base';
 
 // custom components
 import Dashboard from './src/components/dashboard/Dashboard';
@@ -119,6 +119,7 @@ export const DashboardScreenNavigator = () => {
       />
       <Stack.Screen
         options={{
+          headerShown: false,
           headerBackTitleVisible: false,
           headerTintColor: colorMode === 'dark' ? '#FCF5EA' : '#515050',
           headerStyle: {
@@ -135,48 +136,52 @@ export const DashboardScreenNavigator = () => {
 export const ProfileStack = () => {
   const { colorMode } = useColorMode();
   return (
-    <TopTab.Navigator
-      initialRouteName="Favorites"
-      screenOptions={{
-        tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
-        tabBarStyle: {
-          height: '10%',
-          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
-        },
-        tabBarIndicatorStyle: {
-          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
-        },
-      }}
-    >
-      <TopTab.Screen name="Favorites" component={FavoritesScreen} />
-      <TopTab.Screen
-        name="Diet Preferences"
-        component={DietPreferencesScreen}
-      />
-      <TopTab.Screen name="Settings" component={SettingsScreen} />
-    </TopTab.Navigator>
+    <View>
+      <Heading mt={5}>Profile</Heading>
+      <TopTab.Navigator
+        initialRouteName="Favorites"
+        screenOptions={{
+          tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
+          tabBarStyle: {
+            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
+          },
+        }}
+      >
+        <TopTab.Screen name="Favorites" component={FavoritesScreen} />
+        <TopTab.Screen
+          name="Diet Preferences"
+          component={DietPreferencesScreen}
+        />
+        <TopTab.Screen name="Settings" component={SettingsScreen} />
+      </TopTab.Navigator>
+    </View>
   );
 };
 
 export const DiagramStack = () => {
   const { colorMode } = useColorMode();
   return (
-    <TopTab.Navigator
-      initialRouteName="Type Diagram"
-      screenOptions={{
-        tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
-        tabBarStyle: {
-          height: '15%',
-          paddingTop: 40,
-          backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
-        },
-        tabBarIndicatorStyle: {
-          backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
-        },
-      }}
-    >
-      <TopTab.Screen name="Types" component={Diagrams} />
-      <TopTab.Screen name="Expiry Date" component={ExpiryDateDiagram} />
-    </TopTab.Navigator>
+    <View>
+      <Heading mt={5}>Diagrams</Heading>
+      <TopTab.Navigator
+        initialRouteName="Type Diagram"
+        screenOptions={{
+          tabBarActiveTintColor: colorMode === 'dark' ? '#FCF5EA' : 'black',
+          tabBarStyle: {
+            height: '8.8%',
+            backgroundColor: colorMode === 'dark' ? '#515050' : '#FCF5EA',
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D47',
+          },
+        }}
+      >
+        <TopTab.Screen name="Types" component={Diagrams} />
+        <TopTab.Screen name="Expiry Date" component={ExpiryDateDiagram} />
+      </TopTab.Navigator>
+    </View>
   );
 };

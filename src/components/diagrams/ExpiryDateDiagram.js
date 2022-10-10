@@ -105,10 +105,9 @@ export default function ExpiryDateDiagram({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
-      <Heading>Diagrams</Heading>
-      <Text ml={5} italic size={'sm'} mb={3}>
-        shows the expiration period of the ingredients in your Cabinet
-      </Text>
+      <Heading size="sm" mb={1} mt={1}>
+        Expiration time of the ingredients in your Cabinet
+      </Heading>
       <ScrollView>
         <Box flex={1} mb={20}>
           {modifiedCabinetItems.length > 0 ? null : (

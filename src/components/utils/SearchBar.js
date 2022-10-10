@@ -14,6 +14,7 @@ const SearchBar = ({ placeholder, onChangeText, defaultValue }) => {
       defaultValue={defaultValue}
       autoCapitalize="none"
       variant="filled"
+      returnKeyType="search"
       /*        borderRadius="10" */
       py="4"
       InputLeftElement={
