@@ -139,8 +139,7 @@ const Dashboard = () => {
                 return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })
             ) : isLoadingRecipes ? (
-              <LoadingCards />
-            ) : !cabinetItems?.length ? (
+              <LoadingCards /> /* : !cabinetItems?.length ? (
               <Center>
                 <Text py={4}>Your cabinet is empty.</Text>
                 <Button
@@ -151,6 +150,7 @@ const Dashboard = () => {
                   Add an Ingredient
                 </Button>
               </Center>
+            ) */
             ) : null}
           </ScrollView>
         </Center>
