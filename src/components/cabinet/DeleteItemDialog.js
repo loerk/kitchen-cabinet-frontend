@@ -30,24 +30,27 @@ const DeleteItemDialog = ({
         setListData(listData.filter((item) => item !== toBeDeleted.deletedIem));
         setToDelete(true);
         closeDeleteAlert();
-        toast.show({
-          render: () => {
-            return (
-              <Box
-                bg={isErrorDelete ? 'error.300' : 'success.300'}
-                px="2"
-                py="1"
-                shadow={3}
-                rounded="sm"
-                mb={12}
-              >
-                {isErrorDelete
-                  ? 'We could not delete this ingredient'
-                  : 'The ingredient was successfully deleted'}
-              </Box>
-            );
-          },
-        });
+        setTimeout(() => {
+          toast.show({
+            duration: 1500,
+            render: () => {
+              return (
+                <Box
+                  bg={isErrorDelete ? 'error.300' : 'success.300'}
+                  px="2"
+                  py="1"
+                  shadow={3}
+                  rounded="sm"
+                  mb={12}
+                >
+                  {isErrorDelete
+                    ? `We could not delete ${toBeDeleted.name}`
+                    : `${toBeDeleted.name} was successfully deleted`}
+                </Box>
+              );
+            },
+          });
+        }, 2000);
       }}
       continueBtnText="Delete"
     />

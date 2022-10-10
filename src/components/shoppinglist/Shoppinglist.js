@@ -157,28 +157,31 @@ const ShoppingList = () => {
         onPress={() => {
           deleteRow(rowMap, data.item.key);
           addSetting(data.item.id);
-          toast.show({
-            render: () => {
-              return (
-                <Box
-                  bg={isErrorAdd ? 'error.300' : 'success.300'}
-                  px="2"
-                  py="1"
-                  shadow={3}
-                  rounded="sm"
-                  mb={12}
-                >
-                  {isLoading ? (
-                    <Spinner />
-                  ) : !isErrorAdd ? (
-                    'You successfully added this item.'
-                  ) : (
-                    'Sorry, something went wrong'
-                  )}
-                </Box>
-              );
-            },
-          });
+          setTimeout(() => {
+            toast.show({
+              duration: 1500,
+              render: () => {
+                return (
+                  <Box
+                    bg={isErrorAdd ? 'error.300' : 'success.300'}
+                    px="2"
+                    py="1"
+                    shadow={3}
+                    rounded="sm"
+                    mb={12}
+                  >
+                    {isLoading ? (
+                      <Spinner />
+                    ) : !isErrorAdd ? (
+                      'You successfully added this item.'
+                    ) : (
+                      'Sorry, something went wrong'
+                    )}
+                  </Box>
+                );
+              },
+            });
+          }, 2000);
         }}
       >
         <Icon
@@ -215,28 +218,31 @@ const ShoppingList = () => {
         onPress={() => {
           deleteRow(rowMap, data.item.key);
           deleteSetting(data.item.id);
-          toast.show({
-            render: () => {
-              return (
-                <Box
-                  bg={isErrorDelete ? 'error.300' : 'success.300'}
-                  px="2"
-                  py="1"
-                  shadow={3}
-                  rounded="sm"
-                  mb={12}
-                >
-                  {isLoading ? (
-                    <Spinner />
-                  ) : !isErrorDelete ? (
-                    'You successfully deleted this item'
-                  ) : (
-                    'Sorry, something went wrong'
-                  )}
-                </Box>
-              );
-            },
-          });
+          setTimeout(() => {
+            toast.show({
+              duration: 1500,
+              render: () => {
+                return (
+                  <Box
+                    bg={isErrorDelete ? 'error.300' : 'success.300'}
+                    px="2"
+                    py="1"
+                    shadow={3}
+                    rounded="sm"
+                    mb={12}
+                  >
+                    {isLoading ? (
+                      <Spinner />
+                    ) : !isErrorDelete ? (
+                      'You successfully deleted this item'
+                    ) : (
+                      'Sorry, something went wrong'
+                    )}
+                  </Box>
+                );
+              },
+            });
+          }, 2000);
         }}
       >
         <Icon
