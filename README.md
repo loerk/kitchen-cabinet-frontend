@@ -15,23 +15,6 @@ check our <a href="https://github.com/YannWe/Kitchen-Cabinet-Backend" target="_b
 - [Team](#team)
 - [Links](#links)
 
-## About The Project
-
-<h1 align="center">Kitchen Cabinet</h1>
-<p align="center">
-check our <a href="https://github.com/YannWe/Kitchen-Cabinet-Backend" target="_blank">Backend</a>
-</p>
-
-<!-- TABLE OF CONTENTS -->
-
-## Table of Contents
-
-- [About](#about)
-- [Features](#features)
-- [Technologies](#technologies)
-- [Team](#team)
-- [Links](#links)
-
 <!-- ABOUT -->
 
 ## Overview
