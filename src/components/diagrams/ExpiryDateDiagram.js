@@ -6,8 +6,8 @@ import {
   Text,
   Center,
   View,
-  Heading,
   Button,
+  Heading,
   ScrollView,
 } from 'native-base';
 import { VictoryPie } from 'victory-native';
@@ -18,17 +18,11 @@ import { AuthContext } from '../../authNavigation/AuthProvider';
 import { useGetCabinetItemsQuery } from '../../features/api/apiSlice';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Diagrams({ navigation }) {
+export default function ExpiryDateDiagram({ navigation }) {
   const { cabinetId } = useContext(AuthContext);
   const { width } = Dimensions.get('window');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const {
-    data: cabinetItems,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetCabinetItemsQuery(cabinetId);
+  const { data: cabinetItems, isSuccess } = useGetCabinetItemsQuery(cabinetId);
   const colorScale = [
     '#891D47',
     '#c6878f',
@@ -43,55 +37,49 @@ export default function Diagrams({ navigation }) {
     '#ebdc78',
   ];
   const chartData = {};
-  let modifiedCabinetItems = [];
+
   let toDisplay = [];
+  let modifiedCabinetItems = [];
+  const date = new Date();
+  const CURRENT_DATE = `${date.getFullYear()}-${String(
+    date.getMonth() + 1
+  ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
   if (isSuccess) {
     modifiedCabinetItems = cabinetItems.map((item) => {
-      return item.name.includes('tuna') || item.name === 'Thunfisch'
-        ? { ...item, type: 'meat' }
-        : item.name === 'rub' || item.type === 'salt'
-        ? { ...item, type: 'spices' }
-        : item.type === 'gluten free cereal' || item.type === 'pasta'
-        ? { ...item, type: 'grains' }
-        : item.name.includes('milk') || item.type === 'cheese'
-        ? { ...item, type: 'dairy' }
-        : item.name === 'potatoes' ||
-          item.name === 'onions' ||
-          item.type === 'onion' ||
-          item.type === 'legumes'
-        ? { ...item, type: 'vegetable' }
-        : item.type === 'undefined' ||
-          item.type === 'sweetener' ||
-          item.type === 'olives' ||
-          item.name.includes('bean coffee') ||
-          item.type === 'sauce' ||
-          item.type === 'stock' ||
-          item.type === 'spread' ||
-          item.type === 'cooking fat' ||
-          !item.type
-        ? { ...item, type: 'other' }
-        : item;
-    });
-    for (const element of modifiedCabinetItems) {
-      if (chartData[element.type]) {
-        chartData[element.type] += 1;
-      } else {
-        chartData[element.type] = 1;
-      }
-    }
-    /*     console.log(
-          modifiedCabinetItems
-            .filter((item) => item.type === 'cooking fat')
-            .map((item) => item.name)
-        ); */
+      const { expiryDate } = item;
+      const expired = +new Date(CURRENT_DATE) > +new Date(expiryDate);
+      const remainingDaysLeft = Math.round(
+        (+new Date(expiryDate) - +new Date(CURRENT_DATE)) /
+          (1000 * 60 * 60 * 24)
+      );
+      const twoWeeksLeft = Math.abs(remainingDaysLeft) <= 14;
+      const fiveDaysLeft = Math.abs(remainingDaysLeft) <= 5;
 
-    const titles = Object.keys(chartData);
-    const values = Object.values(chartData);
-    toDisplay = modifiedCabinetItems.map((item, index) => {
-      return { x: titles[index], y: values[index] };
+      if (expired) {
+        return { ...item, expiresIn: 'Already expired' };
+      } else if (fiveDaysLeft) {
+        return { ...item, expiresIn: 'Within five days' };
+      } else if (twoWeeksLeft) {
+        return { ...item, expiresIn: 'Within two weeks' };
+      } else {
+        return { ...item, expiresIn: 'More than two weeks' };
+      }
     });
   }
+  for (const element of modifiedCabinetItems) {
+    if (chartData[element.expiresIn]) {
+      chartData[element.expiresIn] += 1;
+    } else {
+      chartData[element.expiresIn] = 1;
+    }
+  }
+
+  const titles = Object.keys(chartData);
+  const values = Object.values(chartData);
+  toDisplay = modifiedCabinetItems.map((item, index) => {
+    return { x: titles[index], y: values[index] };
+  });
 
   let finalChartData = toDisplay.map((item) => {
     let percentage = ((item.y / toDisplay.length) * 100).toFixed(0);
@@ -117,26 +105,22 @@ export default function Diagrams({ navigation }) {
 
   return (
     <View keyboardShouldPersistTaps="handled">
-      <Heading mt={5}>Diagrams</Heading>
+      <Heading size="sm" mb={1} mt={1} mr={5} textAlign="center">
+        Expiration Time of the Ingredients in your Cabinet
+      </Heading>
       <ScrollView>
         <Box flex={1} mb={20}>
-          {modifiedCabinetItems.length > 0 ? (
-            <Center>
-              <Text mt={5} mb={5} bold>
-                Types of ingredients in the cabinet:
-              </Text>
-            </Center>
-          ) : (
+          {modifiedCabinetItems.length > 0 ? null : (
             <>
               <Center>
-                <Text mt={5}>Your cabinet is empty.</Text>
+                <Text py={4}>Your Cabinet is Empty</Text>
 
                 <Button
                   onPress={() => navigation.navigate('Add')}
                   w="50%"
                   bg="secondary.100"
                 >
-                  Add an item
+                  Add an Ingredient
                 </Button>
               </Center>
             </>
@@ -157,7 +141,7 @@ export default function Diagrams({ navigation }) {
               {
                 target: 'data',
                 eventHandlers: {
-                  onPress: () => {
+                  onPressIn: () => {
                     return [
                       {
                         target: 'labels',
@@ -184,7 +168,7 @@ export default function Diagrams({ navigation }) {
             }}
           />
 
-          <Box w={'100%'} h={'90%'} mt={5}>
+          <Box mt={5}>
             <FlatList
               data={finalChartData}
               renderItem={({ item }) => {
@@ -192,8 +176,8 @@ export default function Diagrams({ navigation }) {
                   <TouchableOpacity
                     style={{
                       flexDirection: 'row',
-                      height: 40,
-                      paddingHorizontal: 130,
+                      height: 30,
+                      paddingLeft: 80,
                       borderRadius: 10,
                       backgroundColor:
                         selectedCategory && selectedCategory == item.x

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from '@env';
+/* import { REACT_APP_BASE_URL } from '@env'; */
 
 import React, { useCallback, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
@@ -8,11 +8,13 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import Feather from 'react-native-vector-icons/Feather';
 import { Box, useColorMode } from 'native-base';
 Feather.loadFont();
+const REACT_APP_BASE_URL = 'https://ill-pink-lobster-kit.cyclic.app/';
 
 export const CabinetSelectItemAutocomplete = ({
   setSelectedIngredient,
   selectedIngredient,
 }) => {
+  const REACT_APP_BASE_URL = 'https://ill-pink-lobster-kit.cyclic.app/';
   const [loading, setLoading] = useState(false);
   const [suggestionsList, setSuggestionsList] = useState(null);
   const { colorMode } = useColorMode();
@@ -24,7 +26,7 @@ export const CabinetSelectItemAutocomplete = ({
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${BASE_URL}/recipes/ingredient?ingredient=${q}`
+        `${REACT_APP_BASE_URL}/recipes/ingredient?ingredient=${q}`
       );
       setLoading(false);
       setSuggestionsList(
@@ -87,11 +89,7 @@ export const CabinetSelectItemAutocomplete = ({
             alignSelf: 'center',
           }}
           inputContainerStyle={{
-            //borderWidth: '1',
-            //borderColor: '#891D4740',
-            //color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
             backgroundColor: colorMode === 'dark' ? '#FCF5EA' : '#891D4710',
-            // width: 200,
           }}
           containerStyle={{ flexGrow: 1, flexShrink: 1 }}
           ChevronIconComponent={

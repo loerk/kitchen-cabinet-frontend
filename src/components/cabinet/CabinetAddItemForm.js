@@ -8,6 +8,7 @@ import {
   AlertDialog,
   Box,
   Heading,
+  useToast,
 } from 'native-base';
 
 import { EvilIcons } from '@expo/vector-icons';
@@ -15,11 +16,12 @@ import React, { useState, useCallback, useRef, useContext } from 'react';
 import { useAddItemMutation } from '../../features/api/apiSlice';
 
 // custom components
-/* import DateTimePicker from '../utils/DateTimePicker';*/
 import { CabinetSelectItemAutocomplete } from './CabinetAddItemAutocomplete';
 import DatePicker from '../utils/DatePicker';
+
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import { addWeeks } from '../../helpers/getDefaultExpiryDate';
 
 const date = new Date();
 const INITIAL_DATE = `${date.getFullYear()}-${String(
@@ -27,8 +29,8 @@ const INITIAL_DATE = `${date.getFullYear()}-${String(
 ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 export const CabinetAddItemForm = () => {
+  const toast = useToast();
   const { cabinetId } = useContext(AuthContext);
-  //const toast = useToast();
   const { colorMode } = useColorMode();
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const closeCalendar = () => setIsOpenCalendar(false);
@@ -38,8 +40,7 @@ export const CabinetAddItemForm = () => {
     id: '',
     expiryDate: '',
   });
-  const [addItem, { isLoading, isSuccess, isError }] = useAddItemMutation();
-
+  const [addItem, { isLoading, isError }] = useAddItemMutation();
   const [selected, setSelected] = useState(INITIAL_DATE);
 
   const onDayPress = useCallback((day) => {
@@ -51,27 +52,54 @@ export const CabinetAddItemForm = () => {
       addItem({
         cabinetId,
         id: selectedIngredient.id,
-        expiryDate: selectedIngredient.expiryDate,
+        expiryDate: selectedIngredient.expiryDate || addWeeks(2),
       }).unwrap();
     }
+    toast.show({
+      duration: 1500,
+      render: () => {
+        return (
+          <Box
+            bg={isError ? 'error.300' : 'success.300'}
+            px="2"
+            py="1"
+            shadow={3}
+            rounded="sm"
+            mb={12}
+          >
+            {!isError
+              ? `You successfully added ${selectedIngredient.name
+                  .split(' ')
+                  .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                  .join(' ')} `
+              : `We could not add ${selectedIngredient.name
+                  .split(' ')
+                  .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                  .join(' ')}`}
+          </Box>
+        );
+      },
+    });
   };
 
   return (
     <View>
-      <Heading mt={5}>Add Item</Heading>
+      <Heading mt={5}>Add Ingredient</Heading>
       <ScrollView>
         <Center mt={'20%'}>
           <Text size="md" pt={4} bold>
-            Please select an Item
+            Please Select an Ingredient
           </Text>
-          <Text pb={4}>(Type 3+ letters)</Text>
+          <Text pb={4} fontSize="sm" italic>
+            (Type 3+ letters)
+          </Text>
           <CabinetSelectItemAutocomplete
             setSelectedIngredient={setSelectedIngredient}
             selectedIngredient={selectedIngredient}
           />
           <Box flex={1} alignItems={'center'}>
             <Text bold size="md" pb={5}>
-              Pick an expiry Date
+              Pick an Expiration Date
             </Text>
             <EvilIcons
               name="calendar"
@@ -82,7 +110,9 @@ export const CabinetAddItemForm = () => {
 
             {selectedIngredient.expiryDate ? (
               <Center>
-                <Text>{selectedIngredient.expiryDate}</Text>
+                <Text>
+                  {selectedIngredient.expiryDate.split('-').reverse().join('/')}
+                </Text>
               </Center>
             ) : null}
             <AlertDialog
@@ -119,47 +149,29 @@ export const CabinetAddItemForm = () => {
             {isLoading ? (
               <Button
                 isLoading
-                mb="33"
-                mt="60"
+                mb="13"
+                mt="30"
                 onPress={saveItem}
                 disabled={!selectedIngredient.name}
                 bg="secondary.100"
-                // bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
               >
-                Add Item
+                Add Ingredient
               </Button>
             ) : (
               <Button
                 cursor="pointer"
-                mb="33"
-                mt="60"
+                mb="13"
+                mt="30"
                 onPress={saveItem}
                 disabled={!selectedIngredient.name}
                 bg="secondary.100"
-                //bg={colorMode === 'light' ? 'secondary.100' : 'primary.100'}
               >
-                Add Item
+                Add Ingredient
               </Button>
             )}
           </Box>
         </Center>
       </ScrollView>
-      {isSuccess ? (
-        // ? toast.show({
-        //     render: () => {
-        //       return (
-        <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
-          <Text>
-            You successfully added {selectedIngredient.name} to your cabinet!
-          </Text>
-        </Box>
-      ) : // })
-      null}
-      {isError ? (
-        <Text>
-          Oops please check you cabinet, we are not sure if this worked
-        </Text>
-      ) : null}
     </View>
   );
 };

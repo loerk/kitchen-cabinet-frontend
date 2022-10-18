@@ -21,16 +21,17 @@ import { AuthContext } from '../../authNavigation/AuthProvider';
 export const IngredientsList = ({
   missingIngredients,
   usedIngredients,
-  missingIngredientsNames,
-  usedIngredientsNames,
+  missingIngredientsIds,
+  usedIngredientsIds,
   ingredients,
 }) => {
   if (missingIngredients) {
-    missingIngredientsNames = missingIngredients.map((el) => el.name);
+    missingIngredientsIds = missingIngredients.map((el) => el.id);
   }
   if (usedIngredients) {
-    usedIngredientsNames = usedIngredients.map((el) => el.name);
+    usedIngredientsIds = usedIngredients.map((el) => el.id);
   }
+
   const { cabinetId } = useContext(AuthContext);
   const [shoppinglist, setShoppinglist] = useState({
     name: '',
@@ -39,31 +40,12 @@ export const IngredientsList = ({
     metrics: '',
   });
   const { colorMode } = useColorMode();
-
+  // if (!usedIngredientsIds) usedIngredientsIds =
   const [addShoppinglist, { isSuccess, isLoading }] =
     useAddShoppinglistMutation();
   useEffect(() => {
-    if (!missingIngredients) {
-      setShoppinglist(
-        ingredients
-          .map((ingredient) => {
-            if (missingIngredientsNames?.includes(ingredient.name)) {
-              return {
-                name: ingredient.name,
-                id: ingredient.id,
-                amount: Math.round(ingredient.measures.metric.amount),
-                metrics: ingredient.measures.metric.unitShort,
-              };
-            }
-            return null;
-          })
-          .filter((item) => item !== null)
-      );
-    } else {
-      setShoppinglist(missingIngredients);
-    }
+    setShoppinglist(missingIngredients.filter((el) => el.id !== -1));
   }, []);
-  console.log({ shoppinglist });
   const addToShoppinglist = () => {
     addShoppinglist({ cabinetId, shoppinglist });
   };
@@ -71,59 +53,70 @@ export const IngredientsList = ({
   return (
     <Center>
       {ingredients &&
-        ingredients.map((ingredient) => {
-          return (
-            <VStack flex={1} mb={3} key={uuidv4()} w={'100%'}>
-              <HStack
-                ml={20}
-                w={'80%'}
-                flex={1}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-              >
-                {usedIngredientsNames?.includes(ingredient.name) ? (
-                  <MaterialCommunityIcons
-                    name="checkbox-marked-circle-outline"
-                    size={24}
-                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name="checkbox-blank-circle-outline"
-                    size={24}
-                    color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                  />
-                )}
-                <Text w={'40%'} bold>
-                  {ingredient.name}
-                </Text>
-                <Box w={'40%'}>
-                  <HStack>
-                    <Text mr={2}>
-                      {Math.round(ingredient.measures.metric.amount)}
-                    </Text>
-                    <Text>{ingredient.measures.metric.unitShort}</Text>
-                  </HStack>
-                </Box>
-              </HStack>
-            </VStack>
-          );
-        })}
-      {missingIngredientsNames || usedIngredientsNames ? (
+        ingredients
+          .filter((el) => el.id !== -1)
+          .map((ingredient) => {
+            return (
+              <VStack flex={1} mb={3} key={uuidv4()} w={'100%'}>
+                <HStack
+                  ml={20}
+                  w={'80%'}
+                  flex={1}
+                  justifyContent={'space-between'}
+                  alignItems={'center'}
+                >
+                  {usedIngredientsIds?.includes(ingredient.id) ? (
+                    <MaterialCommunityIcons
+                      name="checkbox-marked-circle-outline"
+                      size={24}
+                      color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="checkbox-blank-circle-outline"
+                      size={24}
+                      color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+                    />
+                  )}
+                  <Text w={'40%'} bold>
+                    {ingredient.name}
+                  </Text>
+                  <Box w={'40%'}>
+                    <HStack>
+                      <Text mr={2}>
+                        {Math.round(ingredient.measures.metric.amount)}
+                      </Text>
+                      <Text>{ingredient.measures.metric.unitShort}</Text>
+                    </HStack>
+                  </Box>
+                </HStack>
+              </VStack>
+            );
+          })}
+      {missingIngredientsIds.length ? (
         <Button
           bg="secondary.100"
           onPress={addToShoppinglist}
           mt={7}
           maxW={'50%'}
         >
-          Add to shopping list
+          Add to Shopping List
         </Button>
       ) : null}
 
-      {isLoading && <Spinner />}
+      {isLoading && <Spinner pt={3} />}
       {isSuccess && (
-        <Text textAlign={'center'}>
-          You sucessfully added the missing items to your shoppinglist
+        <Text
+          mt={3}
+          p={3}
+          maxW={250}
+          shadow={3}
+          rounded="sm"
+          maxW={250}
+          textAlign={'center'}
+          bg="success.300"
+        >
+          Added to Shopping List
         </Text>
       )}
     </Center>

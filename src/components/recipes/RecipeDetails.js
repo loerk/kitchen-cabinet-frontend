@@ -31,8 +31,8 @@ import { AuthContext } from '../../authNavigation/AuthProvider';
 export const RecipeDetails = ({
   missingIngredients,
   usedIngredients,
-  missingIngredientsNames,
-  usedIngredientsNames,
+  missingIngredientsIds,
+  usedIngredientsIds,
   id,
   isOpen,
 }) => {
@@ -42,6 +42,7 @@ export const RecipeDetails = ({
   const { data: recipeDetails, isLoading } = useGetRecipeByIdQuery(
     isOpen ? id : skipToken
   );
+
   const [
     addFavoriteRecipe,
     { isSuccess: isSuccessSaving, isLoading: isSaving },
@@ -110,8 +111,8 @@ export const RecipeDetails = ({
                   <IngredientsList
                     missingIngredients={missingIngredients}
                     usedIngredients={usedIngredients}
-                    missingIngredientsNames={missingIngredientsNames}
-                    usedIngredientsNames={usedIngredientsNames}
+                    missingIngredientsIds={missingIngredientsIds}
+                    usedIngredientsIds={usedIngredientsIds}
                     ingredients={recipeDetails.extendedIngredients}
                   />
                 )}
@@ -133,7 +134,7 @@ export const RecipeDetails = ({
                                   <Text key={uuidv4()}>{ingredient.name}</Text>
                                 ))
                               ) : (
-                                <Text>all Ingredients</Text>
+                                <Text>All Ingredients</Text>
                               )}
                             </VStack>
                           </HStack>
@@ -146,7 +147,7 @@ export const RecipeDetails = ({
                   ) : (
                     <View>
                       <Text textAlign={'center'} w={300}>
-                        We are sorry, there is no further Information provided.
+                        We are sorry, there is no further information provided.
                         But you may find something similar{' '}
                       </Text>
                       <OpenURLButton
@@ -157,12 +158,13 @@ export const RecipeDetails = ({
                       </OpenURLButton>
                     </View>
                   )}
-                  {missingIngredientsNames || usedIngredientsNames ? (
+                  {missingIngredientsIds !== undefined ||
+                  usedIngredientsIds !== undefined ? (
                     <Button
                       bg="secondary.100"
                       onPress={() => saveFavorite(recipeDetails.id)}
                     >
-                      Add to favourites
+                      Add to Favorites
                     </Button>
                   ) : (
                     <Button
@@ -177,15 +179,28 @@ export const RecipeDetails = ({
                       Remove from Favorites
                     </Button>
                   )}
-                  {isSaving && <Spinner text="Loading..." />}
+                  {isSaving && <Spinner pt={3} />}
                   {isSuccessSaving && (
-                    <Text textAlign={'center'}>
-                      This recipe is now one of your favourites
+                    <Text
+                      mt={3}
+                      p={3}
+                      maxW={250}
+                      shadow={3}
+                      rounded="sm"
+                      textAlign={'center'}
+                      bg="success.300"
+                    >
+                      Added to Favorites
                     </Text>
                   )}
                   {isSuccessDeleting && (
-                    <Text textAlign={'center'}>
-                      This recipe is now removed from your favourites
+                    <Text
+                      pt={3}
+                      maxW={250}
+                      textAlign={'center'}
+                      bg="success.300"
+                    >
+                      Removed from Favorites
                     </Text>
                   )}
                 </Box>

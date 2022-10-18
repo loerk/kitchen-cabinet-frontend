@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Center,
   Divider,
-  Heading,
   ScrollView,
   Spinner,
   StatusBar,
@@ -31,7 +30,6 @@ const Favorites = () => {
   const { data: favoriteRecipes, isLoading } = useGetFavoritesQuery(cabinetId);
   const { data: cabinetItems } = useGetCabinetItemsQuery(cabinetId);
 
-  // useEffect for searching By title
   useEffect(() => {
     const filteredFavorites = favoriteRecipes?.filter((recipe) => {
       if (recipe.title.toLowerCase().includes(searchInput)) return true;
@@ -49,6 +47,7 @@ const Favorites = () => {
         <SafeAreaView>
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
           />
 
           <Divider />
@@ -65,14 +64,14 @@ const Favorites = () => {
               ? searchedRecipes?.map((recipe) => (
                   <RecipeCard
                     key={uuidv4()}
-                    item={recipe}
+                    recipe={recipe}
                     ingredientIds={ids}
                   />
                 ))
               : favoriteRecipes?.map((recipe) => (
                   <RecipeCard
                     key={uuidv4()}
-                    item={recipe}
+                    recipe={recipe}
                     ingredientIds={ids}
                   />
                 ))}

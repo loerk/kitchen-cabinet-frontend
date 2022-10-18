@@ -34,6 +34,7 @@ import LoadingCards from '../utils/LoadingCards';
 
 // Authentication
 import { AuthContext } from '../../authNavigation/AuthProvider';
+import { Pressable } from 'react-native';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -45,7 +46,13 @@ const Dashboard = () => {
   const [displayedRecipes, setDisplayedRecipes] = useState([]);
 
   const { data: cabinetItems } = useGetCabinetItemsQuery(cabinetId);
-  const cabinetItemNames = cabinetItems?.map((item) => item.name).join(',');
+  const cabinetItemNames = cabinetItems
+    ?.map((item) => item.name)
+    .reduce((acc, curr) => {
+      if (!acc.includes(curr)) return [...acc, curr];
+      return [...acc];
+    }, [])
+    .join(',');
   const payload = { cabinetId, ingredients: cabinetItemNames };
 
   const { data: suggestedRecipes, isLoading: isLoadingRecipes } =
@@ -58,8 +65,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const filteredSuggestions = displayedRecipes?.filter((recipe) => {
-      if (recipe.title.toLowerCase().includes(searchInput)) return true;
-      return false;
+      return recipe.title.toLowerCase().includes(searchInput);
     });
     if (searchInput) setDisplayedRecipes(filteredSuggestions);
     if (!searchInput) setDisplayedRecipes(suggestedRecipes);
@@ -71,21 +77,24 @@ const Dashboard = () => {
         {
           <StatusBar
             barStyle={colorMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor={colorMode === 'dark' ? '#515050' : '#FCF5EA'}
           />
         }
         <HStack>
           <Box w={'100%'}>
             <HStack justifyContent={'space-between'} alignItems={'flex-end'}>
-              <VStack mt={5}>
-                <Text style={{ paddingLeft: 18 }}>Welcome</Text>
-                <Heading>{user.displayName && `${user.displayName}`}</Heading>
+              <VStack mt={0}>
+                <Text style={{ paddingLeft: 35 }}>Welcome</Text>
+                <Heading style={{ paddingLeft: 35 }}>
+                  {user.displayName && `${user.displayName}`}
+                </Heading>
               </VStack>
 
               <Ionicons
                 name="person-circle-outline"
                 size={40}
                 color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-                style={{ marginRight: 14 }}
+                style={{ marginRight: 34 }}
                 onPress={() => navigation.navigate('Profile')}
               />
             </HStack>
@@ -104,12 +113,14 @@ const Dashboard = () => {
             onChangeText={(newValue) => setSearchInput(newValue)}
             defaultValue={searchInput}
           />
-          <Ionicons
-            name="options"
-            size={34}
-            color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
-            onPress={() => setIsOpen(!isOpen)}
-          />
+          <Pressable onPressIn={() => setIsOpen(!isOpen)}>
+            <Ionicons
+              name="options"
+              size={34}
+              color={colorMode === 'dark' ? '#FCF5EA' : '#515050'}
+              //onPress={() => setIsOpen(!isOpen)}
+            />
+          </Pressable>
         </HStack>
         <Center mt={3}>
           <Slide in={isOpen} placement={'right'} duration={300}>
@@ -120,34 +131,26 @@ const Dashboard = () => {
               setIsOpen={setIsOpen}
             />
           </Slide>
-          <Text
-            fontSize="2xl"
-            style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
-            textAlign={'center'}
-          >
-            Suggested Recipes: {displayedRecipes?.length || 0}
-          </Text>
+          {displayedRecipes?.length && (
+            <Text
+              fontSize="2xl"
+              style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
+              textAlign={'center'}
+            >
+              Suggested Recipes: {displayedRecipes?.length || 0}
+            </Text>
+          )}
           <ScrollView horizontal={true}>
-            {isLoadingRecipes ? <LoadingCards /> : null}
             {displayedRecipes?.length ? (
               displayedRecipes?.map((recipe) => {
-                return <RecipeCard key={uuidv4()} item={recipe} />;
+                return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })
-            ) : isLoadingRecipes ? null : !cabinetItemNames?.length ? (
-              <Center>
-                <Text>Your cabinet is empty. {'\n'}</Text>
-                <Button
-                  onPress={() => navigation.navigate('Add')}
-                  w="100%"
-                  bg="secondary.100"
-                >
-                  Add an item
-                </Button>
-              </Center>
+            ) : isLoadingRecipes ? (
+              <LoadingCards />
             ) : null}
           </ScrollView>
         </Center>
-        <ExpirySuggestions items={cabinetItems} />
+        <ExpirySuggestions cabinetItems={cabinetItems} />
       </ScrollView>
     </View>
   );

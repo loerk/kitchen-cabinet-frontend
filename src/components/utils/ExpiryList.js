@@ -19,6 +19,7 @@ export default function ExpiryList({ title, arr, isLoading, action }) {
         {title}
       </Heading>
       <FlatList
+        nestedScrollEnabled={true}
         pr={3}
         mb={6}
         keyExtractor={() => uuidv4()}
@@ -61,7 +62,10 @@ export default function ExpiryList({ title, arr, isLoading, action }) {
                   color="coolGray.800"
                   bold
                 >
-                  {item.name}
+                  {item.name
+                    .split(' ')
+                    .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+                    .join(' ')}
                 </Text>
               </VStack>
               <Spacer />

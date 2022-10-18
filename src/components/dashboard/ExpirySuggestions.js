@@ -3,18 +3,7 @@ import { SafeAreaView } from 'react-native';
 import 'react-native-get-random-values';
 import { uuidv4 } from '@firebase/util';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
-import {
-  Avatar,
-  Box,
-  Button,
-  FlatList,
-  Heading,
-  HStack,
-  ScrollView,
-  Spacer,
-  Text,
-  VStack,
-} from 'native-base';
+import { Box, Heading, ScrollView } from 'native-base';
 
 import { useGetRecipeByIngredientsQuery } from '../../features/api/apiSlice';
 
@@ -23,77 +12,89 @@ import { RecipeCard } from '../utils/RecipeCard';
 import { AuthContext } from '../../authNavigation/AuthProvider';
 import ExpiryList from '../utils/ExpiryList';
 
-function ExpirySuggestions({ items }) {
+function ExpirySuggestions({ cabinetItems }) {
   const { cabinetId } = useContext(AuthContext);
-
   const [ingredients, setIngredients] = useState('');
-
   const payload = { cabinetId, ingredients };
   const { data: suggestedRecipes, isLoading } = useGetRecipeByIngredientsQuery(
     ingredients.length ? payload : skipToken
   );
 
-  const reduced = items?.reduce((acc, curr) => {
+  const sortedCabinetItems = cabinetItems?.reduce((acc, curr) => {
     const date = new Date();
-    const timeDifference = Math.round(
-      (+new Date(curr.expiryDate) - date.getTime()) / (1000 * 60 * 60 * 24)
+    const CURRENT_DATE = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+    const expired = +new Date(CURRENT_DATE) > +new Date(curr.expiryDate);
+    const remainingDaysLeft = Math.round(
+      (+new Date(curr.expiryDate) - +new Date(CURRENT_DATE)) /
+        (1000 * 60 * 60 * 24)
     );
+    const twoWeeksLeft = Math.abs(remainingDaysLeft) <= 14;
+    const fiveDaysLeft = Math.abs(remainingDaysLeft) <= 5;
     let key = '';
-    if (timeDifference < 0) {
-      key = 'superUrgent';
+    if (expired) {
+      key = 'expired';
       return { ...acc, [key]: [...(acc[key] ?? []), curr] };
-    } else if (timeDifference < 10) {
-      key = 'urgent';
+    } else if (fiveDaysLeft) {
+      key = 'fiveDaysLeft';
       return { ...acc, [key]: [...(acc[key] ?? []), curr] };
-    } else if (timeDifference < 30) {
-      key = 'middle';
+    } else if (twoWeeksLeft) {
+      key = 'twoWeeksLeft';
       return { ...acc, [key]: [...(acc[key] ?? []), curr] };
     }
 
     return acc;
   }, {});
   const getSoonRecipes = () => {
-    setIngredients(reduced.middle.map((item) => item.name).join());
+    setIngredients(
+      sortedCabinetItems.twoWeeksLeft.map((item) => item.name).join()
+    );
   };
   const getUrgentRecipes = () => {
-    setIngredients(reduced.urgent.map((item) => item.name).join());
+    setIngredients(
+      sortedCabinetItems.fiveDaysLeft.map((item) => item.name).join()
+    );
   };
   const getSuperUrgentRecipes = () => {
-    setIngredients(reduced.superUrgent.map((item) => item.name).join());
+    setIngredients(sortedCabinetItems.expired.map((item) => item.name).join());
   };
-  if (!items) return;
+  if (!cabinetItems) return;
   return (
     <Box>
-      <Heading
-        fontSize="2xl"
-        style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
-        textAlign={'center'}
-      >
-        Expiration Overview
-      </Heading>
+      {!!cabinetItems.length && (
+        <Heading
+          fontSize="2xl"
+          style={{ fontWeight: 'bold', marginTop: 5, marginBottom: 3 }}
+          textAlign={'center'}
+        >
+          Expiration Overview
+        </Heading>
+      )}
       <SafeAreaView>
         <ScrollView mx={3} horizontal={true} pb={5}>
-          {reduced?.superUrgent && (
+          {sortedCabinetItems?.expired && (
             <ExpiryList
               title={'Expired'}
               isLoading={isLoading}
-              arr={reduced.superUrgent}
+              arr={sortedCabinetItems.expired}
               action={getSuperUrgentRecipes}
             />
           )}
-          {reduced?.urgent && (
+          {sortedCabinetItems?.fiveDaysLeft && (
             <ExpiryList
               title={'Expiring soon'}
               isLoading={isLoading}
-              arr={reduced.urgent}
+              arr={sortedCabinetItems.fiveDaysLeft}
               action={getUrgentRecipes}
             />
           )}
-          {reduced?.middle && (
+          {sortedCabinetItems?.twoWeeksLeft && (
             <ExpiryList
               title={'Expiring within 2 weeks'}
               isLoading={isLoading}
-              arr={reduced.middle}
+              arr={sortedCabinetItems.twoWeeksLeft}
               action={getSoonRecipes}
             />
           )}
@@ -102,7 +103,7 @@ function ExpirySuggestions({ items }) {
           <Box>
             <ScrollView horizontal={true}>
               {suggestedRecipes?.map((recipe) => {
-                return <RecipeCard key={uuidv4()} item={recipe} />;
+                return <RecipeCard key={uuidv4()} recipe={recipe} />;
               })}
             </ScrollView>
           </Box>
