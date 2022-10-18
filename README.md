@@ -1,9 +1,6 @@
-## About The Project
-
-<h1 align="center">Kitchen Cabinet</h1>
-<p align="center">
+# Kitchen Cabinet
 check our <a href="https://github.com/YannWe/Kitchen-Cabinet-Backend" target="_blank">Backend</a>
-</p>
+
 
 <!-- TABLE OF CONTENTS -->
 
@@ -40,33 +37,17 @@ This Project is our Final Project of the one year fullstack web developer course
 
 ## Features
 
-**Login**
 
-<img src="./readmeScreens/KC-Login.gif" width="150"/>
+| Feature | Userstory | Demo |
+| - | - | - |
+| **Login**  | The user is able to register and login with their credentials.   |<img src="./readmeScreens/KC-Login.gif" width="150"/>|
+| **Dashboard**  | On the dashboard the user can see their recipe suggestions on first glance. The user can also get an overview of their ingredients categorized by expiration dates. The user is able to get recipes only with these ingredients by clicking a button |<img src="./readmeScreens/Dashboard.gif" width="150"/>|
+| **Cabinet**  |The user is able to see all ingredients in their cabinet sorted by expiration date and highlighted with different colors. The user is able to edit and delete each ingredient   |<img src="./readmeScreens/Cabinet.gif" width="150"/>|
+| **Add Ingredients**  | The user is able to add ingredients to their cabinet and add an expiration date. If no expiration date given it will default to 2 weeks.   |<img src="./readmeScreens/Add.gif" width="150"/>|
+| **Shopping List**  | The user is able to add missing ingredients to a shoppinglist. The user has the option to delete the ingredient or add the ingredient directly to their cabinet|<img src="./readmeScreens/ShoppingList.gif" width="150"/>|
+| **Diagrams** | The user gets an overview of the cabinets food types or expiration dates|<img src="./readmeScreens/Diagrams.gif" width="150"/>|
+| **Profile**  | The user is able to add recipes to their favorites which will be saved in the profile. The user is able to set predefined diet and intolerances which will prefilter the suggested recipes. The user is able to logout and switch to dark mode  |<img src="./readmeScreens/Profile.gif" width="150"/>|
 
-**Dashboard**
-
-<img src="./readmeScreens/Dashboard.gif" width="150"/>
-
-**Cabinet**
-
-<img src="./readmeScreens/Cabinet.gif" width="150"/>
-
-**Add Ingredients**
-
-<img src="./readmeScreens/Add.gif" width="150"/>
-
-**Shopping List**
-
-<img src="./readmeScreens/ShoppingList.gif" width="150"/>
-
-**Diagrams**
-
-<img src="./readmeScreens/Diagrams.gif" width="150"/>
-
-**Profile**
-
-<img src="./readmeScreens/Profile.gif" width="150"/>
 
 <!-- TECHNOLOGIES -->
 
@@ -84,16 +65,15 @@ This Project is our Final Project of the one year fullstack web developer course
 
 ## Team
 
-- [Aseel](https://github.com/aseelalmutareb)
-- [Yannick](https://github.com/YannWe)
-- [Franziska](https://github.com/loerk)
+- [Aseel Almutareb](https://github.com/aseelalmutareb)
+- [Yannick Wedekind](https://github.com/YannWe)
+- [Franziska Seitz](https://github.com/loerk)
 
 <!-- LINKS -->
 
 ## Links
 
 - [Backend](https://github.com/YannWe/Kitchen-Cabinet-Backend)
-- [Design?](<https://www.figma.com/file/ATMhtCX7NRp9otxh0y1EMy/Untitled-(Copy)?node-id=0%3A1>)
 - [Github Project Page](https://github.com/users/YannWe/projects/1/views/1)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -101,7 +81,5 @@ This Project is our Final Project of the one year fullstack web developer course
 ### Try it out
 
 [Android](https://expo.dev/artifacts/eas/nuN3qudDFgEVerUAK1etcy.apk)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
