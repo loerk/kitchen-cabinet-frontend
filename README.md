@@ -42,6 +42,7 @@ This Project is our Final Project of the one year fullstack web developer course
 | - | - | - |
 | **Login**  | The user is able to register and login with their credentials.   |<img src="./readmeScreens/KC-Login.gif" width="150"/>|
 | **Dashboard**  | On the dashboard the user can see their recipe suggestions on first glance. The user can also get an overview of their ingredients categorized by expiration dates. The user is able to get recipes only with these ingredients by clicking a button |<img src="./readmeScreens/Dashboard.gif" width="150"/>|
+| **Dashboard Filters**  | On the dashboard the user can utilise the filter options to narrow down the recipe results by specific categories |<img src="./readmeScreens/DashboardFilters.gif" width="150"/>|
 | **Cabinet**  |The user is able to see all ingredients in their cabinet sorted by expiration date and highlighted with different colors. The user is able to edit and delete each ingredient   |<img src="./readmeScreens/Cabinet.gif" width="150"/>|
 | **Add Ingredients**  | The user is able to add ingredients to their cabinet and add an expiration date. If no expiration date given it will default to 2 weeks.   |<img src="./readmeScreens/Add.gif" width="150"/>|
 | **Shopping List**  | The user is able to add missing ingredients to a shoppinglist. The user has the option to delete the ingredient or add the ingredient directly to their cabinet|<img src="./readmeScreens/ShoppingList.gif" width="150"/>|
