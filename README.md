@@ -77,8 +77,6 @@ This Project is our Final Project of the one year fullstack web developer course
 - [Backend](https://github.com/YannWe/Kitchen-Cabinet-Backend)
 - [Github Project Page](https://github.com/users/YannWe/projects/1/views/1)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Try it out
 
 [Android](https://expo.dev/artifacts/eas/nuN3qudDFgEVerUAK1etcy.apk)
